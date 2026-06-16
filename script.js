@@ -1,0 +1,531 @@
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("¡ReBest script cargado y optimizado con éxito!");
+    
+    const body = document.body;
+
+    // =========================================================
+    // 1. PREPARACIÓN DE ANIMACIÓN HERO (Letras y Palabras)
+    // =========================================================
+    let animacionHeroIniciada = false;
+    const lineas = document.querySelectorAll('.texto-animado');
+
+    lineas.forEach(linea => {
+        if(linea) {
+            const texto = linea.textContent;
+            linea.textContent = ''; 
+            
+            // Primero separamos por palabras para evitar cortes de línea a la mitad
+            texto.split(' ').forEach((palabra, index, array) => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'word';
+                wordSpan.style.display = 'inline-block'; 
+                wordSpan.style.whiteSpace = 'nowrap';
+
+                // Ahora separamos las letras dentro de esa palabra
+                palabra.split('').forEach(letra => {
+                    const charSpan = document.createElement('span');
+                    charSpan.textContent = letra; 
+                    charSpan.className = 'char';
+                    wordSpan.appendChild(charSpan);
+                });
+
+                linea.appendChild(wordSpan);
+
+                // Agregamos el espacio real entre palabras (excepto al final)
+                if (index < array.length - 1) {
+                    const spaceSpan = document.createElement('span');
+                    spaceSpan.innerHTML = '&nbsp;';
+                    spaceSpan.className = 'char space';
+                    linea.appendChild(spaceSpan);
+                }
+            });
+        }
+    });
+
+    const iniciarAnimacionesHero = () => {
+        if (animacionHeroIniciada) return; 
+        animacionHeroIniciada = true;
+
+        // Animamos solo las letras, no los espacios
+        const letras = document.querySelectorAll('.char:not(.space)'); 
+        letras.forEach((letra, index) => {
+            setTimeout(() => {
+                letra.classList.add('visible');
+            }, index * 30); 
+        });
+
+        setTimeout(() => {
+            const marcoFoto = document.querySelector('.marco-foto');
+            if(marcoFoto) marcoFoto.classList.add('visible');
+        }, 500);
+
+        setTimeout(() => {
+            document.querySelectorAll('.anim-retraso').forEach(el => el.classList.add('visible'));
+        }, 800);
+    };
+
+    // =========================================================
+    // 2. LÓGICA DE LA PANTALLA DE INTRODUCCIÓN (MULTI-VIDEO Y ALTA PRECISIÓN)
+    // =========================================================
+    const introOverlay = document.querySelector('.intro-overlay');
+    const introVideos = document.querySelectorAll('.intro-overlay video');
+
+    const TIEMPO_REFLEJO = 4.700; 
+
+    let animacionFrameId;
+    let videoActivo = null;
+
+    const hideIntro = () => {
+        if (introOverlay && !introOverlay.classList.contains('hidden')) {
+            introOverlay.classList.add('hidden');
+            introOverlay.style.pointerEvents = 'none';
+            
+            iniciarAnimacionesHero();
+            
+            introVideos.forEach(v => v.pause());
+            
+            setTimeout(() => {
+                introOverlay.style.display = 'none'; 
+            }, 600); 
+            
+            body.classList.remove('intro-active'); 
+            console.log("Intro oculta, scroll habilitado.");
+        }
+    };
+
+    const checkVideoTime = () => {
+        if (videoActivo && videoActivo.currentTime >= TIEMPO_REFLEJO) { 
+            hideIntro();
+            cancelAnimationFrame(animacionFrameId);
+        } else if (introOverlay && !introOverlay.classList.contains('hidden')) {
+            animacionFrameId = requestAnimationFrame(checkVideoTime);
+        }
+    };
+
+    if (introVideos.length > 0) {
+        introVideos.forEach(vid => {
+            const playPromise = vid.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                    console.warn("Autoplay bloqueado. Saltando intro...");
+                    hideIntro();
+                });
+            }
+
+            vid.addEventListener('play', () => {
+                if (window.getComputedStyle(vid).display !== 'none') {
+                    videoActivo = vid;
+                    cancelAnimationFrame(animacionFrameId);
+                    animacionFrameId = requestAnimationFrame(checkVideoTime);
+                }
+            });
+
+            vid.addEventListener('ended', hideIntro);
+            vid.addEventListener('error', hideIntro);
+        });
+    }
+
+    setTimeout(() => {
+        hideIntro();
+    }, 8000);
+
+    if (introOverlay) {
+        introOverlay.addEventListener('click', () => {
+            if (videoActivo) {
+                alert(`Pon este número en TIEMPO_REFLEJO: ${videoActivo.currentTime.toFixed(3)}`);
+            }
+        }); 
+    }
+
+    // =========================================================
+    // 3. LÓGICA DEL MENÚ HAMBURGUESA
+    // =========================================================
+    const hamburgerToggle = document.querySelector('.hamburger-toggle');
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+
+    const toggleMenu = (forzarCierre = false) => {
+        if (!hamburgerMenu || !hamburgerToggle) return;
+        
+        const isOpen = forzarCierre ? false : !hamburgerMenu.classList.contains('open');
+        
+        hamburgerMenu.classList.toggle('open', isOpen);
+        hamburgerToggle.classList.toggle('open', isOpen);
+        body.classList.toggle('menu-open', isOpen);
+        
+        hamburgerToggle.setAttribute('aria-expanded', isOpen);
+        hamburgerMenu.setAttribute('aria-hidden', !isOpen);
+    };
+
+    if (hamburgerToggle && hamburgerMenu) {
+        hamburgerToggle.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            toggleMenu();
+        });
+
+        const menuLinks = document.querySelectorAll('.hamburger-menu a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const targetId = link.getAttribute('href');
+                
+                if (targetId && targetId.startsWith('#')) {
+                    e.preventDefault(); 
+                    toggleMenu(true);
+
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        setTimeout(() => {
+                            targetElement.scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'start' 
+                            });
+                        }, 300); 
+                    }
+                }
+            });
+        });
+    }
+
+    // =========================================================
+    // 4. ANIMACIONES DE APARICIÓN (SCROLL)
+    // =========================================================
+    const scrollElements = document.querySelectorAll(
+        '.fade-in, .about-section, .team-section, .services-section, .clients-section, .cta-section, .team-card, .about-highlight, .about-image-wrapper, .solucion-card'
+    );
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15 
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = entry.target;
+
+                if (target.classList.contains('services-section') && window.innerWidth > 900) {
+                    const serviceCards = target.querySelectorAll('.service-card');
+                    
+                    serviceCards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.classList.add('is-visible');
+                        }, index * 800); 
+                    });
+                    
+                    target.classList.add('is-visible');
+                    observer.unobserve(target);
+                } 
+                else {
+                    target.classList.add('is-visible');
+                    observer.unobserve(target); 
+                }
+            }
+        });
+    }, observerOptions);
+
+    scrollElements.forEach(element => {
+        if(element) observer.observe(element);
+    });
+
+    // =========================================================
+    // 5. HEADER DINÁMICO AL HACER SCROLL
+    // =========================================================
+    const header = document.querySelector('.main-header');
+    
+    if (header) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled'); 
+            } else {
+                header.classList.remove('scrolled'); 
+            }
+        }, { passive: true });
+    }
+
+    // =========================================================
+    // 6. EFECTO TILT 3D PARA TARJETAS INTERACTIVAS
+    // =========================================================
+    const cards = document.querySelectorAll('.team-card, .service-card, .about-highlight, .solucion-card'); 
+
+    cards.forEach(card => {
+        let isTicking = false;
+
+        card.addEventListener('mousemove', (e) => {
+            if (window.innerWidth <= 900) return;
+
+            if (!isTicking) {
+                window.requestAnimationFrame(() => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left; 
+                    const y = e.clientY - rect.top;  
+
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+
+                    const rotateX = ((y - centerY) / centerY) * -10; 
+                    const rotateY = ((x - centerX) / centerX) * 10;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                    card.style.transition = 'transform 0.1s ease-out';
+                    card.style.zIndex = "10";
+                    isTicking = false;
+                });
+                isTicking = true;
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            if (window.innerWidth <= 900) {
+                card.style.transform = "";
+                return;
+            }
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translate3d(0, 0, 0) scale3d(1, 1, 1)`;
+            card.style.transition = 'transform 0.5s ease-out'; 
+            
+            card.style.zIndex = ""; 
+            setTimeout(() => {
+                if (!card.matches(':hover')) {
+                    card.style.transform = "";
+                    card.style.transition = "";
+                }
+            }, 500); 
+        });
+    });
+
+    // =========================================================
+    // 7. CARRUSEL INFINITO AUTOMÁTICO (LOGOS CLIENTES MÓVIL)
+    // =========================================================
+    const gridClientes = document.querySelector('.clientes-grid');
+    
+    if (gridClientes && window.innerWidth <= 768) {
+        const logosOriginales = Array.from(gridClientes.children);
+        
+        logosOriginales.forEach(logo => {
+            const clon = logo.cloneNode(true);
+            gridClientes.appendChild(clon);
+        });
+    }
+
+    // =========================================================
+    // 8. CARRUSEL DE SERVICIOS
+    // =========================================================
+    const servicesCarousel = document.querySelector('#services-carousel'); 
+    const serviceDots = document.querySelectorAll('#services-dots .dot'); 
+    const prevBtn = document.querySelector('.services-block .carousel-arrow.prev');
+    const nextBtn = document.querySelector('.services-block .carousel-arrow.next');
+
+    if (servicesCarousel) {
+        const items = servicesCarousel.querySelectorAll('.service-card'); 
+        let currentIndex = 0;
+        let isScrolling = false;
+
+        const updateActiveCardClass = (index) => {
+            items.forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+        };
+
+        const navigateToCard = (index) => {
+            if (index < 0) {
+                currentIndex = items.length - 1; 
+            } else if (index >= items.length) {
+                currentIndex = 0; 
+            } else {
+                currentIndex = index;
+            }
+
+            const targetLeft = items[currentIndex].offsetLeft - servicesCarousel.offsetLeft;
+
+            isScrolling = true;
+            servicesCarousel.scrollTo({
+                left: targetLeft,
+                behavior: 'smooth'
+            });
+
+            updateDots(currentIndex);
+            updateActiveCardClass(currentIndex);
+
+            setTimeout(() => {
+                isScrolling = false;
+            }, 600);
+        };
+
+        const updateDots = (index) => {
+            serviceDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        };
+
+        if(items.length > 0) {
+            updateActiveCardClass(0);
+        }
+
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', () => navigateToCard(currentIndex - 1));
+            nextBtn.addEventListener('click', () => navigateToCard(currentIndex + 1));
+        }
+        
+        serviceDots.forEach((dot, i) => {
+            dot.addEventListener('click', () => navigateToCard(i));
+        });
+
+        servicesCarousel.addEventListener('scroll', () => {
+            if (isScrolling) return; 
+
+            const scrollPosition = servicesCarousel.scrollLeft + (servicesCarousel.clientWidth / 2);
+            let closestIndex = 0;
+            let minDistance = Infinity;
+
+            items.forEach((item, index) => {
+                const itemCenter = item.offsetLeft - servicesCarousel.offsetLeft + (item.offsetWidth / 2);
+                const distance = Math.abs(scrollPosition - itemCenter);
+                
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestIndex = index;
+                }
+            });
+
+            if (closestIndex !== currentIndex) {
+                currentIndex = closestIndex;
+                updateDots(currentIndex);
+                updateActiveCardClass(currentIndex);
+            }
+        }, { passive: true });
+    }
+
+    // =========================================================
+    // 9. ANIMACIÓN CONTADOR DE ESTADÍSTICAS
+    // =========================================================
+    const statsSection = document.querySelector('.stats-container');
+    const statNumbers = document.querySelectorAll('.stat-number');
+    let hasAnimatedStats = false;
+
+    const animateStats = () => {
+        statNumbers.forEach(stat => {
+            const originalText = stat.innerText;
+            const targetNumber = parseInt(originalText.replace(/[^0-9]/g, ''));
+            const prefix = originalText.includes('+') ? '+' : '';
+            const suffix = originalText.includes('%') ? '%' : '';
+            
+            let currentNumber = 0;
+            const increment = Math.ceil(targetNumber / 40); 
+            
+            const updateCounter = () => {
+                currentNumber += increment;
+                
+                if (currentNumber < targetNumber) {
+                    stat.innerText = `${prefix}${currentNumber}${suffix}`;
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    stat.innerText = originalText; 
+                }
+            };
+            
+            stat.innerText = `${prefix}0${suffix}`;
+            updateCounter();
+        });
+    };
+
+    if (statsSection) {
+        const statsObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !hasAnimatedStats) {
+                animateStats();
+                hasAnimatedStats = true; 
+                statsObserver.unobserve(statsSection);
+            }
+        }, { threshold: 0.5 }); 
+        
+        statsObserver.observe(statsSection);
+    }
+
+    // =========================================================
+    // 10. CARRUSEL DE PORTAFOLIO DINÁMICO (LA MAGIA FINAL)
+    // =========================================================
+    const portfolioTrack = document.getElementById('portfolio-carousel');
+    const portfolioSlides = document.querySelectorAll('.portfolio-card');
+    const portfolioPrev = document.getElementById('prev-portfolio');
+    const portfolioNext = document.getElementById('next-portfolio');
+    const portfolioDots = document.querySelectorAll('#portfolio-dots .dot');
+
+    if (portfolioTrack && portfolioSlides.length > 0) {
+        let currentPortfolioIndex = 0;
+
+        const updatePortfolioActiveState = (index) => {
+            portfolioSlides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+                
+                const video = slide.querySelector('video');
+                if (video) {
+                    if (i === index) {
+                        video.play().catch(e => console.log("Autoplay bloqueado temporalmente por el navegador."));
+                    } else {
+                        video.pause();
+                    }
+                }
+            });
+
+            portfolioDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        };
+
+        const navigatePortfolioTo = (index) => {
+            if (index < 0) {
+                currentPortfolioIndex = portfolioSlides.length - 1;
+            } else if (index >= portfolioSlides.length) {
+                currentPortfolioIndex = 0;
+            } else {
+                currentPortfolioIndex = index;
+            }
+
+            portfolioTrack.style.transform = `translateX(-${currentPortfolioIndex * 100}%)`;
+            updatePortfolioActiveState(currentPortfolioIndex);
+        };
+
+        if (portfolioPrev && portfolioNext) {
+            portfolioPrev.addEventListener('click', () => navigatePortfolioTo(currentPortfolioIndex - 1));
+            portfolioNext.addEventListener('click', () => navigatePortfolioTo(currentPortfolioIndex + 1));
+        }
+
+        portfolioDots.forEach((dot, i) => {
+            dot.addEventListener('click', () => navigatePortfolioTo(i));
+        });
+
+        let startX = 0;
+        let endX = 0;
+
+        portfolioTrack.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        }, { passive: true });
+
+        portfolioTrack.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            const threshold = 50; 
+            
+            if (startX > endX + threshold) {
+                navigatePortfolioTo(currentPortfolioIndex + 1);
+            } else if (startX < endX - threshold) {
+                navigatePortfolioTo(currentPortfolioIndex - 1);
+            }
+        }, { passive: true });
+        
+        updatePortfolioActiveState(0);
+    }
+
+    // =========================================================
+    // 11. MOSTRAR / OCULTAR BURBUJA DE WHATSAPP AL HACER SCROLL
+    // =========================================================
+    const whatsappBtn = document.querySelector('.whatsapp-flotante');
+
+    if (whatsappBtn) {
+        window.addEventListener('scroll', () => {
+            // Se muestra solo si pasamos los 400px de scroll (fuera del inicio)
+            if (window.scrollY > 400) {
+                whatsappBtn.classList.add('show');
+            } else {
+                whatsappBtn.classList.remove('show');
+            }
+        }, { passive: true });
+    }
+});
