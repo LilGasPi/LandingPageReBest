@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. ANIMACIONES DE APARICIÓN (SCROLL)
     // =========================================================
     const scrollElements = document.querySelectorAll(
-        '.fade-in, .about-section, .team-section, .services-section, .clients-section, .cta-section, .team-card, .about-highlight, .about-image-wrapper, .solucion-card'
+        '.fade-in, .about-section, .team-section, .services-section, .clients-section, .cta-section, .team-card, .about-highlight, .about-image-wrapper, .solucion-card, .anim-slide-left, .anim-slide-right, .portfolio-anim'
     );
 
     const observerOptions = {
@@ -471,7 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // A. ANIMACIONES PARA NUEVOS PANELES (IntersectionObserver)
     // ──────────────────────────────────────────
     const panelElements = document.querySelectorAll(
-        '.team-panel-card, .service-card-panel, .solucion-col-panel, .cta-panel-left, .cta-panel-right'
+        '.team-panel-card, .service-card-panel, .solucion-col-panel, .cta-panel-left, .cta-panel-right, .anim-slide-left, .anim-slide-right, .portfolio-anim'
     );
 
     const panelObserver = new IntersectionObserver((entries) => {
