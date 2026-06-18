@@ -79,34 +79,10 @@
                         <a href="#contacto" class="btn-hero">Asesoramiento gratuito</a>
                         <a href="#portafolio" class="btn-hero-secondary">Ver trabajos →</a>
                     </div>
-                    <!-- Stats mini bar -->
-                    <div class="hero-mini-stats anim-retraso">
-                        <div class="hero-mini-stat">
-                            <span class="hero-mini-num">4 años</span>
-                            <span class="hero-mini-label">Experiencia</span>
-                        </div>
-                        <div class="hero-mini-divider"></div>
-                        <div class="hero-mini-stat">
-                            <span class="hero-mini-num">+85%</span>
-                            <span class="hero-mini-label">Crecimiento real</span>
-                        </div>
-                        <div class="hero-mini-divider"></div>
-                        <div class="hero-mini-stat">
-                            <span class="hero-mini-num">7+</span>
-                            <span class="hero-mini-label">Clientes activos</span>
-                        </div>
-                    </div>
                 </div>
                 <div class="contenedor-imagen">
                     <div class="marco-foto">
-                        <!-- Green corner accent -->
-                        <div class="foto-corner-tl"></div>
-                        <div class="foto-corner-br"></div>
                         <img src="./img/portada-rebest.jpg" alt="Equipo ReBest" class="hero-img">
-                        <div class="foto-badge">
-                            <span class="foto-badge-dot"></span>
-                            <span>Disponibles ahora</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -325,52 +301,65 @@
                 <p class="services-quote">“No solo cómo trabajamos, sino los resultados reales que entregamos.”</p>
             </div>
 
-            <!-- PC: 5 videos en grid automático -->
+            <!-- PC: Grid mixto videos + imágenes -->
             <div class="portfolio-grid-desktop desktop-only">
+                <!-- Fila 1: video | imagen | video tall (2 filas) | imagen | video -->
                 <div class="portfolio-grid-item">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline>
                         <source src="img/mentoria-venta-delivery.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Marketing</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido">
-                        <i class="fas fa-volume-mute"></i>
-                    </button>
+                    <button class="sound-toggle" aria-label="Activar sonido"><i class="fas fa-volume-mute"></i></button>
                 </div>
                 <div class="portfolio-grid-item">
-                    <video class="portfolio-grid-video" autoplay muted loop playsinline>
-                        <source src="img/hair-studio.mp4" type="video/mp4">
-                    </video>
-                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Hair Studio</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido">
-                        <i class="fas fa-volume-mute"></i>
-                    </button>
+                    <img src="img/bar.jpg" alt="Bar" class="portfolio-grid-video">
+                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Bar</span></div>
                 </div>
                 <div class="portfolio-grid-item portfolio-grid-item--tall">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline>
                         <source src="img/cafe-final.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Café</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido">
-                        <i class="fas fa-volume-mute"></i>
-                    </button>
+                    <button class="sound-toggle" aria-label="Activar sonido"><i class="fas fa-volume-mute"></i></button>
                 </div>
+                <div class="portfolio-grid-item">
+                    <img src="img/barcelo.jpg" alt="Barceló" class="portfolio-grid-video">
+                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Barceló</span></div>
+                </div>
+                <div class="portfolio-grid-item">
+                    <video class="portfolio-grid-video" autoplay muted loop playsinline>
+                        <source src="img/hair-studio.mp4" type="video/mp4">
+                    </video>
+                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Hair Studio</span></div>
+                    <button class="sound-toggle" aria-label="Activar sonido"><i class="fas fa-volume-mute"></i></button>
+                </div>
+                <!-- Fila 2 -->
                 <div class="portfolio-grid-item">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline>
                         <source src="img/palimpulsa.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Palimpulsa</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido">
-                        <i class="fas fa-volume-mute"></i>
-                    </button>
+                    <button class="sound-toggle" aria-label="Activar sonido"><i class="fas fa-volume-mute"></i></button>
+                </div>
+                <div class="portfolio-grid-item">
+                    <img src="img/dj.jpg" alt="DJ" class="portfolio-grid-video">
+                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Eventos</span></div>
+                </div>
+                <!-- tall ocupa fila 1 y 2 col 3 — el siguiente va a col 4 fila 2 -->
+                <div class="portfolio-grid-item">
+                    <img src="img/botella.jpg" alt="Botella" class="portfolio-grid-video">
+                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Fotografía</span></div>
                 </div>
                 <div class="portfolio-grid-item">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline>
                         <source src="img/auto.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Automotriz</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido">
-                        <i class="fas fa-volume-mute"></i>
-                    </button>
+                    <button class="sound-toggle" aria-label="Activar sonido"><i class="fas fa-volume-mute"></i></button>
+                </div>
+                <div class="portfolio-grid-item">
+                    <img src="img/dj-2.jpg" alt="DJ 2" class="portfolio-grid-video">
+                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Eventos</span></div>
                 </div>
             </div>
 

@@ -3301,12 +3301,12 @@ main {
 }
 
 /* ──────────────────────────────────────────────
-   PORTAFOLIO — Grid desktop (5 videos)
+   PORTAFOLIO — Grid desktop (videos + imágenes)
    ────────────────────────────────────────────── */
 .portfolio-grid-desktop {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: 420px;
+    grid-template-rows: 300px 300px;
     gap: 6px;
     max-width: 1200px;
     margin: 30px auto 0;
@@ -3317,10 +3317,13 @@ main {
     box-shadow: 0 20px 60px rgba(0,0,0,0.7);
 }
 
-/* Tercera columna más alta (efecto masonry) */
+/* El item tall (café) ocupa ambas filas en la columna 3 */
 .portfolio-grid-item--tall {
-    grid-row: span 1;
+    grid-row: span 2;
 }
+
+/* Los ítems de la segunda fila: empujan a col 1,2 y luego col 4,5 (col 3 ya está ocupada) */
+/* No necesitan posicionamiento manual con autoplace de CSS grid */
 
 .portfolio-grid-item {
     position: relative;
@@ -3813,12 +3816,6 @@ main {
    PORTFOLIO — Fix grid display + sound
    ========================================= */
 
-/* Fix: ensure grid items have proper height */
-.portfolio-grid-desktop {
-    grid-template-rows: 420px !important;
-    min-height: 420px;
-}
-
 /* Sound toggle button */
 .sound-toggle {
     position: absolute;
@@ -3987,7 +3984,7 @@ main {
     .hero-content { gap: 24px; }
     .contenedor-imagen { max-width: 320px; }
     .portfolio-grid-desktop {
-        grid-template-columns: repeat(3, 1fr) !important;
-        grid-template-rows: 280px 280px !important;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 240px 240px 240px;
     }
 }
