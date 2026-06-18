@@ -83,59 +83,61 @@ document.addEventListener('DOMContentLoaded', () => {
             iniciarAnimacionesHero();
             
             introVideos.forEach(v => v.pause());
+            cancelAnimationFrame(animacionFrameId);
             
             setTimeout(() => {
                 introOverlay.style.display = 'none'; 
             }, 600); 
             
             body.classList.remove('intro-active'); 
-            console.log("Intro oculta, scroll habilitado.");
         }
     };
 
     const checkVideoTime = () => {
         if (videoActivo && videoActivo.currentTime >= TIEMPO_REFLEJO) { 
             hideIntro();
-            cancelAnimationFrame(animacionFrameId);
         } else if (introOverlay && !introOverlay.classList.contains('hidden')) {
             animacionFrameId = requestAnimationFrame(checkVideoTime);
         }
     };
 
+    // Solo reproducimos el video que realmente está visible según el viewport,
+    // para evitar que ambos compitan por iniciar la animación a la vez.
+    const obtenerVideoVisible = () => {
+        return Array.from(introVideos).find(v => window.getComputedStyle(v).display !== 'none') || null;
+    };
+
     if (introVideos.length > 0) {
-        introVideos.forEach(vid => {
-            const playPromise = vid.play();
+        const videoVisible = obtenerVideoVisible();
+
+        if (videoVisible) {
+            videoVisible.preload = 'auto';
+            const playPromise = videoVisible.play();
             if (playPromise !== undefined) {
                 playPromise.catch(() => {
-                    console.warn("Autoplay bloqueado. Saltando intro...");
                     hideIntro();
                 });
             }
 
-            vid.addEventListener('play', () => {
-                if (window.getComputedStyle(vid).display !== 'none') {
-                    videoActivo = vid;
-                    cancelAnimationFrame(animacionFrameId);
-                    animacionFrameId = requestAnimationFrame(checkVideoTime);
-                }
+            videoVisible.addEventListener('play', () => {
+                videoActivo = videoVisible;
+                cancelAnimationFrame(animacionFrameId);
+                animacionFrameId = requestAnimationFrame(checkVideoTime);
             });
 
-            vid.addEventListener('ended', hideIntro);
-            vid.addEventListener('error', hideIntro);
-        });
+            videoVisible.addEventListener('ended', hideIntro);
+            videoVisible.addEventListener('error', hideIntro);
+        } else {
+            // No hay video visible (caso inesperado): saltamos la intro directamente
+            hideIntro();
+        }
+    } else {
+        hideIntro();
     }
 
     setTimeout(() => {
         hideIntro();
     }, 8000);
-
-    if (introOverlay) {
-        introOverlay.addEventListener('click', () => {
-            if (videoActivo) {
-                alert(`Pon este número en TIEMPO_REFLEJO: ${videoActivo.currentTime.toFixed(3)}`);
-            }
-        }); 
-    }
 
     // =========================================================
     // 3. LÓGICA DEL MENÚ HAMBURGUESA
@@ -194,8 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const observerOptions = {
         root: null,
-        rootMargin: '0px',
-        threshold: 0.15 
+        rootMargin: '0px 0px -60px 0px',
+        threshold: 0.08 
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
@@ -440,80 +442,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =========================================================
-    // 10. CARRUSEL DE PORTAFOLIO DINÁMICO (LA MAGIA FINAL)
-    // =========================================================
-    const portfolioTrack = document.getElementById('portfolio-carousel');
-    const portfolioSlides = document.querySelectorAll('.portfolio-card');
-    const portfolioPrev = document.getElementById('prev-portfolio');
-    const portfolioNext = document.getElementById('next-portfolio');
-    const portfolioDots = document.querySelectorAll('#portfolio-dots .dot');
-
-    if (portfolioTrack && portfolioSlides.length > 0) {
-        let currentPortfolioIndex = 0;
-
-        const updatePortfolioActiveState = (index) => {
-            portfolioSlides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-                
-                const video = slide.querySelector('video');
-                if (video) {
-                    if (i === index) {
-                        video.play().catch(e => console.log("Autoplay bloqueado temporalmente por el navegador."));
-                    } else {
-                        video.pause();
-                    }
-                }
-            });
-
-            portfolioDots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-        };
-
-        const navigatePortfolioTo = (index) => {
-            if (index < 0) {
-                currentPortfolioIndex = portfolioSlides.length - 1;
-            } else if (index >= portfolioSlides.length) {
-                currentPortfolioIndex = 0;
-            } else {
-                currentPortfolioIndex = index;
-            }
-
-            portfolioTrack.style.transform = `translateX(-${currentPortfolioIndex * 100}%)`;
-            updatePortfolioActiveState(currentPortfolioIndex);
-        };
-
-        if (portfolioPrev && portfolioNext) {
-            portfolioPrev.addEventListener('click', () => navigatePortfolioTo(currentPortfolioIndex - 1));
-            portfolioNext.addEventListener('click', () => navigatePortfolioTo(currentPortfolioIndex + 1));
-        }
-
-        portfolioDots.forEach((dot, i) => {
-            dot.addEventListener('click', () => navigatePortfolioTo(i));
-        });
-
-        let startX = 0;
-        let endX = 0;
-
-        portfolioTrack.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-        }, { passive: true });
-
-        portfolioTrack.addEventListener('touchend', (e) => {
-            endX = e.changedTouches[0].clientX;
-            const threshold = 50; 
-            
-            if (startX > endX + threshold) {
-                navigatePortfolioTo(currentPortfolioIndex + 1);
-            } else if (startX < endX - threshold) {
-                navigatePortfolioTo(currentPortfolioIndex - 1);
-            }
-        }, { passive: true });
-        
-        updatePortfolioActiveState(0);
-    }
-
-    // =========================================================
     // 11. MOSTRAR / OCULTAR BURBUJA DE WHATSAPP AL HACER SCROLL
     // =========================================================
     const whatsappBtn = document.querySelector('.whatsapp-flotante');
@@ -549,7 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 panelObserver.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     panelElements.forEach(el => panelObserver.observe(el));
 
