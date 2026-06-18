@@ -115,43 +115,38 @@
        <section id="equipo" class="team-section fade-in">
             <div class="team-header">
                 <h2 class="section-title">NUESTRO EQUIPO</h2>
-                
                 <div class="team-subtitle-container">
                     <div class="linea-verde-equipo"></div>
                     <p class="team-subtitle">“Dos profesionales. Un solo objetivo: ayudarte a conseguir más clientes.”</p>
                 </div>
             </div>
 
-            <div class="team-grid">
-                
-                <div class="team-card card-duvan">
+            <div class="team-panel">
+                <div class="team-panel-card card-duvan">
                     <span class="founder-label corner-tag">Socio Fundador</span>
                     <div class="team-image-wrapper">
                         <img src="./img/duvan-gomez-fondo.png" alt="Duván Gómez" class="team-photo" loading="lazy">
                     </div>
                     <div class="team-info">
                         <h4>DUVÁN GÓMEZ</h4>
-                        <div class="about-highlight role">
-                            Director de Marketing y Estrategia Digital
-                        </div>
+                        <p class="team-role">Director de Marketing y Estrategia Digital</p>
                         <p>Diseña las estrategias de captación que ayudan a transformar visibilidad en oportunidades comerciales reales.<br><br>Especialista en Meta Ads, Google Ads, captación de clientes y crecimiento para negocios de servicios.</p>
                     </div>
                 </div>
 
-                <div class="team-card card-nicolas">
+                <div class="team-panel-divider"></div>
+
+                <div class="team-panel-card card-nicolas">
                     <span class="founder-label corner-tag">Socio Fundador</span>
                     <div class="team-image-wrapper">
                         <img src="./img/nicolas-pizarro-fondo.png" alt="Nicolás Pizarro" class="team-photo" loading="lazy">
                     </div>
                     <div class="team-info">
                         <h4>NICOLÁS PIZARRO</h4>
-                        <div class="about-highlight role">
-                            Director Creativo y Producción Audiovisual
-                        </div>
+                        <p class="team-role">Director Creativo y Producción Audiovisual</p>
                         <p>Construye la identidad visual y el contenido que permiten a las marcas diferenciarse, conectar y generar confianza.<br><br>Especialista en producción audiovisual, dirección creativa y posicionamiento visual.</p>
                     </div>
                 </div>
-
             </div>
         </section>
 
@@ -164,44 +159,61 @@
                 <div class="services-header">
                     <h2 class="section-title">SERVICIOS</h2>
                 </div>
-                
                 <div class="frase-linea-verde">
                     <div class="linea"></div>
                     <p class="services-quote">“Todo lo que tu negocio necesita para mejorar su imagen, aumentar su visibilidad y atraer más clientes.”</p>
                 </div>
 
-                <div class="carousel-container fade-in">
+                <!-- PC: 3 tarjetas en panel negro -->
+                <div class="services-panel desktop-only">
+                    <div class="service-card-panel">
+                        <img src="./img/1-removebg-preview.png" alt="Icono Estrategia" class="service-icon-right">
+                        <div class="card-number">01</div>
+                        <h3 class="card-title">ESTRATEGIA DE<br>CONTENIDO</h3>
+                        <p class="card-description">Planificamos contenido con propósito. Cada pieza está pensada para posicionar tu marca, generar confianza y <strong>atraer al cliente correcto</strong>.</p>
+                    </div>
+                    <div class="services-panel-divider"></div>
+                    <div class="service-card-panel">
+                        <img src="./img/2-removebg-preview.png" alt="Icono Audiovisual" class="service-icon-right">
+                        <div class="card-number">02</div>
+                        <h3 class="card-title">PRODUCCIÓN<br>AUDIOVISUAL</h3>
+                        <p class="card-description">Creamos piezas audiovisuales diseñadas para captar atención, fortalecer la percepción de tu marca y apoyar la <strong>generación de oportunidades comerciales</strong>.</p>
+                    </div>
+                    <div class="services-panel-divider"></div>
+                    <div class="service-card-panel">
+                        <img src="./img/3-removebg-preview.png" alt="Icono Publicidad" class="service-icon-right">
+                        <div class="card-number">03</div>
+                        <h3 class="card-title">PUBLICIDAD<br>DIGITAL</h3>
+                        <p class="card-description">Utilizamos Meta Ads y Google Ads para atraer clientes potenciales, generar oportunidades comerciales y convertir la inversión publicitaria en <strong>crecimiento medible</strong>.</p>
+                    </div>
+                </div>
+
+                <!-- Móvil: carrusel -->
+                <div class="carousel-container mobile-only fade-in">
                     <button class="carousel-arrow prev rb-glow" aria-label="Anterior">&#10094;</button>
-                    
                     <div id="services-carousel" class="services-carousel">
-        
                         <div class="service-card active">
                             <img src="./img/1-removebg-preview.png" alt="Icono Estrategia" class="service-icon-right">
                             <div class="card-number">01</div>
                             <h3 class="card-title">ESTRATEGIA DE<br>CONTENIDO</h3>
                             <p class="card-description">Planificamos contenido con propósito. Cada pieza está pensada para posicionar tu marca, generar confianza y <strong>atraer al cliente correcto</strong>.</p>
                         </div>
-
                         <div class="service-card">
                             <img src="./img/2-removebg-preview.png" alt="Icono Audiovisual" class="service-icon-right">
                             <div class="card-number">02</div>
                             <h3 class="card-title">PRODUCCIÓN<br>AUDIOVISUAL</h3>
                             <p class="card-description">Creamos piezas audiovisuales diseñadas para captar atención, fortalecer la percepción de tu marca y apoyar la <strong>generación de oportunidades comerciales</strong>.</p>
                         </div>
-
                         <div class="service-card">
                             <img src="./img/3-removebg-preview.png" alt="Icono Publicidad" class="service-icon-right">
                             <div class="card-number">03</div>
                             <h3 class="card-title">PUBLICIDAD<br>DIGITAL</h3>
                             <p class="card-description">Utilizamos Meta Ads y Google Ads para atraer clientes potenciales, generar oportunidades comerciales y convertir la inversión publicitaria en <strong>crecimiento medible</strong>.</p>
                         </div>
-
                     </div>
-
                     <button class="carousel-arrow next rb-glow" aria-label="Siguiente">&#10095;</button>
                 </div>
-
-                <div id="services-dots" class="carousel-dots fade-in">
+                <div id="services-dots" class="carousel-dots mobile-only fade-in">
                     <span class="dot active"></span>
                     <span class="dot"></span>
                     <span class="dot"></span>
@@ -214,28 +226,19 @@
             </div>
         </section>
 
-        <div class="separator-container">
-            <div class="animated-neon-line"></div>
-        </div>
-
         <section id="soluciones" class="soluciones-integrales fade-in">
             <div class="services-header">
                 <h2 class="section-title">SOLUCIONES</h2>
             </div>
-            
             <div class="frase-linea-verde">
                 <div class="linea"></div>
                 <p class="services-quote">“Todo lo que tu negocio necesita para crecer digitalmente.”</p>
             </div>
 
-            <div class="soluciones-glass-container">
-                
-                <div class="solucion-col">
-                    <div class="text-card">
-                        <h4>Creación de Contenido</h4>
-                        <p>“Contenido visual pensado para conectar, diferenciar y transmitir valor.”</p>
-                    </div>
-                    <div class="icons-card">
+            <!-- Panel negro con 3 columnas -->
+            <div class="soluciones-panel">
+                <div class="solucion-col-panel">
+                    <div class="solucion-col-icons">
                         <div class="icon-circle ad">
                             <img src="./img/adobe-logo.png" alt="Adobe" class="adobe-img">
                         </div>
@@ -243,34 +246,26 @@
                             <img src="./img/davinci-logo.png" alt="DaVinci" class="davinci-img">
                         </div>
                     </div>
+                    <h4 class="solucion-col-title">Creación de Contenido</h4>
+                    <p class="solucion-col-desc">“Contenido visual pensado para conectar, diferenciar y transmitir valor.”</p>
                 </div>
 
-                <div class="separator-container-vertical">
-                    <div class="animated-neon-line-vertical"></div>
-                </div>
+                <div class="soluciones-panel-divider"></div>
 
-                <div class="solucion-col">
-                    <div class="text-card">
-                        <h4>Gestión de Redes</h4>
-                        <p>“Planificación estratégica para mantener una presencia profesional y constante.”</p>
-                    </div>
-                    <div class="icons-card">
+                <div class="solucion-col-panel">
+                    <div class="solucion-col-icons">
                         <div class="icon-circle ig"><i class="fab fa-instagram"></i></div>
                         <div class="icon-circle fb"><i class="fab fa-facebook-f"></i></div>
                         <div class="icon-circle tk"><i class="fab fa-tiktok"></i></div>
                     </div>
+                    <h4 class="solucion-col-title">Gestión de Redes</h4>
+                    <p class="solucion-col-desc">“Planificación estratégica para mantener una presencia profesional y constante.”</p>
                 </div>
 
-                <div class="separator-container-vertical">
-                    <div class="animated-neon-line-vertical"></div>
-                </div>
+                <div class="soluciones-panel-divider"></div>
 
-                <div class="solucion-col">
-                    <div class="text-card">
-                        <h4>Marketing Digital</h4>
-                        <p>“Campañas enfocadas en generar clientes potenciales y oportunidades comerciales.”</p>
-                    </div>
-                    <div class="icons-card">
+                <div class="solucion-col-panel">
+                    <div class="solucion-col-icons">
                         <div class="partner-logo-img meta-ads">
                             <img src="./img/meta-ads-logo3.png" alt="Meta Ads" class="mkt-img">
                         </div>
@@ -278,118 +273,116 @@
                             <img src="./img/google-ads-logo3.png" alt="Google Ads" class="mkt-img">
                         </div>
                     </div>
+                    <h4 class="solucion-col-title">Marketing Digital</h4>
+                    <p class="solucion-col-desc">“Campañas enfocadas en generar clientes potenciales y oportunidades comerciales.”</p>
                 </div>
-
             </div>
         </section>
-
-        <div class="separator-container">
-            <div class="animated-neon-line"></div>
-        </div>
 
         <section id="portafolio" class="portfolio-section fade-in">
             <div class="services-header">
                 <h2 class="section-title">PORTAFOLIO</h2>
             </div>
-            
             <div class="frase-linea-verde">
                 <div class="linea"></div>
                 <p class="services-quote">“No solo cómo trabajamos, sino los resultados reales que entregamos.”</p>
             </div>
 
-            <div class="carousel-container portfolio-carousel-container fade-in">
-                <button class="carousel-arrow prev rb-glow" id="prev-portfolio" aria-label="Anterior">&#10094;</button>
-                
-                <div id="portfolio-carousel" class="portfolio-carousel-track">
-                    
-                    <div class="portfolio-card active portada-carrusel">
-                        <div class="contenido-portada">
-                            <h3>NUESTRO PORTAFOLIO</h3>
-                            <p>Conoce los resultados reales que entregamos</p>
-                        </div>
-                    </div>
-                    
-                    <div class="portfolio-card">
-                        <video class="portfolio-media dynamic-media" controls playsinline muted>
-                            <source src="img/mentoria-venta-delivery.mp4" type="video/mp4">
-                            Tu navegador no soporta el formato de video.
-                        </video>
-                    </div>
-
-                    <div class="portfolio-card">
-                        <img src="img/bar.jpg" alt="Proyecto Bar" class="portfolio-media dynamic-media">
-                    </div>
-
-                    <div class="portfolio-card">
-                        <video class="portfolio-media dynamic-media" controls playsinline muted>
-                            <source src="img/hair-studio.mp4" type="video/mp4">
-                            Tu navegador no soporta el formato de video.
-                        </video>
-                    </div>
-
-                    <div class="portfolio-card">
-                        <img src="img/barcelo.jpg" alt="Proyecto Barceló" class="portfolio-media dynamic-media">
-                    </div>
-
-                    <div class="portfolio-card">
-                        <video class="portfolio-media dynamic-media" controls playsinline muted>
-                            <source src="img/cafe-final.mp4" type="video/mp4">
-                            Tu navegador no soporta el formato de video.
-                        </video>
-                    </div>
-
-                    <div class="portfolio-card">
-                        <img src="img/botella.jpg" alt="Proyecto Botella" class="portfolio-media dynamic-media">
-                    </div>
-
-                    <div class="portfolio-card">
-                        <video class="portfolio-media dynamic-media" controls playsinline muted>
-                            <source src="img/palimpulsa.mp4" type="video/mp4">
-                            Tu navegador no soporta el formato de video.
-                        </video>
-                    </div>
-
-                    <div class="portfolio-card">
-                        <img src="img/dj.jpg" alt="Proyecto DJ" class="portfolio-media dynamic-media">
-                    </div>
-
-                    <div class="portfolio-card">
-                        <video class="portfolio-media dynamic-media" controls playsinline muted>
-                            <source src="img/auto.mp4" type="video/mp4">
-                            Tu navegador no soporta el formato de video.
-                        </video>
-                    </div>
-
-                    <div class="portfolio-card">
-                        <img src="img/dj-2.jpg" alt="Proyecto DJ 2" class="portfolio-media dynamic-media">
-                    </div>
-
+            <!-- PC: 5 videos en grid automático -->
+            <div class="portfolio-grid-desktop desktop-only">
+                <div class="portfolio-grid-item">
+                    <video class="portfolio-grid-video" autoplay muted loop playsinline>
+                        <source src="img/mentoria-venta-delivery.mp4" type="video/mp4">
+                    </video>
+                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Marketing</span></div>
                 </div>
-
-                <button class="carousel-arrow next rb-glow" id="next-portfolio" aria-label="Siguiente">&#10095;</button>
+                <div class="portfolio-grid-item">
+                    <video class="portfolio-grid-video" autoplay muted loop playsinline>
+                        <source src="img/hair-studio.mp4" type="video/mp4">
+                    </video>
+                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Hair Studio</span></div>
+                </div>
+                <div class="portfolio-grid-item portfolio-grid-item--tall">
+                    <video class="portfolio-grid-video" autoplay muted loop playsinline>
+                        <source src="img/cafe-final.mp4" type="video/mp4">
+                    </video>
+                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Café</span></div>
+                </div>
+                <div class="portfolio-grid-item">
+                    <video class="portfolio-grid-video" autoplay muted loop playsinline>
+                        <source src="img/palimpulsa.mp4" type="video/mp4">
+                    </video>
+                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Palimpulsa</span></div>
+                </div>
+                <div class="portfolio-grid-item">
+                    <video class="portfolio-grid-video" autoplay muted loop playsinline>
+                        <source src="img/auto.mp4" type="video/mp4">
+                    </video>
+                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Automotriz</span></div>
+                </div>
             </div>
 
-            <div id="portfolio-dots" class="carousel-dots fade-in">
-                <span class="dot active"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+            <!-- Móvil: carrusel mejorado -->
+            <div class="portfolio-carousel-wrapper mobile-only">
+                <div class="portfolio-mobile-track" id="portfolio-mobile-track">
+                    <div class="portfolio-mobile-slide active">
+                        <div class="portada-carrusel">
+                            <div class="contenido-portada">
+                                <h3>NUESTRO PORTAFOLIO</h3>
+                                <p>Conoce los resultados reales que entregamos</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-mobile-slide">
+                        <video class="portfolio-mobile-media" autoplay muted loop playsinline>
+                            <source src="img/mentoria-venta-delivery.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="portfolio-mobile-slide">
+                        <img src="img/bar.jpg" alt="Proyecto Bar" class="portfolio-mobile-media">
+                    </div>
+                    <div class="portfolio-mobile-slide">
+                        <video class="portfolio-mobile-media" autoplay muted loop playsinline>
+                            <source src="img/hair-studio.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="portfolio-mobile-slide">
+                        <img src="img/barcelo.jpg" alt="Proyecto Barceló" class="portfolio-mobile-media">
+                    </div>
+                    <div class="portfolio-mobile-slide">
+                        <video class="portfolio-mobile-media" autoplay muted loop playsinline>
+                            <source src="img/cafe-final.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="portfolio-mobile-slide">
+                        <img src="img/botella.jpg" alt="Proyecto Botella" class="portfolio-mobile-media">
+                    </div>
+                    <div class="portfolio-mobile-slide">
+                        <video class="portfolio-mobile-media" autoplay muted loop playsinline>
+                            <source src="img/palimpulsa.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="portfolio-mobile-slide">
+                        <img src="img/dj.jpg" alt="Proyecto DJ" class="portfolio-mobile-media">
+                    </div>
+                    <div class="portfolio-mobile-slide">
+                        <video class="portfolio-mobile-media" autoplay muted loop playsinline>
+                            <source src="img/auto.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="portfolio-mobile-slide">
+                        <img src="img/dj-2.jpg" alt="Proyecto DJ 2" class="portfolio-mobile-media">
+                    </div>
+                </div>
+                <button class="portfolio-mobile-btn prev" id="portfolio-mobile-prev" aria-label="Anterior">&#10094;</button>
+                <button class="portfolio-mobile-btn next" id="portfolio-mobile-next" aria-label="Siguiente">&#10095;</button>
+                <div class="portfolio-mobile-dots" id="portfolio-mobile-dots"></div>
             </div>
 
             <div class="portfolio-ig-text" style="margin-top: 30px;">
                 <p>Puedes ver más de nuestros trabajos en <a href="https://instagram.com/agenciarebest" target="_blank" rel="noopener noreferrer">Instagram <i class="fab fa-instagram"></i></a></p>
             </div>
         </section>
-
-        <div class="separator-container">
-            <div class="animated-neon-line"></div>
         </div>
         <div class="stats-container fade-in">
             <div class="stat-item">
@@ -451,32 +444,26 @@
         </div>
 
         <section id="contacto" class="cta-section fade-in">
-            <div class="cta-container">
-                
-                <div class="cta-media">
-                    <img src="img/logo-blanco.png" alt="Hablemos de tu negocio" class="cta-image">
+            <div class="cta-panel">
+                <!-- Columna izquierda: logo + tagline -->
+                <div class="cta-panel-left">
+                    <img src="img/logo-blanco.png" alt="ReBest Logo" class="cta-panel-logo">
+                    <p class="cta-panel-tagline">Creatividad que conecta.<br>Estrategia que convierte.</p>
                 </div>
-                
-                <div class="cta-content">
-                    <div class="about-highlight">
-                        <img src="./img/4-removebg-preview.png" alt="Icono Visión ReBest" class="about-highlight-icon-new">
-                        
-                        <h2 class="cta-title">Tu negocio ya tiene potencial. Ahora hagamos que más personas lo vean, lo recuerden y te elijan.</h2>
-                        
-                        <p class="cta-description">Una conversación puede ayudarte a identify oportunidades que hoy tu negocio está dejando pasar.</p>
-                        
-                        <a href="https://api.whatsapp.com/send?phone=56991777994&text=Hola%20ReBest,%20me%20gustaría%20agendar%20una%20reunión%20estratégica." class="cta-btn" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-whatsapp"></i> Agenda tu reunión estratégica
-                        </a>
-                    </div>
+
+                <div class="cta-panel-divider"></div>
+
+                <!-- Columna derecha: texto + botón -->
+                <div class="cta-panel-right">
+                    <img src="./img/4-removebg-preview.png" alt="Icono CTA" class="about-highlight-icon-new">
+                    <h2 class="cta-title">Tu negocio ya tiene potencial. Ahora hagamos que más personas lo vean, lo recuerden y te elijan.</h2>
+                    <p class="cta-description">Una conversación puede ayudarte a identificar oportunidades que hoy tu negocio está dejando pasar.</p>
+                    <a href="https://api.whatsapp.com/send?phone=56991777994&text=Hola%20ReBest,%20me%20gustaría%20agendar%20una%20reunión%20estratégica." class="cta-btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i> Agenda tu reunión estratégica
+                    </a>
                 </div>
-                
             </div>
         </section>
-
-        <div class="separator-container">
-            <div class="animated-neon-line"></div>
-        </div>
 
         <footer class="main-footer">
             <div class="footer-container">

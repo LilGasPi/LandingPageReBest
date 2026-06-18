@@ -529,3 +529,127 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 });
+// ==========================================================================
+// ReBest v2.0 — Nuevos paneles, carrusel móvil portafolio, animaciones extra
+// ==========================================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // ──────────────────────────────────────────
+    // A. ANIMACIONES PARA NUEVOS PANELES (IntersectionObserver)
+    // ──────────────────────────────────────────
+    const panelElements = document.querySelectorAll(
+        '.team-panel-card, .service-card-panel, .solucion-col-panel, .cta-panel-left, .cta-panel-right'
+    );
+
+    const panelObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                panelObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+
+    panelElements.forEach(el => panelObserver.observe(el));
+
+    // ──────────────────────────────────────────
+    // B. CARRUSEL MÓVIL DE PORTAFOLIO
+    // ──────────────────────────────────────────
+    const mobileTrack   = document.getElementById('portfolio-mobile-track');
+    const mobilePrev    = document.getElementById('portfolio-mobile-prev');
+    const mobileNext    = document.getElementById('portfolio-mobile-next');
+    const mobileDotsBox = document.getElementById('portfolio-mobile-dots');
+
+    if (mobileTrack) {
+        const slides = Array.from(mobileTrack.querySelectorAll('.portfolio-mobile-slide'));
+        let mobileIdx = 0;
+
+        // Crear dots dinámicamente
+        slides.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', () => goToMobile(i));
+            mobileDotsBox.appendChild(dot);
+        });
+
+        const mobileDots = () => mobileDotsBox.querySelectorAll('.dot');
+
+        const goToMobile = (idx) => {
+            // Pausar todos los videos del slide actual
+            slides[mobileIdx].querySelectorAll('video').forEach(v => v.pause());
+
+            mobileIdx = (idx + slides.length) % slides.length;
+            mobileTrack.style.transform = `translateX(-${mobileIdx * 100}%)`;
+
+            // Actualizar dots
+            mobileDots().forEach((d, i) => d.classList.toggle('active', i === mobileIdx));
+
+            // Reproducir video del nuevo slide si existe
+            const vid = slides[mobileIdx].querySelector('video');
+            if (vid) vid.play().catch(() => {});
+        };
+
+        if (mobilePrev) mobilePrev.addEventListener('click', () => goToMobile(mobileIdx - 1));
+        if (mobileNext) mobileNext.addEventListener('click', () => goToMobile(mobileIdx + 1));
+
+        // Soporte touch / swipe
+        let touchStartX = 0;
+        mobileTrack.addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+        mobileTrack.addEventListener('touchend', e => {
+            const diff = touchStartX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 45) goToMobile(mobileIdx + (diff > 0 ? 1 : -1));
+        }, { passive: true });
+
+        // Reproducir primer video si hay
+        const firstVid = slides[0].querySelector('video');
+        if (firstVid) firstVid.play().catch(() => {});
+    }
+
+    // ──────────────────────────────────────────
+    // C. SCROLL INDICATOR HERO
+    // ──────────────────────────────────────────
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        // Se muestra junto con las animaciones de hero
+        setTimeout(() => scrollIndicator.classList.add('visible'), 1400);
+        scrollIndicator.addEventListener('click', () => {
+            const nosotros = document.getElementById('nosotros');
+            if (nosotros) nosotros.scrollIntoView({ behavior: 'smooth' });
+        });
+        // Se oculta al hacer scroll
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 120) {
+                scrollIndicator.style.opacity = '0';
+            } else {
+                scrollIndicator.style.opacity = '';
+            }
+        }, { passive: true });
+    }
+
+    // ──────────────────────────────────────────
+    // D. TILT 3D EN NUEVAS TARJETAS DE PANELES (PC)
+    // ──────────────────────────────────────────
+    const panelCards = document.querySelectorAll('.service-card-panel, .solucion-col-panel, .team-panel-card');
+    panelCards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+            if (window.innerWidth <= 900) return;
+            const r = card.getBoundingClientRect();
+            const x = ((e.clientX - r.left) / r.width  - 0.5) * 12;
+            const y = ((e.clientY - r.top)  / r.height - 0.5) * -8;
+            card.style.transform = `perspective(900px) rotateX(${y}deg) rotateY(${x}deg) scale3d(1.015,1.015,1.015)`;
+            card.style.transition = 'transform 0.08s ease-out';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+            card.style.transition = 'transform 0.5s ease, opacity 0.9s ease';
+        });
+    });
+
+    // ──────────────────────────────────────────
+    // E. PARTÍCULAS SUTILES EN SEPARADORES (shimmer efecto)
+    // ──────────────────────────────────────────
+    // Ya manejado por CSS animation: scanline
+});
