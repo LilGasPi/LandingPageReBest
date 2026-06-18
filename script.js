@@ -196,37 +196,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const observerOptions = {
         root: null,
-        rootMargin: '0px 0px -60px 0px',
-        threshold: 0.08 
+        rootMargin: '0px 0px 0px 0px',
+        threshold: 0.06
     };
 
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const target = entry.target;
 
                 if (target.classList.contains('services-section') && window.innerWidth > 900) {
                     const serviceCards = target.querySelectorAll('.service-card');
-                    
                     serviceCards.forEach((card, index) => {
                         setTimeout(() => {
                             card.classList.add('is-visible');
-                        }, index * 800); 
+                        }, index * 150);
                     });
-                    
                     target.classList.add('is-visible');
-                    observer.unobserve(target);
-                } 
-                else {
+                    obs.unobserve(target);
+                } else {
                     target.classList.add('is-visible');
-                    observer.unobserve(target); 
+                    obs.unobserve(target);
                 }
             }
         });
     }, observerOptions);
 
+    // Activar inmediatamente los elementos ya visibles al cargar
     scrollElements.forEach(element => {
-        if(element) observer.observe(element);
+        if (!element) return;
+        const rect = element.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+            element.classList.add('is-visible');
+        } else {
+            observer.observe(element);
+        }
     });
 
     // =========================================================
@@ -477,9 +481,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 panelObserver.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.06, rootMargin: '0px 0px 0px 0px' });
 
-    panelElements.forEach(el => panelObserver.observe(el));
+    panelElements.forEach(el => {
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('is-visible');
+        } else {
+            panelObserver.observe(el);
+        }
+    });
 
     // ──────────────────────────────────────────
     // B. CARRUSEL MÓVIL DE PORTAFOLIO
