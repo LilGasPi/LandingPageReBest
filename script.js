@@ -630,6 +630,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ──────────────────────────────────────────
+    // F. SOUND TOGGLE FOR PORTFOLIO VIDEOS
+    // ──────────────────────────────────────────
+    document.querySelectorAll('.sound-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const video = btn.closest('.portfolio-grid-item').querySelector('video');
+            if (!video) return;
+            
+            if (video.muted) {
+                // Mute all other videos first
+                document.querySelectorAll('.portfolio-grid-video').forEach(v => {
+                    v.muted = true;
+                    const otherBtn = v.closest('.portfolio-grid-item')?.querySelector('.sound-toggle');
+                    if (otherBtn) {
+                        otherBtn.classList.remove('is-unmuted');
+                        otherBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                        otherBtn.setAttribute('aria-label', 'Activar sonido');
+                    }
+                });
+                video.muted = false;
+                btn.classList.add('is-unmuted');
+                btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                btn.setAttribute('aria-label', 'Silenciar');
+            } else {
+                video.muted = true;
+                btn.classList.remove('is-unmuted');
+                btn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                btn.setAttribute('aria-label', 'Activar sonido');
+            }
+        });
+    });
+
+    // ──────────────────────────────────────────
     // D. TILT 3D EN NUEVAS TARJETAS DE PANELES (PC)
     // ──────────────────────────────────────────
     const panelCards = document.querySelectorAll('.service-card-panel, .solucion-col-panel, .team-panel-card');

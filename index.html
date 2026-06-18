@@ -48,10 +48,11 @@
         </div>
         <ul class="menu-items">
             <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#nosotros">Nosotros</a></li>
-            <li><a href="#equipo">Equipo</a></li>
+            <li><a href="#equipo">Nuestro Equipo</a></li>
             <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#soluciones">Soluciones</a></li>
             <li><a href="#portafolio">Portafolio</a></li>
+            <li><a href="#clientes">Clientes</a></li>
             <li><a href="#contacto">Contacto</a></li>
         </ul>
         
@@ -61,8 +62,12 @@
         
        <section id="inicio" class="hero">
             <div class="hero-bg-snake"></div>
+            <!-- Diagonal accent -->
+            <div class="hero-diagonal"></div>
             <div class="hero-content">
                 <div class="contenedor-texto">
+                    <!-- Eyebrow label -->
+                    <span class="hero-eyebrow">Agencia de Marketing Digital</span>
                     <h1 class="titulo-principal">
                         <div class="texto-animado">Tu negocio ya tiene potencial.</div>
                         <div class="destacado">
@@ -70,13 +75,45 @@
                         </div>
                     </h1>
                     <p class="subtitulo-hero anim-retraso">Atrae más clientes y fortalece tu posicionamiento mediante estrategia, contenido y publicidad digital diseñada para negocios de servicios.</p>
-                    <a href="#contacto" class="btn-hero anim-retraso">Asesoramiento gratuito</a>
+                    <div class="hero-cta-group anim-retraso">
+                        <a href="#contacto" class="btn-hero">Asesoramiento gratuito</a>
+                        <a href="#portafolio" class="btn-hero-secondary">Ver trabajos →</a>
+                    </div>
+                    <!-- Stats mini bar -->
+                    <div class="hero-mini-stats anim-retraso">
+                        <div class="hero-mini-stat">
+                            <span class="hero-mini-num">4 años</span>
+                            <span class="hero-mini-label">Experiencia</span>
+                        </div>
+                        <div class="hero-mini-divider"></div>
+                        <div class="hero-mini-stat">
+                            <span class="hero-mini-num">+85%</span>
+                            <span class="hero-mini-label">Crecimiento real</span>
+                        </div>
+                        <div class="hero-mini-divider"></div>
+                        <div class="hero-mini-stat">
+                            <span class="hero-mini-num">7+</span>
+                            <span class="hero-mini-label">Clientes activos</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="contenedor-imagen">
                     <div class="marco-foto">
+                        <!-- Green corner accent -->
+                        <div class="foto-corner-tl"></div>
+                        <div class="foto-corner-br"></div>
                         <img src="./img/portada-rebest.jpg" alt="Equipo ReBest" class="hero-img">
+                        <div class="foto-badge">
+                            <span class="foto-badge-dot"></span>
+                            <span>Disponibles ahora</span>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <!-- Scroll indicator -->
+            <div class="scroll-indicator" id="scroll-indicator">
+                <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+                <span>Scroll</span>
             </div>
         </section>
 
@@ -295,30 +332,45 @@
                         <source src="img/mentoria-venta-delivery.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Marketing</span></div>
+                    <button class="sound-toggle" aria-label="Activar sonido">
+                        <i class="fas fa-volume-mute"></i>
+                    </button>
                 </div>
                 <div class="portfolio-grid-item">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline>
                         <source src="img/hair-studio.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Hair Studio</span></div>
+                    <button class="sound-toggle" aria-label="Activar sonido">
+                        <i class="fas fa-volume-mute"></i>
+                    </button>
                 </div>
                 <div class="portfolio-grid-item portfolio-grid-item--tall">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline>
                         <source src="img/cafe-final.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Café</span></div>
+                    <button class="sound-toggle" aria-label="Activar sonido">
+                        <i class="fas fa-volume-mute"></i>
+                    </button>
                 </div>
                 <div class="portfolio-grid-item">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline>
                         <source src="img/palimpulsa.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Palimpulsa</span></div>
+                    <button class="sound-toggle" aria-label="Activar sonido">
+                        <i class="fas fa-volume-mute"></i>
+                    </button>
                 </div>
                 <div class="portfolio-grid-item">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline>
                         <source src="img/auto.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Automotriz</span></div>
+                    <button class="sound-toggle" aria-label="Activar sonido">
+                        <i class="fas fa-volume-mute"></i>
+                    </button>
                 </div>
             </div>
 
