@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. ANIMACIONES DE APARICIÓN (SCROLL)
     // =========================================================
     const scrollElements = document.querySelectorAll(
-        '.fade-in, .about-section, .team-section, .services-section, .clients-section, .cta-section, .team-card, .about-highlight, .about-image-wrapper, .solucion-card, .anim-slide-left, .anim-slide-right, .portfolio-anim'
+        '.fade-in, .about-section, .team-section, .services-section, .clients-section, .cta-section, .team-card, .about-highlight, .about-image-wrapper, .solucion-card, .anim-slide-left, .anim-slide-right, .portfolio-anim, .frase-linea-verde, .stats-container, .clientes-container, .main-footer'
     );
 
     const observerOptions = {
@@ -471,7 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // A. ANIMACIONES PARA NUEVOS PANELES (IntersectionObserver)
     // ──────────────────────────────────────────
     const panelElements = document.querySelectorAll(
-        '.team-panel-card, .service-card-panel, .solucion-col-panel, .cta-panel-left, .cta-panel-right, .anim-slide-left, .anim-slide-right, .portfolio-anim'
+        '.team-panel-card, .service-card-panel, .cta-panel-left, .cta-panel-right, .anim-slide-left, .anim-slide-right, .portfolio-anim, .solucion-col-panel:not(.snake-reveal)'
     );
 
     const panelObserver = new IntersectionObserver((entries) => {
@@ -625,4 +625,75 @@ document.addEventListener('DOMContentLoaded', () => {
     // E. PARTÍCULAS SUTILES EN SEPARADORES (shimmer efecto)
     // ──────────────────────────────────────────
     // Ya manejado por CSS animation: scanline
+
+    // ──────────────────────────────────────────
+    // G. INDEX ESCALONADO PARA LOGOS DE CLIENTES (desktop)
+    // ──────────────────────────────────────────
+    if (window.innerWidth > 768) {
+        document.querySelectorAll('.clientes-grid .client-logo:not(.clone)').forEach((logo, i) => {
+            logo.style.setProperty('--ci', i);
+        });
+    }
+
+    // ──────────────────────────────────────────
+    // H. SOLUCIONES — Video de serpiente que "trae" cada columna (solo PC)
+    // ──────────────────────────────────────────
+    const solucionesPanel = document.getElementById('soluciones-panel');
+    const snakeVideo = document.getElementById('soluciones-snake-video');
+    const snakeColumns = document.querySelectorAll('.solucion-col-panel.snake-reveal');
+
+    if (solucionesPanel && snakeVideo && snakeColumns.length) {
+        let snakeTriggered = false;
+
+        const isDesktop = () => window.innerWidth > 900;
+
+        const revealColumnsSequentially = () => {
+            snakeColumns.forEach((col, i) => {
+                setTimeout(() => {
+                    col.classList.add('is-visible');
+                }, i * 450);
+            });
+        };
+
+        const playSnakeSequence = () => {
+            if (!isDesktop()) {
+                // En móvil: solo revelar columnas con su animación normal, sin video
+                revealColumnsSequentially();
+                return;
+            }
+
+            snakeVideo.currentTime = 0;
+            snakeVideo.classList.add('snake-playing');
+            const playPromise = snakeVideo.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {});
+            }
+
+            // Revela cada columna progresivamente mientras la serpiente recorre el panel (~4.3s totales)
+            snakeColumns.forEach((col, i) => {
+                setTimeout(() => {
+                    col.classList.add('is-visible');
+                }, 900 + i * 1100);
+            });
+
+            // Limpieza tras finalizar el recorrido animado
+            setTimeout(() => {
+                snakeVideo.pause();
+                snakeVideo.classList.remove('snake-playing');
+                snakeVideo.classList.add('snake-done');
+            }, 4400);
+        };
+
+        const snakeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !snakeTriggered) {
+                    snakeTriggered = true;
+                    playSnakeSequence();
+                    snakeObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.35 });
+
+        snakeObserver.observe(solucionesPanel);
+    }
 });

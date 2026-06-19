@@ -252,8 +252,13 @@
             </div>
 
             <!-- Panel negro con 3 columnas -->
-            <div class="soluciones-panel">
-                <div class="solucion-col-panel">
+            <div class="soluciones-panel" id="soluciones-panel">
+                <!-- Video de serpiente: solo desktop, recorre el panel y revela cada columna -->
+                <video class="soluciones-snake-video desktop-only" id="soluciones-snake-video" muted playsinline preload="none">
+                    <source src="./img/serpiente-soluciones.mp4" type="video/mp4">
+                </video>
+
+                <div class="solucion-col-panel snake-reveal">
                     <div class="solucion-col-icons">
                         <div class="icon-circle ad">
                             <img src="./img/adobe-logo.png" alt="Adobe" class="adobe-img">
@@ -268,7 +273,7 @@
 
                 <div class="soluciones-panel-divider"></div>
 
-                <div class="solucion-col-panel">
+                <div class="solucion-col-panel snake-reveal">
                     <div class="solucion-col-icons">
                         <div class="icon-circle ig"><i class="fab fa-instagram"></i></div>
                         <div class="icon-circle fb"><i class="fab fa-facebook-f"></i></div>
@@ -280,7 +285,7 @@
 
                 <div class="soluciones-panel-divider"></div>
 
-                <div class="solucion-col-panel">
+                <div class="solucion-col-panel snake-reveal">
                     <div class="solucion-col-icons">
                         <div class="partner-logo-img meta-ads">
                             <img src="./img/meta-ads-logo3.png" alt="Meta Ads" class="mkt-img">
