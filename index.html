@@ -4,11 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReBest | Agencia de Marketing Digital</title>
-    
+
+    <!-- Conexiones tempranas a dominios externos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- Precarga del fondo principal para que aparezca de inmediato -->
+    <link rel="preload" as="image" href="./img/fondo-rebest-serpientes.jpg" fetchpriority="high">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css?v=1.6">
+    <link rel="stylesheet" href="style.css?v=1.7">
 </head>
 <body class="intro-active"> 
     
@@ -312,8 +320,8 @@
             <!-- PC: Grid mixto videos + imágenes 2 filas × 5 columnas -->
             <div class="portfolio-grid-desktop desktop-only">
                 <div class="portfolio-grid-item portfolio-anim" style="--pi:0">
-                    <video class="portfolio-grid-video" autoplay muted loop playsinline>
-                        <source src="img/mentoria-venta-delivery.mp4" type="video/mp4">
+                    <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
+                        <source data-src="img/mentoria-venta-delivery.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Marketing</span></div>
                     <button class="sound-toggle" aria-label="Activar sonido"><i class="fas fa-volume-mute"></i></button>
@@ -323,8 +331,8 @@
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Bar</span></div>
                 </div>
                 <div class="portfolio-grid-item portfolio-anim" style="--pi:2">
-                    <video class="portfolio-grid-video" autoplay muted loop playsinline>
-                        <source src="img/cafe-final.mp4" type="video/mp4">
+                    <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
+                        <source data-src="img/cafe-final.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Café</span></div>
                     <button class="sound-toggle" aria-label="Activar sonido"><i class="fas fa-volume-mute"></i></button>
@@ -334,15 +342,15 @@
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Barceló</span></div>
                 </div>
                 <div class="portfolio-grid-item portfolio-anim" style="--pi:4">
-                    <video class="portfolio-grid-video" autoplay muted loop playsinline>
-                        <source src="img/hair-studio.mp4" type="video/mp4">
+                    <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
+                        <source data-src="img/hair-studio.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Hair Studio</span></div>
                     <button class="sound-toggle" aria-label="Activar sonido"><i class="fas fa-volume-mute"></i></button>
                 </div>
                 <div class="portfolio-grid-item portfolio-anim" style="--pi:5">
-                    <video class="portfolio-grid-video" autoplay muted loop playsinline>
-                        <source src="img/palimpulsa.mp4" type="video/mp4">
+                    <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
+                        <source data-src="img/palimpulsa.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Palimpulsa</span></div>
                     <button class="sound-toggle" aria-label="Activar sonido"><i class="fas fa-volume-mute"></i></button>
@@ -356,8 +364,8 @@
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Fotografía</span></div>
                 </div>
                 <div class="portfolio-grid-item portfolio-anim" style="--pi:8">
-                    <video class="portfolio-grid-video" autoplay muted loop playsinline>
-                        <source src="img/auto.mp4" type="video/mp4">
+                    <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
+                        <source data-src="img/auto.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Automotriz</span></div>
                     <button class="sound-toggle" aria-label="Activar sonido"><i class="fas fa-volume-mute"></i></button>
@@ -380,40 +388,40 @@
                         </div>
                     </div>
                     <div class="portfolio-mobile-slide">
-                        <video class="portfolio-mobile-media" autoplay muted loop playsinline>
-                            <source src="img/mentoria-venta-delivery.mp4" type="video/mp4">
+                        <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
+                            <source data-src="img/mentoria-venta-delivery.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="portfolio-mobile-slide">
                         <img src="img/bar.jpg" alt="Proyecto Bar" class="portfolio-mobile-media">
                     </div>
                     <div class="portfolio-mobile-slide">
-                        <video class="portfolio-mobile-media" autoplay muted loop playsinline>
-                            <source src="img/hair-studio.mp4" type="video/mp4">
+                        <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
+                            <source data-src="img/hair-studio.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="portfolio-mobile-slide">
                         <img src="img/barcelo.jpg" alt="Proyecto Barceló" class="portfolio-mobile-media">
                     </div>
                     <div class="portfolio-mobile-slide">
-                        <video class="portfolio-mobile-media" autoplay muted loop playsinline>
-                            <source src="img/cafe-final.mp4" type="video/mp4">
+                        <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
+                            <source data-src="img/cafe-final.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="portfolio-mobile-slide">
                         <img src="img/botella.jpg" alt="Proyecto Botella" class="portfolio-mobile-media">
                     </div>
                     <div class="portfolio-mobile-slide">
-                        <video class="portfolio-mobile-media" autoplay muted loop playsinline>
-                            <source src="img/palimpulsa.mp4" type="video/mp4">
+                        <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
+                            <source data-src="img/palimpulsa.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="portfolio-mobile-slide">
                         <img src="img/dj.jpg" alt="Proyecto DJ" class="portfolio-mobile-media">
                     </div>
                     <div class="portfolio-mobile-slide">
-                        <video class="portfolio-mobile-media" autoplay muted loop playsinline>
-                            <source src="img/auto.mp4" type="video/mp4">
+                        <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
+                            <source data-src="img/auto.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="portfolio-mobile-slide">

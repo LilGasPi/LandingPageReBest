@@ -175,12 +175,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
+                        // Esperamos a que termine la transición de cierre del menú
+                        // antes de hacer scroll, para evitar cortes por overflow:hidden
                         setTimeout(() => {
-                            targetElement.scrollIntoView({ 
-                                behavior: 'smooth', 
-                                block: 'start' 
+                            const headerEl = document.querySelector('.main-header');
+                            const headerOffset = headerEl ? headerEl.offsetHeight + 24 : 110;
+                            const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                            const offsetPosition = elementPosition - headerOffset;
+
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
                             });
-                        }, 300); 
+                        }, 420); 
                     }
                 }
             });
@@ -557,7 +564,12 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => scrollIndicator.classList.add('visible'), 1400);
         scrollIndicator.addEventListener('click', () => {
             const nosotros = document.getElementById('nosotros');
-            if (nosotros) nosotros.scrollIntoView({ behavior: 'smooth' });
+            if (nosotros) {
+                const headerEl = document.querySelector('.main-header');
+                const headerOffset = headerEl ? headerEl.offsetHeight + 24 : 110;
+                const elementPosition = nosotros.getBoundingClientRect().top + window.pageYOffset;
+                window.scrollTo({ top: elementPosition - headerOffset, behavior: 'smooth' });
+            }
         });
         // Se oculta al hacer scroll
         window.addEventListener('scroll', () => {
@@ -695,5 +707,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { threshold: 0.35 });
 
         snakeObserver.observe(solucionesPanel);
+    }
+
+    // ──────────────────────────────────────────
+    // I. LAZY LOAD DE VIDEOS DE PORTAFOLIO
+    // ──────────────────────────────────────────
+    // Los videos de portafolio no cargan su archivo real hasta que
+    // están a punto de entrar en pantalla. Esto evita que 10 videos
+    // intenten descargarse a la vez al cargar la página (causa principal
+    // de la sensación de "página pegada" / carga lenta).
+    const lazyVideos = document.querySelectorAll('video.portfolio-grid-video, video.portfolio-mobile-media');
+
+    if (lazyVideos.length) {
+        const loadVideo = (video) => {
+            const source = video.querySelector('source[data-src]');
+            if (!source) return;
+            source.src = source.getAttribute('data-src');
+            source.removeAttribute('data-src');
+            video.load();
+            video.play().catch(() => {});
+        };
+
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadVideo(entry.target);
+                    videoObserver.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '400px 0px', threshold: 0.01 });
+
+        lazyVideos.forEach(video => videoObserver.observe(video));
     }
 });
