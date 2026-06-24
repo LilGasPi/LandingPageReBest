@@ -1716,16 +1716,34 @@ body.intro-active {
 .float-wsp:hover { transform: scale(1.12) translateY(-6px); background: #fff; color: #000; box-shadow: 0 15px 40px rgba(255, 255, 255, 0.4); }
 
 /* =========================================
-   SECCIÓN SOLUCIONES INTEGRALES (FONDO TRANSPARENTE Y LIBRE)
+   SECCIÓN SOLUCIONES INTEGRALES — Fondo negro sólido y literal (full-bleed)
+   El objetivo es un corte de escena limpio: negro absoluto de borde a borde,
+   sin textura ni patrón, para que el video de la serpiente resalte por contraste.
    ========================================= */
 
 .soluciones-integrales { 
-    margin-top: 80px; 
-    margin-bottom: 80px; 
+    position: relative; 
+    margin-top: 0; 
+    margin-bottom: 0; 
     max-width: 1200px; 
     margin-left: auto; 
     margin-right: auto; 
-    padding: 0 20px;
+    padding: 100px 20px;
+    z-index: 1;
+}
+
+/* Pseudo-elemento full-bleed: se extiende a todo el ancho del viewport
+   independientemente del max-width:1200px del contenido interno */
+.soluciones-integrales::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100vw;
+    height: 100%;
+    transform: translateX(-50%);
+    background: #000000;
+    z-index: -1;
 }
 
 /* --- EL CONTENEDOR PRINCIPAL (AHORA 100% TRANSPARENTE) --- */
