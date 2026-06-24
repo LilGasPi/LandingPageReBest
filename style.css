@@ -277,11 +277,22 @@ body.intro-active {
     transform: translateX(-50%);
     text-align: center;
     overflow: visible; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 60vw;
+    pointer-events: none;
 }
 
-.header-banner img {
-    max-height: 100%; 
-    max-width: 400px; 
+.header-banner-text {
+    margin: 0;
+    white-space: nowrap;
+    font-family: var(--font-titles);
+    font-weight: 800;
+    font-size: clamp(0.7rem, 1.6vw, 1rem);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent-green);
     animation: pulso-neon 3s infinite ease-in-out;
 }
 
@@ -289,6 +300,11 @@ body.intro-active {
     0% { filter: drop-shadow(0 0 4px rgba(0, 255, 102, 0.4)); transform: scale(1); }
     50% { filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.9)) drop-shadow(0 0 30px rgba(0, 255, 102, 0.5)); transform: scale(1.02); }
     100% { filter: drop-shadow(0 0 4px rgba(0, 255, 102, 0.4)); transform: scale(1); }
+}
+
+/* En pantallas chicas el banner se oculta para no chocar con el logo y el botón de menú */
+@media (max-width: 600px) {
+    .header-banner { display: none; }
 }
 
 /* HAMBURGER TOGGLE */
@@ -711,6 +727,13 @@ body.intro-active {
     margin-top: 25px;
 }
 
+/* Especificidad extra: vence a .mobile-only { display:block !important } en el mismo breakpoint */
+@media (max-width: 900px) {
+    .carousel-dots.mobile-only {
+        display: flex !important;
+    }
+}
+
 .dot {
     width: 10px;
     height: 10px;
@@ -813,6 +836,9 @@ body.intro-active {
     .carousel-container {
         padding: 0 52px;
     }
+    .soluciones-carousel-wrapper {
+        padding: 0 52px;
+    }
     
     .carousel-arrow {
         width: 36px;
@@ -826,6 +852,10 @@ body.intro-active {
     .service-card {
         padding: 25px 20px 20px 20px;
         min-height: 280px;
+    }
+
+    .solucion-col-panel {
+        padding: 30px 20px;
     }
     
     .card-number {
@@ -855,12 +885,15 @@ body.intro-active {
     gap: 20px; /* Distancia exacta entre la línea verde y el texto */
     margin: 60px auto; /* Espacio arriba y abajo de la frase */
     padding: 0 20px;
+    max-width: 900px;
+    box-sizing: border-box;
 }
 
 .frase-linea-verde .linea {
     width: 3px; /* Grosor de la línea */
     height: 35px; /* Altura de la línea */
     background-color: #00ff66; /* Verde neón ReBest */
+    flex-shrink: 0; /* La línea nunca se achica */
 }
 
 .frase-linea-verde p {
@@ -870,6 +903,19 @@ body.intro-active {
     color: #ffffff; /* Blanco apagado/gris claro */
     margin: 0;
     font-weight: normal;
+    min-width: 0; /* Permite que el texto haga wrap dentro del flex en vez de desbordar */
+    flex: 1 1 auto;
+    overflow-wrap: break-word;
+}
+
+@media (max-width: 600px) {
+    .frase-linea-verde {
+        padding: 0 16px;
+        gap: 14px;
+    }
+    .frase-linea-verde p {
+        font-size: 1rem;
+    }
 }
 
 /* Hover Dinámico de la Tarjeta */
@@ -2383,9 +2429,13 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #0d0d0d; 
+    width: 100%;
+    min-height: 460px; /* Igual a .portfolio-mobile-slide en desktop */
+    background-color: #0d0d0d;
+    background-image: url('img/fondo-negro-patron.png');
+    background-size: 500px auto;
+    background-blend-mode: luminosity;
     border: 1px solid rgba(0, 255, 102, 0.2); /* Borde sutil verde neón */
-    height: 500px; /* Coincide con la altura de los videos/fotos */
     text-align: center;
     padding: 2rem;
     border-radius: 16px;
@@ -2483,8 +2533,8 @@ main {
 
 /* Adaptación de tamaño para celulares */
 @media (max-width: 768px) {
-    /* Ajustamos altura de media y portada por igual */
-    .dynamic-media, .portada-carrusel {
+    /* dynamic-media pertenece a un carrusel legacy y mantiene su altura fija */
+    .dynamic-media {
         height: 450px; 
     }
     .contenido-portada h3 {
@@ -2540,7 +2590,7 @@ main {
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
-    align-items: stretch;
+    align-items: start;
 }
 
 /* Bloque principal: imagen + texto, lado a lado */
@@ -2625,14 +2675,15 @@ main {
     font-weight: 700;
 }
 
-/* Tarjeta Visión: separada, más pequeña, con ícono circular */
+/* Tarjeta Visión: separada, compacta y equilibrada, con ícono circular */
 .about-highlight {
-    padding: 40px 32px;
+    padding: 38px 32px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    gap: 14px;
+    gap: 16px;
     background-color: rgba(8, 20, 8, 0.75);
     background-image: url('img/fondo-negro-patron.png');
     background-size: 500px auto;
@@ -2643,6 +2694,7 @@ main {
     opacity: 0;
     transform: translateX(40px);
     transition: transform 1s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 1s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+    align-self: start;
 }
 
 .about-highlight.is-visible {
@@ -2656,20 +2708,19 @@ main {
 }
 
 .about-highlight-icon-circle {
-    width: 64px;
-    height: 64px;
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     background: rgba(0, 255, 102, 0.08);
     box-shadow: 0 0 25px rgba(0, 255, 102, 0.25), inset 0 0 12px rgba(0, 255, 102, 0.1);
-    margin-bottom: 6px;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .about-highlight-icon-circle i {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: var(--accent-green);
     filter: drop-shadow(0 0 8px rgba(0, 255, 102, 0.6));
 }
@@ -2684,14 +2735,29 @@ main {
     font-size: clamp(1rem, 1.4vw, 1.15rem);
     letter-spacing: 2px;
     margin: 0;
+    position: relative;
+    padding-bottom: 14px;
+}
+
+/* Pequeña línea decorativa bajo el título para separar del quote sin dejar aire muerto */
+.highlight-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
 }
 
 .highlight-quote {
     color: #ffffff;
-    font-size: clamp(1.4rem, 1.3vw, 1.3rem);
-    line-height: 1.65;
+    font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+    line-height: 1.6;
     font-style: italic;
     margin: 0;
+    max-width: 320px;
 }
 
 .highlight-quote strong {
@@ -2735,6 +2801,10 @@ main {
 
     .about-highlight {
         padding: 32px 24px;
+    }
+
+    .highlight-quote {
+        max-width: 280px;
     }
 }
 
@@ -3063,19 +3133,58 @@ main {
     margin: 0;
 }
 
-/* Responsive soluciones */
+/* Responsive soluciones — Carrusel deslizable con fondo individual por bloque */
 @media (max-width: 900px) {
-    .soluciones-panel {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-    }
-    .soluciones-panel-divider {
-        height: 2px;
-        width: 60%;
+    .soluciones-carousel-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 480px;
+        padding: 0 65px;
         margin: 0 auto;
-        background: linear-gradient(90deg, transparent, rgba(0,255,102,0.2) 50%, transparent);
+        box-sizing: border-box;
     }
-    .solucion-col-panel { padding: 35px 24px; }
+
+    .soluciones-panel {
+        display: flex;
+        grid-template-columns: none;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 20px;
+        padding: 10px 0 25px;
+        margin-top: 0;
+        min-height: 0;
+        background: none;
+        border: none;
+        box-shadow: none;
+        backdrop-filter: none;
+        border-radius: 0;
+    }
+    .soluciones-panel::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* El divider ya no separa columnas dentro de un mismo panel: cada slide es su propio panel */
+    .soluciones-panel-divider {
+        display: none;
+    }
+
+    .solucion-col-panel {
+        flex: 0 0 100%;
+        scroll-snap-align: center;
+        padding: 38px 28px;
+        background-color: rgba(0, 0, 0, 0.55);
+        background-image: url('img/fondo-negro-patron.png');
+        background-size: 500px auto;
+        background-blend-mode: luminosity;
+        border-radius: 20px;
+        border: 1px solid rgba(0, 255, 102, 0.15);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+    }
 }
 
 /* ──────────────────────────────────────────────
@@ -3246,6 +3355,7 @@ main {
     grid-template-columns: 1fr 2px 1.6fr;
     min-height: 400px;
     width: 100%;
+    min-width: 0;
 }
 
 .cta-panel-left {
@@ -3300,6 +3410,8 @@ main {
     line-height: 1.2;
     color: #fff;
     margin: 0;
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 .cta-panel-right .cta-description {
     font-style: italic;
@@ -3307,6 +3419,8 @@ main {
     font-size: clamp(0.95rem, 1.3vw, 1.1rem);
     color: #ccc;
     margin: 0;
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 /* Responsive CTA */
@@ -3326,6 +3440,7 @@ main {
     .cta-panel-right {
         padding: 40px 28px;
         transform: none;
+        min-width: 0;
     }
 }
 
@@ -3808,22 +3923,26 @@ main {
     .services-section {
         margin: 60px auto;
         padding: 0 16px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .services-block {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        background-color: rgba(0, 0, 0, 0.55);
+        background-image: url('img/fondo-negro-patron.png');
+        background-size: 500px auto;
+        background-blend-mode: luminosity;
+        border-radius: 24px;
+        border: 1px solid rgba(0, 255, 102, 0.15);
+        padding: 36px 0 30px;
     }
 
     /* Soluciones */
     .soluciones-integrales {
         padding: 0 16px;
         margin: 60px auto;
-    }
-    .soluciones-panel {
-        grid-template-columns: 1fr !important;
-        grid-template-rows: auto !important;
-    }
-    .soluciones-panel-divider {
-        height: 2px !important;
-        width: 60% !important;
-        margin: 0 auto !important;
-        background: linear-gradient(90deg, transparent, rgba(0,255,102,0.2) 50%, transparent) !important;
     }
     .solucion-col-panel { padding: 28px 20px !important; }
 

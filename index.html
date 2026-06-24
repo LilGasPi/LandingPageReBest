@@ -40,7 +40,7 @@
         </div>
         
         <div class="header-banner">
-            <img src="./img/banner.png" alt="Nuestro objetivo: tu crecimiento">
+            <p class="header-banner-text">Marketing digital para negocios de servicios.</p>
         </div>
         
         <button class="hamburger-toggle" aria-label="Abrir menú" aria-expanded="false">
@@ -259,52 +259,63 @@
                 <p class="services-quote">“Todo lo que tu negocio necesita para crecer digitalmente.”</p>
             </div>
 
-            <!-- Panel negro con 3 columnas -->
-            <div class="soluciones-panel" id="soluciones-panel">
-                <!-- Video de serpiente: solo desktop, recorre el panel y revela cada columna -->
-                <video class="soluciones-snake-video desktop-only" id="soluciones-snake-video" muted playsinline preload="none">
-                    <source src="./img/serpiente-soluciones.mp4" type="video/mp4">
-                </video>
+            <!-- Panel negro con 3 columnas (desktop) / carrusel deslizable (móvil) -->
+            <div class="soluciones-carousel-wrapper">
+                <button class="carousel-arrow prev rb-glow mobile-only" id="soluciones-prev" aria-label="Anterior">&#10094;</button>
 
-                <div class="solucion-col-panel snake-reveal">
-                    <div class="solucion-col-icons">
-                        <div class="icon-circle ad">
-                            <img src="./img/adobe-logo.png" alt="Adobe" class="adobe-img">
+                <div class="soluciones-panel" id="soluciones-panel">
+                    <!-- Video de serpiente: solo desktop, recorre el panel y revela cada columna -->
+                    <video class="soluciones-snake-video desktop-only" id="soluciones-snake-video" muted playsinline preload="none">
+                        <source src="./img/serpiente-soluciones.mp4" type="video/mp4">
+                    </video>
+
+                    <div class="solucion-col-panel snake-reveal">
+                        <div class="solucion-col-icons">
+                            <div class="icon-circle ad">
+                                <img src="./img/adobe-logo.png" alt="Adobe" class="adobe-img">
+                            </div>
+                            <div class="icon-circle dv">
+                                <img src="./img/davinci-logo.png" alt="DaVinci" class="davinci-img">
+                            </div>
                         </div>
-                        <div class="icon-circle dv">
-                            <img src="./img/davinci-logo.png" alt="DaVinci" class="davinci-img">
-                        </div>
+                        <h4 class="solucion-col-title">Creación de Contenido</h4>
+                        <p class="solucion-col-desc">“Piezas visuales y audiovisuales que posicionan tu marca y atraen al cliente correcto.”</p>
                     </div>
-                    <h4 class="solucion-col-title">Creación de Contenido</h4>
-                    <p class="solucion-col-desc">“Piezas visuales y audiovisuales que posicionan tu marca y atraen al cliente correcto.”</p>
+
+                    <div class="soluciones-panel-divider"></div>
+
+                    <div class="solucion-col-panel snake-reveal">
+                        <div class="solucion-col-icons">
+                            <div class="icon-circle ig"><i class="fab fa-instagram"></i></div>
+                            <div class="icon-circle fb"><i class="fab fa-facebook-f"></i></div>
+                            <div class="icon-circle tk"><i class="fab fa-tiktok"></i></div>
+                        </div>
+                        <h4 class="solucion-col-title">Gestión de Redes</h4>
+                        <p class="solucion-col-desc">“Tu presencia online activa, consistente y alineada a tu estrategia comercial.”</p>
+                    </div>
+
+                    <div class="soluciones-panel-divider"></div>
+
+                    <div class="solucion-col-panel snake-reveal">
+                        <div class="solucion-col-icons">
+                            <div class="partner-logo-img meta-ads">
+                                <img src="./img/meta-ads-logo3.png" alt="Meta Ads" class="mkt-img">
+                            </div>
+                            <div class="partner-logo-img google-ads">
+                                <img src="./img/google-ads-logo3.png" alt="Google Ads" class="mkt-img">
+                            </div>
+                        </div>
+                        <h4 class="solucion-col-title">Marketing Digital</h4>
+                        <p class="solucion-col-desc">“Meta Ads y Google Ads para generar clientes potenciales y hacer crecer tu negocio.”</p>
+                    </div>
                 </div>
 
-                <div class="soluciones-panel-divider"></div>
-
-                <div class="solucion-col-panel snake-reveal">
-                    <div class="solucion-col-icons">
-                        <div class="icon-circle ig"><i class="fab fa-instagram"></i></div>
-                        <div class="icon-circle fb"><i class="fab fa-facebook-f"></i></div>
-                        <div class="icon-circle tk"><i class="fab fa-tiktok"></i></div>
-                    </div>
-                    <h4 class="solucion-col-title">Gestión de Redes</h4>
-                    <p class="solucion-col-desc">“Tu presencia online activa, consistente y alineada a tu estrategia comercial.”</p>
-                </div>
-
-                <div class="soluciones-panel-divider"></div>
-
-                <div class="solucion-col-panel snake-reveal">
-                    <div class="solucion-col-icons">
-                        <div class="partner-logo-img meta-ads">
-                            <img src="./img/meta-ads-logo3.png" alt="Meta Ads" class="mkt-img">
-                        </div>
-                        <div class="partner-logo-img google-ads">
-                            <img src="./img/google-ads-logo3.png" alt="Google Ads" class="mkt-img">
-                        </div>
-                    </div>
-                    <h4 class="solucion-col-title">Marketing Digital</h4>
-                    <p class="solucion-col-desc">“Meta Ads y Google Ads para generar clientes potenciales y hacer crecer tu negocio.”</p>
-                </div>
+                <button class="carousel-arrow next rb-glow mobile-only" id="soluciones-next" aria-label="Siguiente">&#10095;</button>
+            </div>
+            <div id="soluciones-dots" class="carousel-dots mobile-only fade-in">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
             </div>
         </section>
 

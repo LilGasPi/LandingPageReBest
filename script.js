@@ -320,79 +320,79 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =========================================================
-    // 8. CARRUSEL DE SERVICIOS
+    // 8. CARRUSEL DE SERVICIOS Y SOLUCIONES (función reutilizable)
     // =========================================================
-    const servicesCarousel = document.querySelector('#services-carousel'); 
-    const serviceDots = document.querySelectorAll('#services-dots .dot'); 
-    const prevBtn = document.querySelector('.services-block .carousel-arrow.prev');
-    const nextBtn = document.querySelector('.services-block .carousel-arrow.next');
+    function initSnapCarousel({ trackSelector, itemSelector, dotsSelector, prevSelector, nextSelector }) {
+        const track = document.querySelector(trackSelector);
+        if (!track) return;
 
-    if (servicesCarousel) {
-        const items = servicesCarousel.querySelectorAll('.service-card'); 
+        const items = track.querySelectorAll(itemSelector);
+        const dots = document.querySelectorAll(dotsSelector);
+        const prevBtn = document.querySelector(prevSelector);
+        const nextBtn = document.querySelector(nextSelector);
+
+        if (!items.length) return;
+
         let currentIndex = 0;
         let isScrolling = false;
 
-        const updateActiveCardClass = (index) => {
+        const updateActiveItemClass = (index) => {
             items.forEach((item, i) => {
                 item.classList.toggle('active', i === index);
             });
         };
 
-        const navigateToCard = (index) => {
+        const updateDots = (index) => {
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        };
+
+        const navigateTo = (index) => {
             if (index < 0) {
-                currentIndex = items.length - 1; 
+                currentIndex = items.length - 1;
             } else if (index >= items.length) {
-                currentIndex = 0; 
+                currentIndex = 0;
             } else {
                 currentIndex = index;
             }
 
-            const targetLeft = items[currentIndex].offsetLeft - servicesCarousel.offsetLeft;
+            const targetLeft = items[currentIndex].offsetLeft - track.offsetLeft;
 
             isScrolling = true;
-            servicesCarousel.scrollTo({
+            track.scrollTo({
                 left: targetLeft,
                 behavior: 'smooth'
             });
 
             updateDots(currentIndex);
-            updateActiveCardClass(currentIndex);
+            updateActiveItemClass(currentIndex);
 
             setTimeout(() => {
                 isScrolling = false;
             }, 600);
         };
 
-        const updateDots = (index) => {
-            serviceDots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-        };
+        updateActiveItemClass(0);
 
-        if(items.length > 0) {
-            updateActiveCardClass(0);
-        }
+        if (prevBtn) prevBtn.addEventListener('click', () => navigateTo(currentIndex - 1));
+        if (nextBtn) nextBtn.addEventListener('click', () => navigateTo(currentIndex + 1));
 
-        if (prevBtn && nextBtn) {
-            prevBtn.addEventListener('click', () => navigateToCard(currentIndex - 1));
-            nextBtn.addEventListener('click', () => navigateToCard(currentIndex + 1));
-        }
-        
-        serviceDots.forEach((dot, i) => {
-            dot.addEventListener('click', () => navigateToCard(i));
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', () => navigateTo(i));
         });
 
-        servicesCarousel.addEventListener('scroll', () => {
-            if (isScrolling) return; 
+        track.addEventListener('scroll', () => {
+            if (isScrolling) return;
 
-            const scrollPosition = servicesCarousel.scrollLeft + (servicesCarousel.clientWidth / 2);
+            const scrollPosition = track.scrollLeft + (track.clientWidth / 2);
             let closestIndex = 0;
             let minDistance = Infinity;
 
             items.forEach((item, index) => {
-                const itemCenter = item.offsetLeft - servicesCarousel.offsetLeft + (item.offsetWidth / 2);
+                const itemCenter = item.offsetLeft - track.offsetLeft + (item.offsetWidth / 2);
                 const distance = Math.abs(scrollPosition - itemCenter);
-                
+
                 if (distance < minDistance) {
                     minDistance = distance;
                     closestIndex = index;
@@ -402,10 +402,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if (closestIndex !== currentIndex) {
                 currentIndex = closestIndex;
                 updateDots(currentIndex);
-                updateActiveCardClass(currentIndex);
+                updateActiveItemClass(currentIndex);
             }
         }, { passive: true });
     }
+
+    // Carrusel de Servicios
+    initSnapCarousel({
+        trackSelector: '#services-carousel',
+        itemSelector: '.service-card',
+        dotsSelector: '#services-dots .dot',
+        prevSelector: '.services-block .carousel-arrow.prev',
+        nextSelector: '.services-block .carousel-arrow.next'
+    });
+
+    // Carrusel de Soluciones (móvil)
+    initSnapCarousel({
+        trackSelector: '#soluciones-panel',
+        itemSelector: '.solucion-col-panel',
+        dotsSelector: '#soluciones-dots .dot',
+        prevSelector: '#soluciones-prev',
+        nextSelector: '#soluciones-next'
+    });
 
     // =========================================================
     // 9. ANIMACIÓN CONTADOR DE ESTADÍSTICAS
