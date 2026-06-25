@@ -740,10 +740,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const loadVideo = (video) => {
             const source = video.querySelector('source[data-src]');
             if (!source) return;
+
+            // Esperamos a que el video tenga datos suficientes antes de
+            // pedirle que reproduzca — llamar play() justo después de load()
+            // hace que el navegador rechace la reproducción en muchos casos
+            // (video se queda "pegado" en el primer frame o en negro).
+            const tryPlay = () => {
+                const p = video.play();
+                if (p && typeof p.catch === 'function') {
+                    p.catch(() => {
+                        // Reintento único tras un breve respiro, por si el
+                        // navegador seguía ocupado decodificando otros videos.
+                        setTimeout(() => video.play().catch(() => {}), 250);
+                    });
+                }
+            };
+
+            video.addEventListener('loadeddata', tryPlay, { once: true });
+            video.addEventListener('canplay', tryPlay, { once: true });
+
             source.src = source.getAttribute('data-src');
             source.removeAttribute('data-src');
             video.load();
-            video.play().catch(() => {});
         };
 
         const videoObserver = new IntersectionObserver((entries) => {
@@ -753,7 +771,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     videoObserver.unobserve(entry.target);
                 }
             });
-        }, { rootMargin: '400px 0px', threshold: 0.01 });
+        }, { rootMargin: '150px 0px', threshold: 0.01 });
 
         lazyVideos.forEach(video => videoObserver.observe(video));
     }
