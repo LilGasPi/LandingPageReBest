@@ -746,6 +746,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // hace que el navegador rechace la reproducción en muchos casos
             // (video se queda "pegado" en el primer frame o en negro).
             const tryPlay = () => {
+                if (!video.isConnected) return;
                 const p = video.play();
                 if (p && typeof p.catch === 'function') {
                     p.catch(() => {
@@ -774,5 +775,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { rootMargin: '150px 0px', threshold: 0.01 });
 
         lazyVideos.forEach(video => videoObserver.observe(video));
+
+        // ──────────────────────────────────────────
+        // I.2 PAUSAR VIDEOS QUE NO ESTÁN REALMENTE VISIBLES
+        // ──────────────────────────────────────────
+        // Con 10 videos en el grid, dejarlos todos reproduciendo en loop
+        // de forma permanente (aunque ya cargaron) satura la decodificación
+        // del navegador y se nota como "pixelado" o desincronizado entre
+        // ellos. Solo deben reproducir los que están realmente a la vista.
+        // (El carrusel móvil ya maneja su propio play/pause por slide más
+        // abajo, así que aquí solo se vigila el grid de escritorio.)
+        const desktopGridVideos = document.querySelectorAll('video.portfolio-grid-video');
+        const visibilityObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (!video.currentSrc && !video.querySelector('source')?.src) return;
+                if (entry.isIntersecting) {
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
+            });
+        }, { threshold: 0.15 });
+
+        desktopGridVideos.forEach(video => visibilityObserver.observe(video));
     }
 });
