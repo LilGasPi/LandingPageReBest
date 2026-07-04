@@ -600,33 +600,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ──────────────────────────────────────────
-    // F. SOUND TOGGLE FOR PORTFOLIO VIDEOS
+    // F. SOUND TOGGLE FOR PORTFOLIO VIDEOS (grid PC + carrusel móvil)
     // ──────────────────────────────────────────
+    const ICON_MUTE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>';
+    const ICON_UNMUTE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+
     document.querySelectorAll('.sound-toggle').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const video = btn.closest('.portfolio-grid-item').querySelector('video');
+            const container = btn.closest('.portfolio-grid-item, .portfolio-mobile-slide');
+            const video = container ? container.querySelector('video') : null;
             if (!video) return;
-            
+
             if (video.muted) {
-                // Mute all other videos first
-                document.querySelectorAll('.portfolio-grid-video').forEach(v => {
+                // Silenciamos todos los demás videos primero (grid PC + carrusel móvil)
+                document.querySelectorAll('.portfolio-grid-video, .portfolio-mobile-media').forEach(v => {
+                    if (v === video) return;
                     v.muted = true;
-                    const otherBtn = v.closest('.portfolio-grid-item')?.querySelector('.sound-toggle');
+                    const otherBtn = v.closest('.portfolio-grid-item, .portfolio-mobile-slide')?.querySelector('.sound-toggle');
                     if (otherBtn) {
                         otherBtn.classList.remove('is-unmuted');
-                        otherBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                        otherBtn.innerHTML = ICON_MUTE;
                         otherBtn.setAttribute('aria-label', 'Activar sonido');
                     }
                 });
                 video.muted = false;
                 btn.classList.add('is-unmuted');
-                btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                btn.innerHTML = ICON_UNMUTE;
                 btn.setAttribute('aria-label', 'Silenciar');
             } else {
                 video.muted = true;
                 btn.classList.remove('is-unmuted');
-                btn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                btn.innerHTML = ICON_MUTE;
                 btn.setAttribute('aria-label', 'Activar sonido');
             }
         });
