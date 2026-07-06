@@ -315,6 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         logosOriginales.forEach(logo => {
             const clon = logo.cloneNode(true);
+            clon.classList.add('clone');
             gridClientes.appendChild(clon);
         });
     }
@@ -665,7 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // G. INDEX ESCALONADO PARA LOGOS DE CLIENTES (desktop)
     // ──────────────────────────────────────────
     if (window.innerWidth > 768) {
-        document.querySelectorAll('.clientes-grid .client-logo:not(.clone)').forEach((logo, i) => {
+        document.querySelectorAll('.clientes-grid .client-logo-box:not(.clone)').forEach((logo, i) => {
             logo.style.setProperty('--ci', i);
         });
     }

@@ -40,10 +40,18 @@
             </a>
         </div>
         
-        <div class="header-banner">
-            <p class="header-banner-text">Marketing digital para negocios de servicios.</p>
-        </div>
-        
+        <nav class="desktop-nav" aria-label="Navegación principal">
+            <ul class="desktop-nav-items">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#equipo">Equipo</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#soluciones">Soluciones</a></li>
+                <li><a href="#portafolio">Portafolio</a></li>
+                <li><a href="#clientes">Clientes</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+
         <button class="hamburger-toggle" aria-label="Abrir menú" aria-expanded="false">
             <span class="bar bar-1"></span>
             <span class="bar bar-2"></span>
@@ -57,12 +65,11 @@
         </div>
         <ul class="menu-items">
             <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#equipo">Nuestro Equipo</a></li>
+            <li><a href="#equipo">Equipo</a></li>
             <li><a href="#servicios">Servicios</a></li>
             <li><a href="#soluciones">Soluciones</a></li>
             <li><a href="#portafolio">Portafolio</a></li>
             <li><a href="#clientes">Clientes</a></li>
-            <li><a href="#contacto">Contacto</a></li>
         </ul>
         
     </nav>
@@ -94,11 +101,6 @@
                         <img src="./img/portada-rebest.jpg" alt="Equipo ReBest" class="hero-img">
                     </div>
                 </div>
-            </div>
-            <!-- Scroll indicator -->
-            <div class="scroll-indicator" id="scroll-indicator">
-                <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
-                <span>Scroll</span>
             </div>
         </section>
 
@@ -271,6 +273,8 @@
                     </video>
 
                     <div class="solucion-col-panel snake-reveal">
+                        <h4 class="solucion-col-title">Creación de Contenido</h4>
+                        <p class="solucion-col-desc">“Piezas visuales y audiovisuales que posicionan tu marca y atraen al cliente correcto.”</p>
                         <div class="solucion-col-icons">
                             <div class="icon-circle ps" title="Photoshop">
                                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="adobe-svg">
@@ -300,25 +304,25 @@
                                 <img src="./img/davinci-logo.png" alt="DaVinci" class="davinci-img">
                             </div>
                         </div>
-                        <h4 class="solucion-col-title">Creación de Contenido</h4>
-                        <p class="solucion-col-desc">“Piezas visuales y audiovisuales que posicionan tu marca y atraen al cliente correcto.”</p>
                     </div>
 
-                    <div class="soluciones-panel-divider"></div>
+                    <div class="soluciones-panel-divider"><span class="soluciones-divider-line"></span></div>
 
                     <div class="solucion-col-panel snake-reveal">
+                        <h4 class="solucion-col-title">Gestión de Redes</h4>
+                        <p class="solucion-col-desc">“Tu presencia online activa, consistente y alineada a tu estrategia comercial.”</p>
                         <div class="solucion-col-icons">
                             <div class="icon-circle ig"><i class="fab fa-instagram"></i></div>
                             <div class="icon-circle fb"><i class="fab fa-facebook-f"></i></div>
                             <div class="icon-circle tk"><i class="fab fa-tiktok"></i></div>
                         </div>
-                        <h4 class="solucion-col-title">Gestión de Redes</h4>
-                        <p class="solucion-col-desc">“Tu presencia online activa, consistente y alineada a tu estrategia comercial.”</p>
                     </div>
 
-                    <div class="soluciones-panel-divider"></div>
+                    <div class="soluciones-panel-divider"><span class="soluciones-divider-line"></span></div>
 
                     <div class="solucion-col-panel snake-reveal">
+                        <h4 class="solucion-col-title">Marketing Digital</h4>
+                        <p class="solucion-col-desc">“Meta Ads y Google Ads para generar clientes potenciales y hacer crecer tu negocio.”</p>
                         <div class="solucion-col-icons">
                             <div class="partner-logo-img meta-ads">
                                 <img src="./img/meta-ads-logo3.png" alt="Meta Ads" class="mkt-img">
@@ -327,8 +331,6 @@
                                 <img src="./img/google-ads-logo3.png" alt="Google Ads" class="mkt-img">
                             </div>
                         </div>
-                        <h4 class="solucion-col-title">Marketing Digital</h4>
-                        <p class="solucion-col-desc">“Meta Ads y Google Ads para generar clientes potenciales y hacer crecer tu negocio.”</p>
                     </div>
                 </div>
 
@@ -380,13 +382,6 @@
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Hair Studio</span></div>
                     <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                 </div>
-                <div class="portfolio-grid-item portfolio-anim" style="--pi:3">
-                    <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
-                        <source data-src="img/palimpulsa.mp4" type="video/mp4">
-                    </video>
-                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Palimpulsa</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
-                </div>
                 <div class="portfolio-grid-item portfolio-anim" style="--pi:4">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
                         <source data-src="img/hair-studio-2.mp4" type="video/mp4">
@@ -399,13 +394,6 @@
                         <source data-src="img/auto.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Automotriz</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
-                </div>
-                <div class="portfolio-grid-item portfolio-anim" style="--pi:7">
-                    <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
-                        <source data-src="img/senales-que-no-hay-que-ignorar.mp4" type="video/mp4">
-                    </video>
-                    <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Tips</span></div>
                     <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                 </div>
             </div>
@@ -447,12 +435,6 @@
                     </div>
                     <div class="portfolio-mobile-slide">
                         <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
-                            <source data-src="img/palimpulsa.mp4" type="video/mp4">
-                        </video>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
-                    </div>
-                    <div class="portfolio-mobile-slide">
-                        <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
                             <source data-src="img/hair-studio-2.mp4" type="video/mp4">
                         </video>
                     <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
@@ -460,12 +442,6 @@
                     <div class="portfolio-mobile-slide">
                         <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
                             <source data-src="img/auto.mp4" type="video/mp4">
-                        </video>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
-                    </div>
-                    <div class="portfolio-mobile-slide">
-                        <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
-                            <source data-src="img/senales-que-no-hay-que-ignorar.mp4" type="video/mp4">
                         </video>
                     <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                     </div>
@@ -508,29 +484,17 @@
             
             <div class="clientes-container">
                 <div class="clientes-grid">
-                    <img src="./img/palimpulsa.png" alt="Palimpulsa" class="client-logo" loading="lazy">
-                    <img src="./img/softhair.png" alt="Soft Hair" class="client-logo" loading="lazy">
-                    <img src="./img/victoria-hair-studio.png" alt="Victoria Hair Studio" class="client-logo" loading="lazy">
-                    <img src="./img/barber-zuly-negro.png" alt="Barber Zuly" class="client-logo" loading="lazy">
-                    <img src="./img/centro-de-autismo.png" alt="Centro de Autismo" class="client-logo" loading="lazy">
-                    <img src="./img/centro-red.png" alt="Centro Red" class="client-logo" loading="lazy">
-                    <img src="./img/donna.png" alt="Donna" class="client-logo" loading="lazy">
-                    <img src="./img/etchepare.png" alt="Etchepare" class="client-logo" loading="lazy">
-                    <img src="./img/futproyect.png" alt="Futproyect" class="client-logo" loading="lazy">
-                    <img src="./img/mecanica-esposito.png" alt="Mecanica Esposito" class="client-logo" loading="lazy">
-                    <img src="./img/barber-soft.png" alt="Barber Soft" class="client-logo" loading="lazy">
-                    
-                    <img src="./img/palimpulsa.png" alt="Palimpulsa" class="client-logo clone" loading="lazy">
-                    <img src="./img/softhair.png" alt="Soft Hair" class="client-logo clone" loading="lazy">
-                    <img src="./img/victoria-hair-studio.png" alt="Victoria Hair Studio" class="client-logo clone" loading="lazy">
-                    <img src="./img/barber-zuly-negro.png" alt="Barber Zuly" class="client-logo clone" loading="lazy">
-                    <img src="./img/centro-de-autismo.png" alt="Centro de Autismo" class="client-logo clone" loading="lazy">
-                    <img src="./img/centro-red.png" alt="Centro Red" class="client-logo clone" loading="lazy">
-                    <img src="./img/donna.png" alt="Donna" class="client-logo clone" loading="lazy">
-                    <img src="./img/etchepare.png" alt="Etchepare" class="client-logo clone" loading="lazy">
-                    <img src="./img/futproyect.png" alt="Futproyect" class="client-logo clone" loading="lazy">
-                    <img src="./img/mecanica-esposito.png" alt="Mecanica Esposito" class="client-logo clone" loading="lazy">
-                    <img src="./img/barber-soft.png" alt="Barber Soft" class="client-logo clone" loading="lazy">
+                    <div class="client-logo-box"><img src="./img/palimpulsa-new.png" alt="Palimpulsa" class="client-logo" loading="lazy"></div>
+                    <div class="client-logo-box"><img src="./img/softhair-new.png" alt="Soft Hair" class="client-logo" loading="lazy"></div>
+                    <div class="client-logo-box"><img src="./img/victoria-hair-studio-new.png" alt="Victoria Hair Studio" class="client-logo" loading="lazy"></div>
+                    <div class="client-logo-box"><img src="./img/barber-shop-zuly-new.png" alt="Barber Zuly" class="client-logo" loading="lazy"></div>
+                    <div class="client-logo-box"><img src="./img/centro-de-autismo-new.png" alt="Centro de Autismo" class="client-logo" loading="lazy"></div>
+                    <div class="client-logo-box"><img src="./img/centro-red-new.png" alt="Centro Red" class="client-logo" loading="lazy"></div>
+                    <div class="client-logo-box"><img src="./img/donna-new.png" alt="Donna" class="client-logo" loading="lazy"></div>
+                    <div class="client-logo-box"><img src="./img/etchepare-new.png" alt="Etchepare" class="client-logo" loading="lazy"></div>
+                    <div class="client-logo-box"><img src="./img/futproyect-new.png" alt="Futproyect" class="client-logo" loading="lazy"></div>
+                    <div class="client-logo-box"><img src="./img/mecanica-esposito-new.png" alt="Mecanica Esposito" class="client-logo" loading="lazy"></div>
+                    <div class="client-logo-box"><img src="./img/barber-soft-new.png" alt="Barber Soft" class="client-logo" loading="lazy"></div>
                 </div>
             </div>
         </section>
