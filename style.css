@@ -3308,9 +3308,9 @@ main {
         display: flex;
         grid-template-columns: none;
         overflow-x: auto;
-        scroll-snap-type: x proximity;
+        scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
-        touch-action: pan-y;
+        touch-action: pan-x;
         scrollbar-width: none;
         gap: 16px;
         padding: 12px 8px 25px;
@@ -4305,6 +4305,12 @@ section.is-visible .section-title::after {
 }
 .solucion-col-panel.is-visible .solucion-col-icons .icon-circle:nth-child(3) {
     opacity: 1; transform: scale(1) translateY(0); transition-delay: 0.4s;
+}
+.solucion-col-panel.is-visible .solucion-col-icons .icon-circle:nth-child(4) {
+    opacity: 1; transform: scale(1) translateY(0); transition-delay: 0.52s;
+}
+.solucion-col-panel.is-visible .solucion-col-icons .icon-circle:nth-child(5) {
+    opacity: 1; transform: scale(1) translateY(0); transition-delay: 0.64s;
 }
 
 /* --- Footer: aparición suave de columnas --- */
