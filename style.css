@@ -48,11 +48,9 @@ html, body {
     box-sizing: border-box;
 }
 
-/* Solo el html tiene scroll suave — así el scroll del usuario es fluido
-   pero las anclas del menú siguen siendo animadas */
-html {
-    scroll-behavior: smooth;
-}
+/* Quitamos scroll-behavior:smooth global: chocaba con la rueda del mouse
+   y causaba el "rebote" al scrollear. El scroll suave al hacer clic en el
+   menú ya lo maneja script.js con window.scrollTo({behavior:'smooth'}). */
 
 body {
     font-family: var(--font-body); 
@@ -813,8 +811,9 @@ body.intro-active {
 
     .services-carousel {
         overflow-x: auto;
-        scroll-snap-type: x mandatory;
+        scroll-snap-type: x proximity;
         -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
         scrollbar-width: none;
         padding: 25px 0;
         gap: 20px;
@@ -1828,16 +1827,17 @@ body.intro-active {
     width: 100vw;
     height: 100%;
     transform: translateX(-50%);
-    background-color: #060606;
+    background-color: #030303;
     background-image:
-        radial-gradient(ellipse at 10% 0%, rgba(0,255,102,0.035) 0%, transparent 45%),
-        radial-gradient(ellipse at 90% 100%, rgba(0,255,102,0.035) 0%, transparent 45%),
+        radial-gradient(ellipse at 0% 0%, rgba(0,255,102,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse at 100% 100%, rgba(0,255,102,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(0,255,102,0.04) 0%, transparent 70%),
         url('img/fondo-negro-patron.png');
-    background-size: cover, cover, 500px auto;
-    background-position: center, center, center;
-    background-repeat: no-repeat, no-repeat, repeat;
-    background-blend-mode: normal, normal, overlay;
-    opacity: 0.85;
+    background-size: cover, cover, cover, 700px auto;
+    background-position: center, center, center, center;
+    background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+    background-blend-mode: normal, normal, normal, soft-light;
+    opacity: 0.9;
     z-index: -1;
 }
 
@@ -2076,16 +2076,17 @@ body.intro-active {
     background: linear-gradient(to bottom, transparent, var(--accent-green, #00ff66), transparent);
     box-shadow: 0 0 10px var(--accent-green, #00ff66), 
                 0 0 20px var(--accent-green, #00ff66);
-    /* Animación infinita */
+    /* Animación infinita — usamos transform (GPU) en vez de animar "top" (reflow) */
     animation: neonDrop 2.5s infinite ease-in-out;
+    will-change: transform, opacity;
 }
 
-/* Keyframes para que la luz caiga de arriba a abajo */
+/* Keyframes para que la luz caiga de arriba a abajo — con transform, no reflow */
 @keyframes neonDrop {
-    0% { top: -50%; opacity: 0; }
+    0% { transform: translateY(-100%); opacity: 0; }
     20% { opacity: 1; }
     80% { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
+    100% { transform: translateY(200%); opacity: 0; }
 }
 
 /* =========================================
@@ -2101,18 +2102,20 @@ body.intro-active {
     .animated-neon-line-vertical {
         width: 50%; /* Largo de la estela en horizontal */
         height: 100%;
+        top: 0;
+        left: 0;
         /* Cambiamos el degradado de izquierda a derecha */
         background: linear-gradient(to right, transparent, var(--accent-green, #00ff66), transparent);
         /* Cambiamos la animación */
         animation: neonSlide 2.5s infinite ease-in-out;
     }
 
-    /* Keyframes para que la luz corra de izquierda a derecha */
+    /* Keyframes para que la luz corra de izquierda a derecha — con transform, no reflow */
     @keyframes neonSlide {
-        0% { left: -50%; top: 0; opacity: 0; }
+        0% { transform: translateX(-100%); opacity: 0; }
         20% { opacity: 1; }
         80% { opacity: 1; }
-        100% { left: 100%; top: 0; opacity: 0; }
+        100% { transform: translateX(200%); opacity: 0; }
     }
 }
 /* =========================================
@@ -2228,7 +2231,7 @@ body.intro-active {
     .main-content { padding: 80px 20px 40px; }
     
     .hero, .services, .about-section, .team-section, .clients-section { margin: 0px 0; }
-    .cta-section { margin: 100px 0 60px; }
+
 
     .hamburger-menu { 
         padding: 100px 20px 40px; 
@@ -2934,8 +2937,7 @@ main {
    MIXIN BASE — Panel negro con patrón compartido
    ────────────────────────────────────────────── */
 .team-panel,
-.services-panel,
-.cta-panel {
+.services-panel {
     background-color: rgba(0, 0, 0, 0.55);
     border-radius: 24px;
     border: 1px solid rgba(0,255,102,0.15);
@@ -2946,6 +2948,18 @@ main {
     transition: box-shadow 0.4s ease;
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
+}
+.cta-panel {
+    background-color: #050505;
+    background-image: radial-gradient(ellipse at 15% 0%, rgba(0,255,102,0.08) 0%, transparent 55%);
+    border-radius: 24px;
+    border: 1px solid rgba(0,255,102,0.15);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    transition: box-shadow 0.4s ease;
 }
 .team-panel:hover,
 .services-panel:hover,
@@ -3294,8 +3308,9 @@ main {
         display: flex;
         grid-template-columns: none;
         overflow-x: auto;
-        scroll-snap-type: x mandatory;
+        scroll-snap-type: x proximity;
         -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
         scrollbar-width: none;
         gap: 16px;
         padding: 12px 8px 25px;
@@ -3410,6 +3425,7 @@ main {
 
 .portfolio-mobile-track {
     display: flex;
+    touch-action: pan-y;
     transition: transform 0.45s cubic-bezier(0.77,0,0.175,1);
 }
 
@@ -3518,7 +3534,7 @@ main {
     filter: drop-shadow(0 0 12px rgba(0,255,102,0.3));
 }
 .cta-panel-tagline {
-    color: #c0c0c0;
+    color: #ffffff;
     font-style: italic;
     font-size: clamp(1rem, 1.4vw, 1.15rem);
     line-height: 1.7;
@@ -4424,11 +4440,13 @@ section.is-visible .section-title::after {
    ══════════════════════════════════════ */
 @media (max-width: 900px) {
     .solucion-col-panel {
-        background: rgba(13, 13, 13, 0.96) !important;
-        backdrop-filter: blur(16px);
-        border: 1px solid rgba(0, 255, 102, 0.15) !important;
-        border-radius: 12px !important;
-        padding: 34px 26px 30px 26px !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: none !important;
+        border-left: 2px solid rgba(0, 255, 102, 0.3) !important;
+        border-radius: 0 !important;
+        padding: 10px 20px 10px 26px !important;
         flex: 0 0 100% !important;
         width: 100% !important;
         min-width: 0 !important;
@@ -4443,21 +4461,21 @@ section.is-visible .section-title::after {
         gap: 16px;
         box-sizing: border-box;
         margin: 0 auto;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+        box-shadow: none !important;
         scroll-snap-align: center;
         overflow: visible;
         transform: none !important;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        transition: border-color 0.3s ease;
     }
     .solucion-col-panel.active {
-        border-color: #00ff66 !important;
-        box-shadow: 0 10px 40px rgba(0, 255, 102, 0.25) !important;
+        border-left-color: #00ff66 !important;
     }
     .solucion-col-icons {
-        justify-content: flex-start;
+        justify-content: center;
         margin-top: 4px;
-        gap: 12px;
+        gap: 14px;
         width: 100%;
+        max-width: 220px;
     }
     .solucion-col-panel .icon-circle {
         width: 40px;
@@ -4472,9 +4490,11 @@ section.is-visible .section-title::after {
         height: 40px;
     }
     .solucion-col-title {
-        font-size: 1.25rem !important;
+        font-size: 1.1rem !important;
+        letter-spacing: 0;
         text-align: left;
         width: 100%;
+        white-space: normal;
     }
     .solucion-col-desc {
         font-size: 1rem !important;
