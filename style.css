@@ -53,7 +53,7 @@ html, body {
    menú ya lo maneja script.js con window.scrollTo({behavior:'smooth'}). */
 
 body {
-    font-family: var(--font-body); 
+    font-family: var(--font-titles); 
     background-color: var(--bg-color);
     color: var(--text-main);
     line-height: 1.6;
@@ -646,6 +646,7 @@ body.intro-active {
     color: #b3b3b3;
     font-size: 1.1rem;
     font-style: italic;
+    font-family: 'Kepler', 'Times New Roman', serif;
     text-align: center;
     margin-bottom: 40px;
 }
@@ -735,11 +736,12 @@ body.intro-active {
 
 /* Descripción */
 .card-description {
-    font-style: italic; 
-    font-family: 'Kepler', 'Times New Roman', serif;
-    font-size: 1.2rem; 
+    font-style: normal; 
+    font-family: var(--font-titles);
+    font-weight: normal;
+    font-size: 1.05rem; 
     color: #ffffff;
-    line-height: 1.5; 
+    line-height: 1.55; 
     z-index: 2;
     overflow-wrap: break-word;
     margin: 0;
@@ -1193,7 +1195,7 @@ body.intro-active {
 
 /* Texto descriptivo */
 .team-info p {
-    font-family: var(--font-body);
+    font-family: var(--font-titles);
     font-weight: normal;
     font-size: clamp(1rem, 1.5vw, 1.1rem); 
     line-height: 1.55; 
@@ -1349,61 +1351,7 @@ body.intro-active {
 @keyframes fade-in-line {
     to { opacity: 1; }
 }
-/* =========================================
-   NUEVA BARRA DE ESTADÍSTICAS
-   ========================================= */
-.stats-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 80px; 
-    padding: 50px 20px;
-    margin-bottom: 40px;
-    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0, 255, 52, 0.05) 50%, rgba(0,0,0,0) 100%);
-    border-top: 1px solid rgba(0, 255, 52, 0.1);
-    border-bottom: 1px solid rgba(0, 255, 52, 0.1);
-    flex-wrap: wrap;
-}
-
-.stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.stat-number {
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: var(--accent-green, #00ff34); 
-    font-family: var(--font-titles);
-    margin-bottom: 5px;
-    text-shadow: 0 0 15px rgba(0, 255, 52, 0.4);
-    line-height: 1;
-}
-
-.stat-label {
-    font-size: 0.95rem;
-    color: #e0e0e0;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 800;
-    font-family: var(--font-titles);
-}
-
-@media (max-width: 768px) {
-    .stats-container {
-        flex-direction: column;
-        gap: 45px;
-        padding: 40px 20px;
-        background: transparent;
-        border: none;
-    }
-    
-    .stat-number {
-        font-size: 3rem;
-    }
-}
+/* (Bloque de estadísticas legacy eliminado — ver "SECCIÓN ESTADÍSTICAS - BARRA HORIZONTAL" más abajo) */
 
 /* =========================================
    SECCIÓN CLIENTES - TÍTULO
@@ -1422,7 +1370,7 @@ body.intro-active {
 /* Nuevo subtítulo con color claro */
 .clients-subtitle {
     text-align: center;
-    color: #e0e0e0;
+    color: #ffffff;
     max-width: 800px;
     margin: 15px auto 40px auto;
     font-size: 1.4rem;
@@ -1465,14 +1413,17 @@ body.intro-active {
 /* Caja uniforme: todos los logos ocupan el mismo espacio visual,
    sin importar las proporciones originales de cada imagen */
 .client-logo-box {
-    width: 170px;
-    height: 100px;
+    width: 220px;
+    height: 130px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    padding: 14px;
     box-sizing: border-box;
     flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
 }
 
 .client-logo {
@@ -1481,7 +1432,7 @@ body.intro-active {
     width: auto;
     height: auto;
     object-fit: contain;
-    transition: transform 0.3s ease, filter 0.3s ease;
+    transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
     
     /* Sombra blanca levísima */
     filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.15));
@@ -1489,8 +1440,36 @@ body.intro-active {
 
 .client-logo-box:hover .client-logo {
     transform: scale(1.12);
-    /* Al pasar el mouse, el brillo pasa a ser verde neón */
-    filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.5)); 
+    /* Al pasar el mouse, el brillo pasa a ser verde neón y se oscurece un poco */
+    filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.5)) brightness(0.55);
+}
+
+/* Nombre del cliente que aparece encima del logo al pasar el cursor */
+.client-logo-caption {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.35);
+    color: #ffffff;
+    font-family: var(--font-titles);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+.client-logo-box:hover .client-logo-caption {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .client-logo-box.clone {
@@ -1503,19 +1482,19 @@ body.intro-active {
 .stats-container {
     display: flex;
     flex-direction: row; 
-    justify-content: space-evenly; 
+    justify-content: center; 
     align-items: center;
-    width: 100%;
-    margin: 50px 0; 
-    padding: 40px 20px;
+    width: min(100%, 980px);
+    margin: 50px auto; 
+    padding: 42px 30px;
     box-sizing: border-box;
+    border-radius: 18px;
     
     /* EFECTO CRISTAL / BARRA VERDE TRANSPARENTE */
-    background: rgba(0, 255, 102, 0.05); 
-    backdrop-filter: blur(5px); 
-    border-top: 1px solid rgba(0, 255, 102, 0.15); 
-    border-bottom: 1px solid rgba(0, 255, 102, 0.15); 
-    box-shadow: 0 0 30px rgba(0, 255, 102, 0.05); 
+    background: linear-gradient(135deg, rgba(0, 255, 102, 0.08), rgba(0, 255, 102, 0.02));
+    backdrop-filter: blur(8px); 
+    border: 1px solid rgba(0, 255, 102, 0.18); 
+    box-shadow: 0 0 40px rgba(0, 255, 102, 0.06), inset 0 1px 0 rgba(255,255,255,0.04); 
 }
 
 .stat-item {
@@ -1524,12 +1503,43 @@ body.intro-active {
     align-items: center;
     text-align: center;
     flex: 1; 
-    padding: 0 5px;
+    padding: 0 20px;
+    transition: transform 0.35s ease;
+}
+.stat-item:hover {
+    transform: translateY(-4px);
+}
+
+.stat-divider {
+    width: 1px;
+    align-self: stretch;
+    background: linear-gradient(180deg, transparent, rgba(0,255,102,0.3) 50%, transparent);
+    flex-shrink: 0;
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0,255,102,0.08);
+    border: 1px solid rgba(0,255,102,0.3);
+    color: var(--accent-green, #00ff66);
+    font-size: 1.3rem;
+    margin-bottom: 14px;
+    box-shadow: 0 0 18px rgba(0,255,102,0.15);
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+.stat-item:hover .stat-icon {
+    box-shadow: 0 0 26px rgba(0,255,102,0.35);
+    transform: scale(1.08);
 }
 
 .stat-number {
     color: var(--accent-green, #00ff66);
-    font-size: 2.5rem; 
+    font-size: 2.6rem; 
     font-weight: 800;
     line-height: 1;
     margin-bottom: 8px;
@@ -1542,7 +1552,7 @@ body.intro-active {
     color: #ffffff;
     font-size: 0.85rem; 
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     margin: 0;
     line-height: 1.3;
     font-family: var(--font-titles);
@@ -1575,9 +1585,9 @@ body.intro-active {
     }
 
     .client-logo-box {
-        width: 120px;
-        height: 72px;
-        padding: 6px;
+        width: 150px;
+        height: 90px;
+        padding: 8px;
     }
 
    .client-logo {
@@ -1600,30 +1610,44 @@ body.intro-active {
     /* --- ESTADÍSTICAS - BARRA HORIZONTAL EN CELULAR --- */
     .stats-container {
         flex-direction: row; /* Mantiene la fila horizontal rígida */
-        justify-content: space-evenly;
+        justify-content: space-between;
         align-items: center;
-        padding: 22px 5px; /* Altura perfecta para un separador fino */
-        margin: 25px 0;
-        gap: 5px; 
+        width: calc(100% - 32px);
+        padding: 22px 14px; 
+        margin: 30px auto;
+        gap: 6px; 
+        border-radius: 14px;
     }
 
     .stat-item {
         padding: 0 4px; 
         width: auto;
-        flex: 1; /* Distribuye el espacio equitativamente entre los 3 */
+        min-width: 0;
+        flex: 1 1 0; /* Distribuye el espacio equitativamente entre los 3 */
+    }
+
+    .stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 0.95rem;
+        margin-bottom: 8px;
     }
 
     .stat-number {
-        font-size: 1.7rem; /* Tamaño optimizado para que destaquen sin romperse */
-        margin-bottom: 2px;
+        font-size: 1.55rem; /* Tamaño optimizado para que destaquen sin romperse */
+        margin-bottom: 3px;
         text-shadow: 0 0 8px rgba(0, 255, 102, 0.3);
     }
 
     .stat-label, 
     .stat-item p {
-        font-size: 0.65rem; /* Letra compacta pero totalmente legible */
-        letter-spacing: 0.5px;
-        white-space: nowrap; /* Evita saltos de línea raros al usar palabras cortas */
+        font-size: 0.6rem; /* Letra compacta pero totalmente legible */
+        letter-spacing: 0.3px;
+        white-space: normal; /* Permite que el texto salte de línea si no cabe */
+        overflow-wrap: break-word;
+        word-break: normal;
+        max-width: 100%;
+        display: block;
     }
 }
 
@@ -1715,7 +1739,7 @@ body.intro-active {
     font-size: 1.15rem;
     color: #ffffff;
     font-style: italic;
-    font-family: var(--font-body);
+    font-family: var(--font-titles);
     line-height: 1.6;
     margin: 0 0 10px 0;
 }
@@ -1908,7 +1932,7 @@ body.intro-active {
     color: #e0e0e0; 
     line-height: 1.6;
     margin: 0;
-    font-family: var(--font-body);
+    font-family: var(--font-titles);
     font-weight: normal; 
 }
 
@@ -1959,6 +1983,14 @@ body.intro-active {
     width: 100%;
     height: auto;
     object-fit: contain;
+}
+
+/* LOGOS ADOBE (imágenes reales) */
+.adobe-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 /* DAVINCI */
@@ -2168,18 +2200,18 @@ body.intro-active {
 
 .footer-col { flex: 1 1 200px; min-width: 180px; }
 .footer-logo { max-width: 140px; margin-bottom: 22px; display: block; }
-.footer-about-text { font-family: var(--font-body); font-size: 17px; line-height: 1.65; color: #ffffff; max-width: 340px; }
+.footer-about-text { font-family: var(--font-titles); font-size: 17px; line-height: 1.65; color: #ffffff; max-width: 340px; }
 .footer-about-text strong { color: #ffffff; font-weight: 600; }
 
 .footer-title { font-family: var(--font-titles); font-size: 16px; color: #ffffff; margin-bottom: 22px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; }
 
 .footer-links { list-style: none; padding: 0; margin: 0; }
 .footer-links li { margin-bottom: 13px; }
-.footer-links a { font-family: var(--font-body); color: #ffffff; text-decoration: none; font-size: 16px; letter-spacing: 0.2px; transition: color 0.25s ease; display: inline-block; }
+.footer-links a { font-family: var(--font-titles); color: #ffffff; text-decoration: none; font-size: 16px; letter-spacing: 0.2px; transition: color 0.25s ease; display: inline-block; }
 .footer-links a:hover { color: var(--accent-green); }
 
 .footer-contact-info { list-style: none; padding: 0; margin: 0; }
-.footer-contact-info li { margin-bottom: 14px; font-family: var(--font-body); font-size: 16px; color: #ffffff; display: flex; align-items: center; gap: 10px; }
+.footer-contact-info li { margin-bottom: 14px; font-family: var(--font-titles); font-size: 16px; color: #ffffff; display: flex; align-items: center; gap: 10px; }
 .footer-contact-info li i { color: var(--accent-green); font-size: 14px; width: 18px; text-align: center; opacity: 0.85; }
 
 .footer-contact-info li a {
@@ -2203,7 +2235,7 @@ body.intro-active {
     margin: 44px auto 0; 
     padding-top: 24px; 
     border-top: 1px solid rgba(255,255,255,0.08); 
-    font-family: var(--font-body); 
+    font-family: var(--font-titles); 
     font-size: 13px; 
     color: #777777; 
     flex-wrap: wrap; 
@@ -2670,7 +2702,7 @@ main {
 /* Texto de Instagram debajo del carrusel */
 .portfolio-ig-text {
     margin-top: 50px;
-    font-family: var(--font-body);
+    font-family: var(--font-titles);
     color: #e0e0e0;
     font-size: 1.05rem;
 }
@@ -2868,6 +2900,7 @@ main {
     font-size: clamp(1.5rem, 1.3vw, 1.2rem);
     line-height: 1.6;
     font-style: italic;
+    font-family: 'Kepler', 'Times New Roman', serif;
     margin: 0;
     max-width: 320px;
 }
@@ -3129,6 +3162,30 @@ main {
     min-height: 380px;
     margin-top: 10px;
 }
+.services-panel.services-panel-4 {
+    grid-template-columns: 1fr 2px 1fr 2px 1fr 2px 1fr;
+}
+@media (max-width: 1200px) and (min-width: 993px) {
+    .services-panel.services-panel-4 {
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: auto;
+    }
+    .services-panel.services-panel-4 .services-panel-divider {
+        display: none;
+    }
+}
+
+/* Icono de Font Awesome (Desarrollo Web) con el mismo look que los íconos PNG */
+.service-icon-right.fa-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    font-size: 1.8rem;
+    color: var(--accent-green);
+    filter: drop-shadow(0 0 8px rgba(0,255,102,0.4));
+}
 
 .services-panel-divider {
     background: linear-gradient(180deg, transparent, rgba(0,255,102,0.2) 50%, transparent);
@@ -3152,6 +3209,7 @@ main {
 }
 .service-card-panel:nth-child(3) { transition-delay: 0.15s; }
 .service-card-panel:nth-child(5) { transition-delay: 0.30s; }
+.service-card-panel:nth-child(7) { transition-delay: 0.45s; }
 
 .service-card-panel:hover {
     background: rgba(0,255,102,0.03);
@@ -3184,9 +3242,10 @@ main {
     margin: 0;
 }
 .service-card-panel .card-description {
-    font-style: italic;
-    font-family: 'Kepler', 'Times New Roman', serif;
-    font-size: clamp(1.3rem, 1.2vw, 1rem);
+    font-style: normal;
+    font-family: var(--font-titles);
+    font-weight: normal;
+    font-size: clamp(1rem, 1.2vw, 0.98rem);
     color: #ffffff;
     line-height: 1.6;
     margin: 0;
@@ -3286,6 +3345,7 @@ main {
     color: #ffffff;
     font-size: clamp(1.2rem, 1.2vw, 1rem);
     font-style: italic;
+    font-family: 'Kepler', 'Times New Roman', serif;
     line-height: 1.6;
     margin: 0;
 }
@@ -3570,7 +3630,7 @@ main {
 }
 .cta-panel-right .cta-description {
     font-style: italic;
-    font-family: var(--font-body);
+    font-family: var(--font-titles);
     font-size: clamp(0.95rem, 1.3vw, 1.1rem);
     color: #ffffff;
     margin: 0;
@@ -3788,6 +3848,25 @@ main {
     filter: drop-shadow(0 0 20px rgba(0, 255, 102, 0.9))
             drop-shadow(0 0 40px rgba(0, 255, 102, 0.6)) !important;
     transform: scale(1.15) !important;
+}
+
+/* Con 4 tarjetas el panel es más angosto: achicamos el ícono y
+   reservamos espacio en el título para que nunca se toquen */
+.services-panel-4 .service-card-panel .service-icon-right {
+    width: 42px !important;
+    top: 26px;
+    right: 20px;
+}
+.services-panel-4 .service-card-panel .service-icon-right.fa-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 1.4rem;
+}
+.services-panel-4 .service-card-panel {
+    padding: 40px 26px;
+}
+.services-panel-4 .service-card-panel .card-title {
+    padding-right: 52px;
 }
 
 /* ──────────────────────────────────────────────
@@ -4252,8 +4331,8 @@ section.is-visible .section-title::after {
     transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.165,0.84,0.44,1);
 }
 .stats-container.is-visible .stat-item:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0s; }
-.stats-container.is-visible .stat-item:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.15s; }
-.stats-container.is-visible .stat-item:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
+.stats-container.is-visible .stat-item:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.15s; }
+.stats-container.is-visible .stat-item:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
 
 /* --- Logos de clientes: aparición escalonada (desktop) --- */
 @media (min-width: 769px) {
