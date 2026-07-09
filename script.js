@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         setTimeout(() => {
-            const marcoFoto = document.querySelector('.marco-foto');
-            if(marcoFoto) marcoFoto.classList.add('visible');
+            const heroMedia = document.querySelector('.hero-media');
+            if(heroMedia) heroMedia.classList.add('visible');
         }, 500);
 
         setTimeout(() => {
@@ -246,12 +246,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('.main-header');
     
     if (header) {
+        let headerTicking = false;
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled'); 
-            } else {
-                header.classList.remove('scrolled'); 
-            }
+            if (headerTicking) return;
+            headerTicking = true;
+            window.requestAnimationFrame(() => {
+                // Histéresis: usamos dos umbrales distintos para activar/desactivar
+                // la clase "scrolled", así se evita el parpadeo/rebote al oscilar
+                // el scroll justo en el límite (típico con mouse/trackpad).
+                if (window.scrollY > 80) {
+                    header.classList.add('scrolled');
+                } else if (window.scrollY < 40) {
+                    header.classList.remove('scrolled');
+                }
+                headerTicking = false;
+            });
         }, { passive: true });
     }
 
