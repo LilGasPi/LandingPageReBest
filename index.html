@@ -7,23 +7,43 @@
     <meta name="facebook-domain-verification" content="apendfzy6ywtbg1uy13zcc76j7d0ub" />
 
     <!-- Descripción y datos para buscadores y redes sociales -->
-    <meta name="description" content="ReBest es una agencia de marketing digital en Santiago, Chile. Ayudamos a negocios de servicios a atraer más clientes mediante estrategia digital, producción audiovisual y publicidad en Meta Ads y Google Ads, con resultados medibles y un equipo que trabaja de forma directa en cada proyecto.">
+    <meta name="description" content="ReBest: agencia de marketing digital en Santiago, Chile. Producción audiovisual, estrategia de contenido, desarrollo web y publicidad en Meta Ads y Google Ads para negocios de servicios que quieren atraer más clientes y crecer con resultados medibles.">
     <link rel="canonical" href="https://agenciarebest.cl/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="ReBest">
     <meta property="og:title" content="ReBest | Agencia de Marketing Digital">
     <meta property="og:description" content="Estrategia, contenido y publicidad digital para negocios de servicios que quieren atraer más clientes y crecer de forma medible.">
-    <meta property="og:image" content="https://agenciarebest.cl/img/logo-rb-blanco.png">
+    <meta property="og:image" content="https://agenciarebest.cl/img/logo_negro.png">
     <meta property="og:url" content="https://agenciarebest.cl/">
     <meta property="og:locale" content="es_CL">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="ReBest | Agencia de Marketing Digital">
     <meta name="twitter:description" content="Estrategia, contenido y publicidad digital para negocios de servicios que quieren atraer más clientes y crecer de forma medible.">
-    <meta name="twitter:image" content="https://agenciarebest.cl/img/logo-rb-blanco.png">
+    <meta name="twitter:image" content="https://agenciarebest.cl/img/logo_negro.png">
 
     <!-- Favicon / ícono en pestaña del navegador y resultados de búsqueda -->
-    <link rel="icon" type="image/png" href="./img/logo-rb-blanco.png">
-    <link rel="apple-touch-icon" href="./img/logo-rb-blanco.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./img/logo_negro.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./img/logo_negro.png">
+    <link rel="shortcut icon" type="image/png" href="./img/logo_negro.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/logo_negro.png">
+
+    <!-- Datos estructurados para que Google muestre el logo en resultados de búsqueda -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ReBest",
+      "url": "https://agenciarebest.cl/",
+      "logo": "https://agenciarebest.cl/img/logo_negro.png",
+      "image": "https://agenciarebest.cl/img/logo_negro.png",
+      "description": "Agencia de marketing digital en Santiago, Chile. Producción audiovisual, estrategia de contenido, desarrollo web y publicidad digital para negocios de servicios.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Santiago",
+        "addressCountry": "CL"
+      }
+    }
+    </script>
 
     <!-- Conexiones tempranas a dominios externos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +58,23 @@
     
     <link rel="stylesheet" href="style.css?v=1.8">
 </head>
-<body class="intro-active"> 
+<body class="intro-active">
+    <script>
+        // SEGURO INDEPENDIENTE: si por cualquier motivo script.js no carga
+        // o falla, esto garantiza que el scroll se libere de todas formas.
+        (function () {
+            var liberado = false;
+            var liberar = function () {
+                if (liberado) return;
+                liberado = true;
+                document.body.classList.remove('intro-active');
+                var overlay = document.getElementById('intro-overlay');
+                if (overlay) { overlay.style.display = 'none'; }
+            };
+            setTimeout(liberar, 5500);
+            window.addEventListener('error', liberar);
+        })();
+    </script> 
     
     <div id="intro-overlay" class="intro-overlay">
         <video id="intro-video-desktop" class="video-desktop" muted playsinline preload="none">
@@ -117,7 +153,7 @@
                 </div>
                 <div class="contenedor-imagen">
                     <div class="marco-foto">
-                        <video src="./img/video-inicio.mp4" alt="Equipo ReBest" class="hero-img" autoplay muted loop>
+                        <video src="./img/video-inicio.mp4" alt="Equipo ReBest" class="hero-img" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback preload="auto">
                             Tu navegador no soporta la reproducción de video.
                         </video>
                     </div>
@@ -261,7 +297,7 @@
                         </div>
                         <div class="service-card">
                             <i class="fas fa-code service-icon-right fa-icon"></i>
-                            <div class="card-number">03</div>
+                            <div class="card-number">03</div> 
                             <h3 class="card-title">DESARROLLO<br>WEB</h3>
                             <p class="card-description">Creamos sitios web pensados para transmitir confianza, potenciar tu presencia digital y <strong>convertir visitas en potenciales clientes</strong>.</p>
                         </div>

@@ -1,7 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("¡ReBest script cargado y optimizado con éxito!");
-    
+
     const body = document.body;
+
+    // Seguro: pase lo que pase más abajo en este script, el scroll se
+    // libera sí o sí como máximo a los 5s (ver también el seguro inline
+    // en el <body> del HTML, que actúa aunque este archivo no cargue).
+    const liberarScrollDeEmergencia = () => {
+        body.classList.remove('intro-active');
+        const overlay = document.getElementById('intro-overlay');
+        if (overlay) overlay.style.display = 'none';
+    };
+    setTimeout(liberarScrollDeEmergencia, 5000);
+
+    try {
 
     // =========================================================
     // 1. PREPARACIÓN DE ANIMACIÓN HERO (Letras y Palabras)
@@ -485,6 +497,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 whatsappBtn.classList.remove('show');
             }
         }, { passive: true });
+    }
+    } catch (err) {
+        console.error('Error en script.js:', err);
+        liberarScrollDeEmergencia();
     }
 });
 // ==========================================================================

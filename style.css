@@ -1440,9 +1440,6 @@ body.intro-active {
 
 .client-logo-box:hover .client-logo {
     transform: scale(1.12);
-    /* Al pasar el mouse, solo un resplandor verde neón — el logo se mantiene
-       siempre legible, sin oscurecerlo ni taparlo con texto encima. */
-    filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.55));
 }
 
 .client-logo-box.clone {
@@ -2992,7 +2989,6 @@ main {
 }
 .cta-panel {
     background-color: #050505;
-    background-image: radial-gradient(ellipse at 15% 0%, rgba(0,255,102,0.08) 0%, transparent 55%);
     border-radius: 24px;
     border: 1px solid rgba(0,255,102,0.15);
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
@@ -3205,7 +3201,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
+    gap: 22px;
     position: relative;
     opacity: 0;
     transform: translateY(50px);
@@ -3239,7 +3235,9 @@ main {
     font-weight: 900;
     color: var(--accent-green);
     text-shadow: 0 0 12px rgba(0,255,102,0.5);
-    line-height: 1;
+    line-height: 0.5;
+    margin: 0 0 14px 0;
+    display: block;
 }
 .service-card-panel .card-title {
     font-size: clamp(1.1rem, 1.6vw, 1.4rem);
@@ -3600,6 +3598,21 @@ main {
 .cta-panel-logo {
     max-width: 180px;
     filter: drop-shadow(0 0 12px rgba(0,255,102,0.3));
+    transition: transform 0.5s cubic-bezier(0.165,0.84,0.44,1);
+}
+.cta-panel-left:hover .cta-panel-logo,
+.cta-panel-left.is-visible .cta-panel-logo {
+    animation: ctaLogoZoom 1.4s cubic-bezier(0.165,0.84,0.44,1);
+}
+@keyframes ctaLogoZoom {
+    0% { transform: scale(0.85); }
+    60% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+@media (hover: hover) {
+    .cta-panel-left:hover .cta-panel-logo {
+        transform: scale(1.08);
+    }
 }
 .cta-panel-tagline {
     color: #ffffff;
