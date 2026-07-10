@@ -3235,7 +3235,7 @@ main {
     font-weight: 900;
     color: var(--accent-green);
     text-shadow: 0 0 12px rgba(0,255,102,0.5);
-    line-height: 0.3;
+    line-height: 1;
     letter-spacing: 1px;
     margin: 0 0 14px 0;
     display: block;
