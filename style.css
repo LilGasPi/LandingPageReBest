@@ -2,12 +2,14 @@
     font-family: 'AvantGarde';
     src: url('./fonts/AvantGarde-Bold.woff2') format('woff2');
     font-weight: 800;
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'Kepler';
     src: url('./fonts/Kepler-Regular.woff2') format('woff2');
     font-weight: normal;
+    font-display: swap;
 }
 
 html, body {
@@ -1174,7 +1176,7 @@ body.intro-active {
     width: 100%; 
 }
 
-.team-info h4 { 
+.team-info h3 { 
     font-size: clamp(1.6rem, 2.5vw, 2.2rem); 
     color: var(--text-main); 
     margin: 0; 
@@ -1265,7 +1267,7 @@ body.intro-active {
         gap: 8px; 
     }
 
-    .team-info h4 { 
+    .team-info h3 { 
         font-size: 1.8rem; /* Recuperamos un poco el tamaño del nombre */
     }
 
@@ -1882,7 +1884,7 @@ body.intro-active {
     flex-grow: 1;
 }
 
-.text-card h4 { 
+.text-card h3 { 
     color: #ffffff; 
     font-size: clamp(1.2rem, 2vw, 1.4rem); 
     margin: 0 0 15px 0; 
@@ -1893,7 +1895,7 @@ body.intro-active {
     transition: color 0.3s ease;
 }
 
-.solucion-col:hover .text-card h4 {
+.solucion-col:hover .text-card h3 {
     color: var(--accent-green, #00ff66);
 }
 
@@ -3098,7 +3100,7 @@ main {
     max-width: 380px;
     box-sizing: border-box;
 }
-.team-panel-card .team-info h4 {
+.team-panel-card .team-info h3 {
     font-size: clamp(1.3rem, 2vw, 1.7rem);
 }
 .team-panel-card .team-info p {
@@ -3235,7 +3237,7 @@ main {
     font-weight: 900;
     color: var(--accent-green);
     text-shadow: 0 0 12px rgba(0,255,102,0.5);
-    line-height: 1;
+    line-height: 0.3;
     letter-spacing: 1px;
     margin: 0 0 14px 0;
     display: block;
