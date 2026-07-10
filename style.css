@@ -12,11 +12,18 @@
     font-display: swap;
 }
 
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     overflow-x: hidden; /* Evita scroll horizontal indeseado */
+    overscroll-behavior-y: none; /* Evita el "rebote" al llegar arriba/abajo con la rueda del mouse o el dedo */
+    height: 100%;
 }
 
 /* --- FIX ANTI-PIXELADO GLOBAL PARA ANIMACIONES --- */
@@ -50,9 +57,14 @@ html, body {
     box-sizing: border-box;
 }
 
-/* Quitamos scroll-behavior:smooth global: chocaba con la rueda del mouse
-   y causaba el "rebote" al scrollear. El scroll suave al hacer clic en el
-   menú ya lo maneja script.js con window.scrollTo({behavior:'smooth'}). */
+/* Scroll suave global: antes se había quitado porque el "rebote" del
+   mouse se confundía con esto, pero el rebote real lo causaba la falta
+   de overscroll-behavior (ya corregido arriba). Con eso resuelto,
+   scroll-behavior:smooth es seguro y hace más fluidos los saltos de
+   sección (clicks del menú, anclas #, etc.) sin afectar la rueda del mouse. */
+html {
+    scroll-behavior: smooth;
+}
 
 body {
     font-family: var(--font-titles); 
@@ -523,8 +535,13 @@ body.intro-active {
 
 /* CONTENIDO PRINCIPAL Y HERO */
 .hero {
-    position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    padding: 120px 4% 50px; overflow: hidden; 
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh; /* alto real del viewport: evita que Chrome/Firefox/móviles calculen 100vh distinto */
+    display: flex; align-items: center; justify-content: center;
+    padding: 120px 4% 50px;
+    overflow: visible; /* antes "hidden" recortaba texto/imagen cuando la sección medía justo 100vh
+                           y el navegador tenía menos alto útil disponible que en Firefox */
 }
 
 .hero-content { display: flex; justify-content: space-between; align-items: center; gap: 40px; width: 100%; max-width: 1300px; }
@@ -2423,7 +2440,8 @@ body.intro-active {
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; 
+    min-height: 100vh;
+    min-height: 100dvh;
 }
 
 

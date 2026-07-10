@@ -43,12 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 linea.appendChild(wordSpan);
 
-                // Agregamos el espacio real entre palabras (excepto al final)
+                // Agregamos el espacio real entre palabras (excepto al final).
+                // IMPORTANTE: se agrega como nodo de texto normal (no como
+                // span inline-block) para que el navegador SÍ pueda cortar
+                // la línea justo ahí. Antes, al estar metido en un span
+                // inline-block, no había punto de corte real ahí y el
+                // espacio "sobrante" terminaba colándose al inicio de la
+                // línea siguiente (el hueco visible antes de "VEAN").
                 if (index < array.length - 1) {
-                    const spaceSpan = document.createElement('span');
-                    spaceSpan.innerHTML = '&nbsp;';
-                    spaceSpan.className = 'char space';
-                    linea.appendChild(spaceSpan);
+                    linea.appendChild(document.createTextNode(' '));
                 }
             });
         }
