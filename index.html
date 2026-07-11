@@ -53,13 +53,11 @@
 
     <!-- Precarga del fondo principal para que aparezca de inmediato -->
     <link rel="preload" as="image" href="./img/fondo-rebest-serpientes.jpg" fetchpriority="high">
-    <link rel="preload" as="font" href="./fonts/AvantGarde-Bold.woff2" type="font/woff2" crossorigin>
-    <link rel="preload" as="font" href="./fonts/Kepler-Regular.woff2" type="font/woff2" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Montserrat:wght@800;900&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css?v=1.8">
+    <link rel="stylesheet" href="style.css?v=2.0">
 </head>
 <body class="intro-active">
     <script>
@@ -82,11 +80,13 @@
     <div id="intro-overlay" class="intro-overlay">
         <video id="intro-video-desktop" class="video-desktop" muted playsinline preload="none">
             <source src="./img/rebest-presentacion-2.mp4" type="video/mp4">
+            <track kind="captions" src="./img/vacio.vtt" srclang="es" label="Español" default>
             Tu navegador no soporta videos HTML5.
         </video>
         
         <video id="intro-video-mobile" class="video-mobile" muted playsinline preload="none">
             <source src="./img/animacion-rebest-vertical.mp4" type="video/mp4"> 
+            <track kind="captions" src="./img/vacio.vtt" srclang="es" label="Español" default>
             Tu navegador no soporta videos HTML5.
         </video>
     </div>
@@ -94,7 +94,7 @@
     <header class="main-header">
         <div class="logo">
             <a href="./" title="Recargar página">
-                <img src="./img/logo-rb-blanco.png" alt="ReBest" class="logo-img"> 
+                <img src="./img/logo-rb-blanco.png" alt="ReBest" class="logo-img" width="122" height="61"> 
             </a>
         </div>
         
@@ -170,7 +170,7 @@
                 <!-- Bloque principal: Imagen + Texto -->
                 <div class="about-main-panel">
                     <div class="about-image-wrapper anim-slide-left">
-                        <img src="./img/foto-equipo.webp" alt="Equipo ReBest" class="about-img" loading="lazy">
+                        <img src="./img/foto-equipo.webp" alt="Equipo ReBest" class="about-img" loading="lazy" width="595" height="1058">
                     </div>
 
                     <div class="about-text anim-slide-right">
@@ -212,7 +212,7 @@
                 <div class="team-panel-card card-duvan anim-slide-left">
                     <span class="founder-label corner-tag">Socio Fundador</span>
                     <div class="team-image-wrapper">
-                        <img src="./img/duvan-gomez-fondo.webp" alt="Duván Gómez" class="team-photo" loading="lazy">
+                        <img src="./img/duvan-gomez-fondo.webp" alt="Duván Gómez" class="team-photo" loading="lazy" width="343" height="429">
                     </div>
                     <div class="team-info">
                         <h3>DUVÁN GÓMEZ</h3>
@@ -226,7 +226,7 @@
                 <div class="team-panel-card card-nicolas anim-slide-right">
                     <span class="founder-label corner-tag">Socio Fundador</span>
                     <div class="team-image-wrapper">
-                        <img src="./img/nicolas-pizarro-fondo.webp" alt="Nicolás Pizarro" class="team-photo" loading="lazy">
+                        <img src="./img/nicolas-pizarro-fondo.webp" alt="Nicolás Pizarro" class="team-photo" loading="lazy" width="343" height="429">
                     </div>
                     <div class="team-info">
                         <h3>NICOLÁS PIZARRO</h3>
@@ -254,14 +254,14 @@
                 <!-- PC: 4 tarjetas en panel negro -->
                 <div class="services-panel services-panel-4 desktop-only">
                     <div class="service-card-panel">
-                        <img src="./img/produccion-audiovisual.png" alt="Icono Audiovisual" class="service-icon-right">
+                        <img src="./img/produccion-audiovisual.png" alt="Icono Audiovisual" class="service-icon-right" width="96" height="96">
                         <div class="card-number">01</div>
                         <h3 class="card-title">PRODUCCIÓN<br>AUDIOVISUAL</h3>
                         <p class="card-description">Transformamos ideas en contenido que genera confianza, fortalece tu marca y <strong>atrae potenciales clientes</strong>.</p>
                     </div>
                     <div class="services-panel-divider"></div>
                     <div class="service-card-panel">
-                        <img src="./img/estrategia-de-contenido.png" alt="Icono Estrategia" class="service-icon-right">
+                        <img src="./img/estrategia-de-contenido.png" alt="Icono Estrategia" class="service-icon-right" width="96" height="99">
                         <div class="card-number">02</div>
                         <h3 class="card-title">ESTRATEGIA DE<br>CONTENIDO</h3>
                         <p class="card-description">Planificamos qué comunicar, cuándo hacerlo y con qué objetivo para convertir cada publicación en <strong>una oportunidad de negocio</strong>.</p>
@@ -275,7 +275,7 @@
                     </div>
                     <div class="services-panel-divider"></div>
                     <div class="service-card-panel">
-                        <img src="./img/publicidad-digital.png" alt="Icono Publicidad" class="service-icon-right">
+                        <img src="./img/publicidad-digital.png" alt="Icono Publicidad" class="service-icon-right" width="96" height="98">
                         <div class="card-number">04</div>
                         <h3 class="card-title">PUBLICIDAD<br>DIGITAL</h3>
                         <p class="card-description">Utilizamos Meta Ads y Google Ads para atraer clientes potenciales, generar oportunidades comerciales y convertir la inversión publicitaria en <strong>crecimiento medible</strong>.</p>
@@ -287,13 +287,13 @@
                     <button class="carousel-arrow prev rb-glow" aria-label="Anterior">&#10094;</button>
                     <div id="services-carousel" class="services-carousel">
                         <div class="service-card active">
-                            <img src="./img/produccion-audiovisual.png" alt="Icono Audiovisual" class="service-icon-right">
+                            <img src="./img/produccion-audiovisual.png" alt="Icono Audiovisual" class="service-icon-right" width="96" height="96">
                             <div class="card-number">01</div>
                             <h3 class="card-title">PRODUCCIÓN<br>AUDIOVISUAL</h3>
                             <p class="card-description">Transformamos ideas en contenido que genera confianza, fortalece tu marca y <strong>atrae potenciales clientes</strong>.</p>
                         </div>
                         <div class="service-card">
-                            <img src="./img/estrategia-de-contenido.png" alt="Icono Estrategia" class="service-icon-right">
+                            <img src="./img/estrategia-de-contenido.png" alt="Icono Estrategia" class="service-icon-right" width="96" height="99">
                             <div class="card-number">02</div>
                             <h3 class="card-title">ESTRATEGIA DE<br>CONTENIDO</h3>
                             <p class="card-description">Planificamos qué comunicar, cuándo hacerlo y con qué objetivo para convertir cada publicación en <strong>una oportunidad de negocio</strong>.</p>
@@ -305,7 +305,7 @@
                             <p class="card-description">Creamos sitios web pensados para transmitir confianza, potenciar tu presencia digital y <strong>convertir visitas en potenciales clientes</strong>.</p>
                         </div>
                         <div class="service-card">
-                            <img src="./img/publicidad-digital.png" alt="Icono Publicidad" class="service-icon-right">
+                            <img src="./img/publicidad-digital.png" alt="Icono Publicidad" class="service-icon-right" width="96" height="98">
                             <div class="card-number">04</div>
                             <h3 class="card-title">PUBLICIDAD<br>DIGITAL</h3>
                             <p class="card-description">Utilizamos Meta Ads y Google Ads para atraer clientes potenciales, generar oportunidades comerciales y convertir la inversión publicitaria en <strong>crecimiento medible</strong>.</p>
@@ -351,19 +351,19 @@
                         <p class="solucion-col-desc">“Piezas visuales y audiovisuales que posicionan tu marca y atraen al cliente correcto.”</p>
                         <div class="solucion-col-icons">
                             <div class="icon-circle ps" title="Photoshop">
-                                <img src="./img/photoshop.webp" alt="Photoshop" class="adobe-logo-img">
+                                <img src="./img/photoshop.webp" alt="Photoshop" class="adobe-logo-img" width="70" height="70">
                             </div>
                             <div class="icon-circle ae" title="After Effects">
-                                <img src="./img/after-efects.webp" alt="After Effects" class="adobe-logo-img">
+                                <img src="./img/after-efects.webp" alt="After Effects" class="adobe-logo-img" width="72" height="70">
                             </div>
                             <div class="icon-circle ai" title="Illustrator">
-                                <img src="./img/ilustrator.webp" alt="Illustrator" class="adobe-logo-img">
+                                <img src="./img/ilustrator.webp" alt="Illustrator" class="adobe-logo-img" width="70" height="70">
                             </div>
                             <div class="icon-circle pr" title="Premiere Pro">
-                                <img src="./img/premiere.webp" alt="Premiere Pro" class="adobe-logo-img">
+                                <img src="./img/premiere.webp" alt="Premiere Pro" class="adobe-logo-img" width="70" height="70">
                             </div>
                             <div class="icon-circle dv">
-                                <img src="./img/davinci-logo.png" alt="DaVinci" class="davinci-img">
+                                <img src="./img/davinci-logo.png" alt="DaVinci" class="davinci-img" width="100" height="70">
                             </div>
                         </div>
                     </div>
@@ -387,10 +387,10 @@
                         <p class="solucion-col-desc">“Meta Ads y Google Ads para generar clientes potenciales y hacer crecer tu negocio.”</p>
                         <div class="solucion-col-icons">
                             <div class="partner-logo-img meta-ads">
-                                <img src="./img/meta-ads-logo3.png" alt="Meta Ads" class="mkt-img">
+                                <img src="./img/meta-ads-logo3.png" alt="Meta Ads" class="mkt-img" width="161" height="51">
                             </div>
                             <div class="partner-logo-img google-ads">
-                                <img src="./img/google-ads-logo3.png" alt="Google Ads" class="mkt-img">
+                                <img src="./img/google-ads-logo3.png" alt="Google Ads" class="mkt-img" width="161" height="42">
                             </div>
                         </div>
                     </div>
@@ -549,17 +549,17 @@
             
             <div class="clientes-container">
                 <div class="clientes-grid">
-                    <div class="client-logo-box"><img src="./img/palimpulsa-new.webp" alt="Palimpulsa" class="client-logo" loading="lazy"></div>
-                    <div class="client-logo-box"><img src="./img/softhair-new.webp" alt="Soft Hair" class="client-logo" loading="lazy"></div>
-                    <div class="client-logo-box"><img src="./img/victoria-hair-_studio-new.webp" alt="Victoria Hair Studio" class="client-logo" loading="lazy"></div>
-                    <div class="client-logo-box"><img src="./img/barber-shop_zuly-new.webp" alt="Barber Zuly" class="client-logo" loading="lazy"></div>
-                    <div class="client-logo-box"><img src="./img/centro-de-autismo-new.webp" alt="Centro de Autismo" class="client-logo" loading="lazy"></div>
-                    <div class="client-logo-box"><img src="./img/centro-red-new.webp" alt="Centro Red" class="client-logo" loading="lazy"></div>
-                    <div class="client-logo-box"><img src="./img/donna-new.webp" alt="Donna" class="client-logo" loading="lazy"></div>
-                    <div class="client-logo-box"><img src="./img/etchepare-new.webp" alt="Etchepare" class="client-logo" loading="lazy"></div>
-                    <div class="client-logo-box"><img src="./img/futproyect-new.webp" alt="Futproyect" class="client-logo" loading="lazy"></div>
-                    <div class="client-logo-box"><img src="./img/mecanica-esposito-new.webp" alt="Mecanica Esposito" class="client-logo" loading="lazy"></div>
-                    <div class="client-logo-box"><img src="./img/barber-soft-new.webp" alt="Barber Soft" class="client-logo" loading="lazy"></div>
+                    <div class="client-logo-box"><img src="./img/palimpulsa-new.webp" alt="Palimpulsa" class="client-logo" loading="lazy" width="235" height="125"></div>
+                    <div class="client-logo-box"><img src="./img/softhair-new.webp" alt="Soft Hair" class="client-logo" loading="lazy" width="235" height="125"></div>
+                    <div class="client-logo-box"><img src="./img/victoria-hair-_studio-new.webp" alt="Victoria Hair Studio" class="client-logo" loading="lazy" width="235" height="125"></div>
+                    <div class="client-logo-box"><img src="./img/barber-shop_zuly-new.webp" alt="Barber Zuly" class="client-logo" loading="lazy" width="235" height="125"></div>
+                    <div class="client-logo-box"><img src="./img/centro-de-autismo-new.webp" alt="Centro de Autismo" class="client-logo" loading="lazy" width="235" height="125"></div>
+                    <div class="client-logo-box"><img src="./img/centro-red-new.webp" alt="Centro Red" class="client-logo" loading="lazy" width="235" height="125"></div>
+                    <div class="client-logo-box"><img src="./img/donna-new.webp" alt="Donna" class="client-logo" loading="lazy" width="235" height="125"></div>
+                    <div class="client-logo-box"><img src="./img/etchepare-new.webp" alt="Etchepare" class="client-logo" loading="lazy" width="235" height="125"></div>
+                    <div class="client-logo-box"><img src="./img/futproyect-new.webp" alt="Futproyect" class="client-logo" loading="lazy" width="235" height="125"></div>
+                    <div class="client-logo-box"><img src="./img/mecanica-esposito-new.webp" alt="Mecanica Esposito" class="client-logo" loading="lazy" width="235" height="125"></div>
+                    <div class="client-logo-box"><img src="./img/barber-soft-new.webp" alt="Barber Soft" class="client-logo" loading="lazy" width="235" height="125"></div>
                 </div>
             </div>
         </section>
@@ -572,7 +572,7 @@
             <div class="cta-panel">
                 <!-- Columna izquierda: logo + tagline -->
                 <div class="cta-panel-left">
-                    <img src="img/logo-blanco.png" alt="ReBest Logo" class="cta-panel-logo">
+                    <img src="img/logo-blanco.png" alt="ReBest Logo" class="cta-panel-logo" width="315" height="200">
                     <p class="cta-panel-tagline">Creatividad que conecta.<br>Estrategia que convierte.</p>
                 </div>
 
@@ -580,7 +580,7 @@
 
                 <!-- Columna derecha: texto + botón -->
                 <div class="cta-panel-right">
-                    <img src="./img/agenda_tu_reunión_estrategica.png" alt="Icono CTA" class="about-highlight-icon-new">
+                    <img src="./img/agenda_tu_reunión_estrategica.png" alt="Icono CTA" class="about-highlight-icon-new" width="105" height="86">
                     <h2 class="cta-title">Tu negocio ya tiene potencial. Hagamos que más personas te vean, te recuerden y te elijan.</h2>
                     <p class="cta-description">Una conversación puede ayudarte a identificar oportunidades que hoy tu negocio está dejando pasar.</p>
                     <a href="https://api.whatsapp.com/send?phone=56991777994&text=Hola%20ReBest,%20me%20gustaría%20agendar%20una%20reunión%20estratégica." class="cta-btn" target="_blank" rel="noopener noreferrer">
@@ -598,7 +598,7 @@
             <div class="footer-container">
                 
                 <div class="footer-col brand-col">
-                    <img src="./img/logo-rb-blanco.png" alt="ReBest Logo" class="footer-logo" loading="lazy">
+                    <img src="./img/logo-rb-blanco.png" alt="ReBest Logo" class="footer-logo" loading="lazy" width="122" height="61">
                     <p class="footer-about-text">
                         <strong>Dos socios. Un mismo objetivo.</strong><br>
                         Ayudar a negocios de servicios a crecer mediante estrategia, contenido y publicidad digital.
