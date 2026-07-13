@@ -49,6 +49,23 @@ body {
    No se usa overscroll-behavior porque en pruebas anteriores bloqueó
    completamente el scroll con mouse/trackpad en PC — mejor un poco de
    rebote nativo que el scroll roto. */
+/* Ajuste visual para pantallas de escritorio grandes: a 100% de zoom del
+   navegador el sitio se sentía "grande" comparado con verlo a 85-90% de zoom.
+   Reducir el font-size base en rem escala tipografía y espaciados basados en
+   rem de forma proporcional, imitando ese look sin depender del zoom real
+   del usuario (que no se puede forzar desde el sitio). No afecta mobile/tablet. */
+@media (min-width: 1200px) {
+    html {
+        font-size: 90%;
+    }
+}
+
+@media (min-width: 1600px) {
+    html {
+        font-size: 87.5%;
+    }
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -2926,7 +2943,7 @@ main {
 @media (max-width: 768px) {
     body::before {
         /* Mantenemos tu degradado oscuro y cambiamos a la imagen vertical */
-        background-image: linear-gradient(rgba(35, 33, 33, 0.4), rgba(35, 33, 33, 0.6)), url('img/fondo-vertical.jpg');
+        background-image: linear-gradient(rgba(35, 33, 33, 0.4), rgba(35, 33, 33, 0.6)), url('img/fondo-vertical.webp');
         background-position: center top;
     }
 }
@@ -3557,8 +3574,9 @@ main {
     position: absolute;
     inset: 0;
     background:
+        linear-gradient(180deg, rgba(0, 255, 102, 0.14) 0%, transparent 30%),
         radial-gradient(ellipse at 20% 0%, rgba(0, 255, 102, 0.1) 0%, transparent 55%),
-        radial-gradient(ellipse at 80% 100%, rgba(0, 255, 102, 0.1) 0%, transparent 55%);
+        radial-gradient(ellipse at 80% 0%, rgba(0, 255, 102, 0.1) 0%, transparent 55%);
     pointer-events: none;
     z-index: 0;
 }
@@ -3579,7 +3597,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 14px;
     padding: 36px 32px;
     text-align: center;
@@ -3624,6 +3642,15 @@ main {
     width: 100%;
     max-width: 380px;
     box-sizing: border-box;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.team-panel-card .team-info p:last-child {
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .team-panel-card .team-info h3 {
@@ -4195,6 +4222,7 @@ main {
 
 .cta-panel-logo {
     max-width: 180px;
+    height: auto;
     filter: drop-shadow(0 0 12px rgba(0, 255, 102, 0.3));
     transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }

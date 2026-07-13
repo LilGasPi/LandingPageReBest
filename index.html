@@ -54,10 +54,14 @@
     <!-- Precarga del fondo principal para que aparezca de inmediato -->
     <link rel="preload" as="image" href="./img/fondo-rebest-serpientes.jpg" fetchpriority="high">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Montserrat:wght@800;900&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css?v=2.0">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Montserrat:wght@800;900&family=Playfair+Display:ital@0;1&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Montserrat:wght@800;900&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    </noscript>
+
+    <link rel="stylesheet" href="style.css?v=2.1">
 </head>
 <body class="intro-active">
     <script>
@@ -94,7 +98,7 @@
     <header class="main-header">
         <div class="logo">
             <a href="./" title="Recargar página">
-                <img src="./img/logo-rb-blanco.png" alt="ReBest" class="logo-img" width="122" height="61"> 
+                <img src="./img/logo-rb-blanco.webp" alt="ReBest" class="logo-img" width="122" height="61"> 
             </a>
         </div>
         
@@ -254,7 +258,7 @@
                 <!-- PC: 4 tarjetas en panel negro -->
                 <div class="services-panel services-panel-4 desktop-only">
                     <div class="service-card-panel">
-                        <img src="./img/produccion-audiovisual.png" alt="Icono Audiovisual" class="service-icon-right" width="96" height="96">
+                        <img src="./img/produccion-audiovisual.webp" alt="Icono Audiovisual" class="service-icon-right" width="96" height="96">
                         <div class="card-number">01</div>
                         <h3 class="card-title">PRODUCCIÓN<br>AUDIOVISUAL</h3>
                         <p class="card-description">Transformamos ideas en contenido que genera confianza, fortalece tu marca y <strong>atrae potenciales clientes</strong>.</p>
@@ -275,7 +279,7 @@
                     </div>
                     <div class="services-panel-divider"></div>
                     <div class="service-card-panel">
-                        <img src="./img/publicidad-digital.png" alt="Icono Publicidad" class="service-icon-right" width="96" height="98">
+                        <img src="./img/publicidad-digital.webp" alt="Icono Publicidad" class="service-icon-right" width="96" height="98">
                         <div class="card-number">04</div>
                         <h3 class="card-title">PUBLICIDAD<br>DIGITAL</h3>
                         <p class="card-description">Utilizamos Meta Ads y Google Ads para atraer clientes potenciales, generar oportunidades comerciales y convertir la inversión publicitaria en <strong>crecimiento medible</strong>.</p>
@@ -287,7 +291,7 @@
                     <button class="carousel-arrow prev rb-glow" aria-label="Anterior">&#10094;</button>
                     <div id="services-carousel" class="services-carousel">
                         <div class="service-card active">
-                            <img src="./img/produccion-audiovisual.png" alt="Icono Audiovisual" class="service-icon-right" width="96" height="96">
+                            <img src="./img/produccion-audiovisual.webp" alt="Icono Audiovisual" class="service-icon-right" width="96" height="96">
                             <div class="card-number">01</div>
                             <h3 class="card-title">PRODUCCIÓN<br>AUDIOVISUAL</h3>
                             <p class="card-description">Transformamos ideas en contenido que genera confianza, fortalece tu marca y <strong>atrae potenciales clientes</strong>.</p>
@@ -305,7 +309,7 @@
                             <p class="card-description">Creamos sitios web pensados para transmitir confianza, potenciar tu presencia digital y <strong>convertir visitas en potenciales clientes</strong>.</p>
                         </div>
                         <div class="service-card">
-                            <img src="./img/publicidad-digital.png" alt="Icono Publicidad" class="service-icon-right" width="96" height="98">
+                            <img src="./img/publicidad-digital.webp" alt="Icono Publicidad" class="service-icon-right" width="96" height="98">
                             <div class="card-number">04</div>
                             <h3 class="card-title">PUBLICIDAD<br>DIGITAL</h3>
                             <p class="card-description">Utilizamos Meta Ads y Google Ads para atraer clientes potenciales, generar oportunidades comerciales y convertir la inversión publicitaria en <strong>crecimiento medible</strong>.</p>
@@ -363,7 +367,7 @@
                                 <img src="./img/premiere.webp" alt="Premiere Pro" class="adobe-logo-img" width="70" height="70">
                             </div>
                             <div class="icon-circle dv">
-                                <img src="./img/davinci-logo.png" alt="DaVinci" class="davinci-img" width="100" height="70">
+                                <img src="./img/davinci-logo.webp" alt="DaVinci" class="davinci-img" width="100" height="70">
                             </div>
                         </div>
                     </div>
@@ -566,7 +570,7 @@
             <div class="cta-panel">
                 <!-- Columna izquierda: logo + tagline -->
                 <div class="cta-panel-left">
-                    <img src="img/logo-blanco.png" alt="ReBest Logo" class="cta-panel-logo" width="315" height="200">
+                    <img src="img/logo-blanco.png" alt="ReBest Logo" class="cta-panel-logo" width="180" height="114">
                     <p class="cta-panel-tagline">Creatividad que conecta.<br>Estrategia que convierte.</p>
                 </div>
 
@@ -592,7 +596,7 @@
             <div class="footer-container">
                 
                 <div class="footer-col brand-col">
-                    <img src="./img/logo-rb-blanco.png" alt="ReBest Logo" class="footer-logo" loading="lazy" width="122" height="61">
+                    <img src="./img/logo-rb-blanco.webp" alt="ReBest Logo" class="footer-logo" loading="lazy" width="122" height="61">
                     <p class="footer-about-text">
                         <strong>Dos socios. Un mismo objetivo.</strong><br>
                         Ayudar a negocios de servicios a crecer mediante estrategia, contenido y publicidad digital.
