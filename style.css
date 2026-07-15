@@ -215,6 +215,13 @@ body.menu-open {
     justify-content: center;
     align-items: center;
     transition: opacity 0.4s ease-out, visibility 0.4s ease-out;
+    /* El overlay ya cubre toda la pantalla (fixed + 100dvh), así que basta
+       con impedir gestos táctiles AQUÍ para bloquear el scroll durante la
+       intro. No usamos overflow:hidden en <body> (ver más abajo) porque en
+       iOS Safari, quitar esa clase por JS no libera el scroll hasta que el
+       usuario toca la pantalla una vez — eso es justamente el bug reportado
+       ("hay que tocar la pantalla para que el scroll vuelva"). */
+    touch-action: none;
 }
 
 .intro-overlay.hidden {
@@ -229,9 +236,9 @@ body.menu-open {
     object-position: center;
 }
 
-body.intro-active {
-    overflow: hidden;
-}
+/* NOTA: body.intro-active ya NO fuerza overflow:hidden. El overlay fixed +
+   touch-action:none de arriba es suficiente para impedir el scroll visual
+   mientras se reproduce el video, y evita el bug de scroll "pegado" en iOS. */
 
 .video-mobile {
     display: none;
@@ -244,6 +251,12 @@ body.intro-active {
 
     .video-mobile {
         display: block;
+        /* Fuerza composición por GPU (evita que el navegador escale el
+           video por software, que es lo que se ve "pixelado"/borroso en
+           pantallas Retina) y elimina el blur de subpíxel al animar. */
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        image-rendering: -webkit-optimize-contrast;
     }
 }
 
@@ -1026,10 +1039,20 @@ body.intro-active {
         /* Desactivamos traslación vertical molesta en touch */
     }
 
-    /* Título sutilmente adaptado para pantallas medianas/chicas */
+    /* Ícono más contenido en móvil para dejar aire junto al título */
+    .service-icon-right {
+        top: 22px;
+        right: 20px;
+        width: 44px;
+    }
+
+    /* Título sutilmente adaptado para pantallas medianas/chicas.
+       margin-top sube de 50px a 88px: el ícono llega hasta ~22+44=66px,
+       así el título arranca siempre debajo de él, sin invadir su columna. */
     .card-title {
         font-size: 1.2rem;
-        margin-top: 50px;
+        margin-top: 88px;
+        padding-right: 8px;
     }
 
     /* Ubicación milimétrica de las flechas dentro de la zona segura lateral */
@@ -1116,10 +1139,17 @@ body.intro-active {
         left: 20px;
     }
 
-    /* Reducción clave: Aquí evitamos que "ESTRATEGIA DE CONTENIDO" genere desbordamientos */
+    .service-icon-right {
+        top: 20px;
+        right: 18px;
+        width: 38px;
+    }
+
+    /* Reducción clave: Aquí evitamos que "ESTRATEGIA DE CONTENIDO" genere desbordamientos
+       Y que el título quede debajo del ícono (20+38=58px de despeje). */
     .card-title {
         font-size: 1.1rem;
-        margin-top: 45px;
+        margin-top: 78px;
         letter-spacing: 0px;
     }
 
@@ -2514,17 +2544,29 @@ body.intro-active {
 }
 
 .footer-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    /* Columna de marca más ancha (tiene texto largo) + 4 columnas iguales.
+       Grid evita los huecos vacíos que dejaba flex+space-between cuando
+       la última fila tenía menos de 5 columnas. */
+    grid-template-columns: 1.6fr 1fr 1fr 1fr 1.2fr;
     gap: 40px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 .footer-col {
-    flex: 1 1 200px;
-    min-width: 180px;
+    min-width: 0;
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+        row-gap: 36px;
+    }
+
+    .footer-col.brand-col {
+        grid-column: 1 / -1;
+    }
 }
 
 .footer-logo {
@@ -5061,12 +5103,11 @@ main {
     }
 
     .footer-container {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         gap: 30px;
     }
 
     .footer-col {
-        flex: none;
         width: 100%;
         min-width: 0;
     }
