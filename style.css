@@ -2547,9 +2547,13 @@ body.menu-open {
     display: grid;
     /* Columna de marca más ancha (tiene texto largo) + 4 columnas iguales.
        Grid evita los huecos vacíos que dejaba flex+space-between cuando
-       la última fila tenía menos de 5 columnas. */
-    grid-template-columns: 1.6fr 1fr 1fr 1fr 1.2fr;
-    gap: 40px;
+       la última fila tenía menos de 5 columnas.
+       Servicios y Soluciones llevan textos más largos ("Producción
+       Audiovisual", "Estrategia de Contenido"), así que reciben algo
+       más de ancho para que no corten a mitad de palabra y queden
+       visualmente descuadradas frente a Explorar/Contacto. */
+    grid-template-columns: 1.5fr 0.85fr 1.15fr 1.05fr 1.1fr;
+    gap: 32px;
     max-width: 1200px;
     margin: 0 auto;
 }
