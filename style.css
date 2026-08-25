@@ -2552,7 +2552,7 @@ body.menu-open {
        Audiovisual", "Estrategia de Contenido"), así que reciben algo
        más de ancho para que no corten a mitad de palabra y queden
        visualmente descuadradas frente a Explorar/Contacto. */
-    grid-template-columns: 1.5fr 0.85fr 1.15fr 1.05fr 1.1fr;
+    grid-template-columns: 1.4fr 0.8fr 1.3fr 1.15fr 1.1fr;
     gap: 32px;
     max-width: 1200px;
     margin: 0 auto;
@@ -2616,10 +2616,12 @@ body.menu-open {
     font-family: var(--font-titles);
     color: #ffffff;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1.4;
     letter-spacing: 0.2px;
     transition: color 0.25s ease;
-    display: inline-block;
+    display: block;
+    white-space: normal;
 }
 
 .footer-links a:hover {
