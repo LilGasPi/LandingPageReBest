@@ -347,20 +347,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // =========================================================
-    // 7. CARRUSEL INFINITO AUTOMÁTICO (LOGOS CLIENTES MÓVIL)
-    // =========================================================
-    const gridClientes = document.querySelector('.clientes-grid');
-    
-    if (gridClientes && window.innerWidth <= 768) {
-        const logosOriginales = Array.from(gridClientes.children);
-        
-        logosOriginales.forEach(logo => {
-            const clon = logo.cloneNode(true);
-            clon.classList.add('clone');
-            gridClientes.appendChild(clon);
-        });
-    }
+    // Los logos de clientes se muestran en una cuadrícula estática y accesible
+    // en móvil y escritorio: no clonamos elementos ni forzamos animación continua.
 
     // =========================================================
     // 8. CARRUSEL DE SERVICIOS Y SOLUCIONES (función reutilizable)
@@ -519,14 +507,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const whatsappBtn = document.querySelector('.whatsapp-flotante');
 
     if (whatsappBtn) {
-        window.addEventListener('scroll', () => {
-            // Se muestra solo si pasamos los 400px de scroll (fuera del inicio)
-            if (window.scrollY > 400) {
-                whatsappBtn.classList.add('show');
-            } else {
-                whatsappBtn.classList.remove('show');
-            }
-        }, { passive: true });
+        const contacto = document.getElementById('contacto');
+        const footer = document.querySelector('.main-footer');
+        const visibleInViewport = element => {
+            if (!element) return false;
+            const rect = element.getBoundingClientRect();
+            return rect.top < window.innerHeight && rect.bottom > 0;
+        };
+        const updateWhatsapp = () => {
+            // Evita tapar el CTA, el contacto del footer y los botones
+            // del carrusel. El botón reaparece en otras secciones.
+            const overContact = visibleInViewport(contacto) || visibleInViewport(footer);
+            whatsappBtn.classList.toggle('show', window.scrollY > 400 && !overContact);
+        };
+        window.addEventListener('scroll', updateWhatsapp, { passive: true });
+        window.addEventListener('resize', updateWhatsapp, { passive: true });
+        updateWhatsapp();
     }
     } catch (err) {
         console.error('Error en script.js:', err);
@@ -579,13 +575,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Crear dots dinámicamente
         slides.forEach((_, i) => {
-            const dot = document.createElement('span');
+            const dot = document.createElement('button');
+            dot.type = 'button';
             dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('aria-label', `Ver trabajo ${i + 1} de ${slides.length}`);
+            dot.setAttribute('aria-pressed', String(i === 0));
+            dot.setAttribute('aria-controls', 'portfolio-mobile-track');
             dot.addEventListener('click', () => goToMobile(i));
             mobileDotsBox.appendChild(dot);
         });
 
         const mobileDots = () => mobileDotsBox.querySelectorAll('.dot');
+
+        // Los slides fuera de pantalla no deben dejar controles de audio
+        // accesibles al tabulador ni ocultar el slide activo al lector de pantalla.
+        const syncSlideAccess = () => {
+            slides.forEach((slide, i) => {
+                const isCurrent = i === mobileIdx;
+                slide.setAttribute('aria-hidden', String(!isCurrent));
+                if ('inert' in slide) slide.inert = !isCurrent;
+            });
+        };
+        syncSlideAccess();
 
         const goToMobile = (idx) => {
             // Pausar todos los videos del slide actual
@@ -595,7 +606,11 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileTrack.style.transform = `translateX(-${mobileIdx * 100}%)`;
 
             // Actualizar dots
-            mobileDots().forEach((d, i) => d.classList.toggle('active', i === mobileIdx));
+            mobileDots().forEach((d, i) => {
+                d.classList.toggle('active', i === mobileIdx);
+                d.setAttribute('aria-pressed', String(i === mobileIdx));
+            });
+            syncSlideAccess();
 
             // Reproducir video del nuevo slide si existe
             const vid = slides[mobileIdx].querySelector('video');
@@ -605,14 +620,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mobilePrev) mobilePrev.addEventListener('click', () => goToMobile(mobileIdx - 1));
         if (mobileNext) mobileNext.addEventListener('click', () => goToMobile(mobileIdx + 1));
 
-        // Soporte touch / swipe
+        // Gesto horizontal: evitar que un desplazamiento vertical del
+        // usuario cambie de trabajo por accidente en iOS o Android.
         let touchStartX = 0;
+        let touchStartY = 0;
         mobileTrack.addEventListener('touchstart', e => {
             touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
         }, { passive: true });
         mobileTrack.addEventListener('touchend', e => {
-            const diff = touchStartX - e.changedTouches[0].clientX;
-            if (Math.abs(diff) > 45) goToMobile(mobileIdx + (diff > 0 ? 1 : -1));
+            const diffX = touchStartX - e.changedTouches[0].clientX;
+            const diffY = touchStartY - e.changedTouches[0].clientY;
+            if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY) * 1.25) {
+                goToMobile(mobileIdx + (diffX > 0 ? 1 : -1));
+            }
         }, { passive: true });
 
         // Reproducir primer video si hay
