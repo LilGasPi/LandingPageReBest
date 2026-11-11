@@ -10,8 +10,8 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow-x: hidden;
-    /* Evita scroll horizontal indeseado */
+    overflow-x: clip;
+    /* clip evita un scroll vertical anidado al ocultar desbordamiento X. */
 }
 
 /* --- FIX ANTI-PIXELADO GLOBAL PARA ANIMACIONES --- */
@@ -76,7 +76,7 @@ body {
     color: var(--text-main);
     line-height: 1.6;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: clip;
     -webkit-overflow-scrolling: touch;
     position: relative;
     -webkit-font-smoothing: antialiased;
@@ -215,13 +215,9 @@ body.menu-open {
     justify-content: center;
     align-items: center;
     transition: opacity 0.4s ease-out, visibility 0.4s ease-out;
-    /* El overlay ya cubre toda la pantalla (fixed + 100dvh), así que basta
-       con impedir gestos táctiles AQUÍ para bloquear el scroll durante la
-       intro. No usamos overflow:hidden en <body> (ver más abajo) porque en
-       iOS Safari, quitar esa clase por JS no libera el scroll hasta que el
-       usuario toca la pantalla una vez — eso es justamente el bug reportado
-       ("hay que tocar la pantalla para que el scroll vuelva"). */
-    touch-action: none;
+    /* La intro es visual: no secuestra el primer gesto táctil o de rueda. */
+    pointer-events: none;
+    touch-action: auto;
 }
 
 .intro-overlay.hidden {
@@ -1016,7 +1012,7 @@ body.menu-open {
         overflow-x: auto;
         scroll-snap-type: x proximity;
         -webkit-overflow-scrolling: touch;
-        touch-action: pan-y;
+        touch-action: auto;
         scrollbar-width: none;
         padding: 25px 0;
         gap: 20px;
@@ -4054,7 +4050,7 @@ main {
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
-        touch-action: pan-x;
+        touch-action: auto;
         scrollbar-width: none;
         gap: 16px;
         padding: 12px 8px 25px;
@@ -5671,4 +5667,89 @@ section.is-visible .section-title::after {
 .portfolio-mobile-media {
     contain: layout paint;
     transform: translateZ(0);
+}
+/* ==========================================================================
+   ReBest — ajustes UX finales: scroll, foco y footer responsive.
+   No se sustituyen imágenes, videos, fondos ni textos.
+   ========================================================================== */
+html, body { overflow-x: clip; }
+body::before { will-change: auto; }
+.hamburger-menu { overscroll-behavior: contain; }
+a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent-green);
+    outline-offset: 4px;
+}
+.main-footer { width: 100%; }
+.footer-contact-info a { overflow-wrap: anywhere; }
+
+@media (max-width: 900px) {
+    .main-footer { padding: 52px clamp(18px, 5vw, 32px) max(28px, env(safe-area-inset-bottom)); }
+    .footer-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 30px clamp(16px, 4vw, 32px);
+    }
+    .footer-col.brand-col, .footer-col.contact-col { grid-column: 1 / -1; }
+    .footer-col.brand-col { text-align: center; }
+    .footer-logo { width: auto; height: auto; max-width: 132px; margin: 0 auto 18px; }
+    .footer-about-text {
+        max-width: 480px;
+        margin-inline: auto;
+        font-size: clamp(0.92rem, 2.6vw, 1rem);
+        font-weight: 400;
+        line-height: 1.75;
+        text-wrap: pretty;
+    }
+    .footer-title { font-size: 0.86rem; line-height: 1.4; margin-bottom: 14px; }
+    .footer-links li { margin-bottom: 4px; }
+    .footer-links a {
+        font-size: clamp(0.83rem, 2.2vw, 0.95rem);
+        font-weight: 500;
+        line-height: 1.45;
+        padding: 6px 0;
+        overflow-wrap: anywhere;
+    }
+    .footer-col.contact-col {
+        padding-top: 22px;
+        border-top: 1px solid rgba(255,255,255,.1);
+    }
+    .footer-contact-info li {
+        align-items: flex-start;
+        font-size: clamp(0.82rem, 2.3vw, 0.95rem);
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+    .footer-contact-info li i { flex: 0 0 18px; margin-top: 5px; }
+    .social-icons { justify-content: flex-start; margin-top: 16px; }
+    .social-icon { width: 44px; height: 44px; font-size: 17px; }
+    .footer-bottom-bar {
+        margin-top: 30px;
+        padding-top: 22px;
+        gap: 14px;
+        text-align: center;
+        justify-content: center;
+    }
+    .back-to-top { min-height: 44px; justify-content: center; }
+    .copyright { max-width: 100%; line-height: 1.6; }
+}
+@media (max-width: 560px) {
+    .footer-container { gap: 26px 18px; }
+    .footer-col.solutions-col { grid-column: 1 / -1; }
+    .footer-col.solutions-col .footer-links {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 18px;
+    }
+    .footer-about-text { font-size: .94rem; }
+    .footer-contact-info li { font-size: .88rem; }
+    .social-icons { justify-content: center; }
+}
+@media (max-width: 359px) {
+    .footer-container { grid-template-columns: minmax(0, 1fr); }
+    .footer-col.brand-col, .footer-col.solutions-col, .footer-col.contact-col {
+        grid-column: 1;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .intro-overlay { transition: none; }
 }
