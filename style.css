@@ -6132,3 +6132,21 @@ a:focus-visible, button:focus-visible {
     }
     .portfolio-mobile-track { transition: none !important; }
 }
+
+/* Tablet pequeña: dos columnas legibles antes del footer de una sola columna. */
+@media (min-width: 701px) and (max-width: 900px) {
+    .main-footer .footer-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .main-footer .brand-col,
+    .main-footer .contact-col {
+        grid-column: 1 / -1;
+    }
+}
+/* Evita animación previa de marqués y asegura el mismo comportamiento
+   al cruzar el breakpoint sin recargar la página. */
+@media (min-width: 769px) {
+    .clientes-grid .client-logo-box {
+        animation: none !important;
+    }
+}
