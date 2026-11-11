@@ -340,55 +340,55 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Carrusel de logos sin tarjetas: se clona una sola serie solo a nivel
-    // visual para que el movimiento sea continuo y sin saltos. Los clones
-    // se ocultan a lectores de pantalla y no son interactivos.
-    const clientTrack = document.querySelector('.clientes-grid');
+    // Logos de Clientes: una serie original + una copia puramente visual.
+    // Su movimiento es continuo y la barra de scroll permanece oculta.
     const clientViewport = document.querySelector('.clientes-container');
-    if (clientTrack && clientViewport) {
+    const clientTrack = clientViewport?.querySelector('.clientes-grid');
+    if (clientViewport && clientTrack) {
         const originals = Array.from(clientTrack.querySelectorAll('.client-logo-box:not(.clone)'));
-        if (originals.length) {
+        if (originals.length > 0) {
             originals.forEach(item => {
-                const clone = item.cloneNode(true);
-                clone.classList.add('clone');
-                clone.setAttribute('aria-hidden', 'true');
-                clientTrack.appendChild(clone);
+                const copy = item.cloneNode(true);
+                copy.classList.add('clone');
+                copy.setAttribute('aria-hidden', 'true');
+                clientTrack.appendChild(copy);
             });
 
-            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-            const setClientTrackWidth = () => {
-                const firstClone = clientTrack.querySelector('.client-logo-box.clone');
-                if (!firstClone) return;
-                // Distancia real hasta el comienzo de la segunda serie,
-                // incluido el gap, para no crear salto visible en el loop.
-                const distance = firstClone.offsetLeft - originals[0].offsetLeft;
-                if (distance > 0) clientTrack.style.setProperty('--client-distance', distance + 'px');
+            // Medimos la distancia hasta el primer clon después de cambiar
+            // el layout a una fila continua; el loop termina exactamente
+            // donde vuelve a empezar y nunca deja una fila incompleta.
+            const measure = () => {
+                const clone = clientTrack.querySelector('.client-logo-box.clone');
+                if (!clone) return;
+                const distance = clone.offsetLeft - originals[0].offsetLeft;
+                if (distance > 0) {
+                    clientTrack.style.setProperty('--client-distance', distance + 'px');
+                    clientViewport.classList.add('is-ready');
+                }
             };
+            const scheduleMeasure = () => requestAnimationFrame(measure);
             const resizeObserver = typeof ResizeObserver !== 'undefined'
-                ? new ResizeObserver(setClientTrackWidth) : null;
-            if (resizeObserver) resizeObserver.observe(clientViewport);
-            window.addEventListener('load', setClientTrackWidth, { once: true });
-            window.addEventListener('resize', setClientTrackWidth, { passive: true });
-            setClientTrackWidth();
+                ? new ResizeObserver(scheduleMeasure) : null;
+            // Observar viewport, no pista animada: evita loops de resize.
+            resizeObserver?.observe(clientViewport);
+            window.addEventListener('resize', scheduleMeasure, { passive: true });
+            window.addEventListener('load', scheduleMeasure, { once: true });
+            if (document.fonts?.ready) document.fonts.ready.then(scheduleMeasure);
+            // Activamos la fila antes de medir, para obtener offsetLeft real.
+            clientViewport.classList.add('is-ready');
+            scheduleMeasure();
 
-            // Pausa de forma natural cuando el usuario toca o señala
-            // la banda. Sin captura táctil ni bloqueo de scroll vertical.
-            const pauseClients = () => clientViewport.classList.add('is-paused');
-            const resumeClients = () => clientViewport.classList.remove('is-paused');
-            clientViewport.addEventListener('pointerenter', pauseClients);
-            clientViewport.addEventListener('pointerleave', resumeClients);
-            clientViewport.addEventListener('touchstart', pauseClients, { passive: true });
-            clientViewport.addEventListener('touchend', () => {
-                // Se reanuda con la siguiente interacción fuera de la banda,
-                // evitando temporizadores mientras se hace scroll.
-            }, { passive: true });
-            document.addEventListener('touchstart', event => {
-                if (!clientViewport.contains(event.target)) resumeClients();
-            }, { passive: true });
-            if (reduceMotion.matches) clientViewport.classList.add('is-reduced-motion');
-            reduceMotion.addEventListener?.('change', event => {
-                clientViewport.classList.toggle('is-reduced-motion', event.matches);
-            });
+            // Solo pausamos con hover verdadero de mouse/trackpad.
+            // En móvil no se registra touchstart ni pointerenter y el carrusel
+            // nunca queda detenido después de deslizar verticalmente.
+            if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                clientViewport.addEventListener('mouseenter', () => {
+                    clientViewport.classList.add('is-paused');
+                });
+                clientViewport.addEventListener('mouseleave', () => {
+                    clientViewport.classList.remove('is-paused');
+                });
+            }
         }
     }
 
