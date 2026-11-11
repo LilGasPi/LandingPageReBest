@@ -5753,3 +5753,382 @@ a:focus-visible, button:focus-visible {
     html { scroll-behavior: auto; }
     .intro-overlay { transition: none; }
 }
+
+/* ==========================================================================
+   REBEST / REFINAMIENTO UX RESPONSIVE — CLIENTES · CONTACTO · FOOTER
+   Se mantienen literalmente los textos, logos, vídeos y fondos existentes.
+   ========================================================================== */
+
+/* Clientes: cuadrícula limpia, legible y estable en todas las plataformas.
+   Sin marquesina infinita, clones ni controles táctiles capturados. */
+.clientes-container {
+    width: min(100% - 32px, 1140px);
+    max-width: 1140px;
+    margin-inline: auto;
+    padding: 20px 0;
+}
+.clientes-grid {
+    width: 100%;
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(12px, 1.8vw, 22px);
+    justify-items: stretch;
+    align-items: stretch;
+    animation: none;
+    transform: none;
+    will-change: auto;
+}
+.clientes-grid .client-logo-box {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    min-height: 124px;
+    padding: 22px 18px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: linear-gradient(145deg, rgba(18, 21, 19, 0.92), rgba(4, 9, 6, 0.88));
+    border: 1px solid rgba(0, 255, 102, 0.16);
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+    animation: none;
+    transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.clientes-grid .client-logo-box.clone { display: none !important; }
+.clientes-grid .client-logo {
+    width: 100%;
+    height: 80px;
+    max-width: 185px;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,.15));
+    image-rendering: auto;
+    transform: none;
+}
+@media (hover: hover) and (pointer: fine) {
+    .clientes-grid .client-logo-box:hover {
+        border-color: rgba(0,255,102,.5);
+        box-shadow: 0 14px 34px rgba(0,255,102,.09);
+        transform: translateY(-3px);
+    }
+}
+@media (max-width: 1024px) {
+    .clientes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .clientes-grid .client-logo-box { min-height: 112px; }
+}
+@media (max-width: 768px) {
+    .clientes-container {
+        width: min(100% - 24px, 600px);
+        overflow: visible;
+        padding: 8px 0;
+    }
+    .clientes-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+        max-width: 100%;
+        gap: 12px;
+        padding: 0;
+        animation: none;
+    }
+    .clientes-grid .client-logo-box {
+        width: 100%;
+        min-height: 106px;
+        height: auto;
+        padding: 16px 12px;
+        opacity: 1;
+        transform: none;
+    }
+    .clientes-grid .client-logo {
+        width: 100%;
+        height: 70px;
+        max-height: 70px;
+        filter: drop-shadow(0 0 5px rgba(255,255,255,.15));
+        transform: none;
+    }
+}
+@media (max-width: 360px) {
+    .clientes-grid { gap: 9px; }
+    .clientes-grid .client-logo-box { padding: 12px 9px; min-height: 96px; }
+}
+
+/* CTA / Contacto: equilibrio visual y ancho legible incluso a 320 px.
+   Asegura que textos y botón entren sin cortes ni desplazamiento horizontal. */
+.cta-panel {
+    max-width: 1100px;
+    min-width: 0;
+}
+.cta-panel-left, .cta-panel-right { min-width: 0; }
+.cta-panel-right .cta-title { text-wrap: balance; }
+.cta-panel-right .cta-description { text-wrap: pretty; }
+@media (max-width: 900px) {
+    #contacto.cta-section {
+        width: 100%;
+        max-width: 640px;
+        margin: clamp(60px, 8vw, 88px) auto;
+        padding: 0 clamp(12px, 3vw, 22px);
+    }
+    #contacto .cta-panel {
+        width: 100%;
+        min-height: 0;
+        grid-template-columns: minmax(0, 1fr);
+    }
+    #contacto .cta-panel-left {
+        padding: clamp(28px, 7vw, 44px) clamp(18px, 6vw, 32px);
+        gap: 16px;
+    }
+    #contacto .cta-panel-logo { width: min(100%, 180px); height: auto; }
+    #contacto .cta-panel-divider { width: 65%; max-width: 240px; margin-inline: auto; }
+    #contacto .cta-panel-right {
+        padding: clamp(28px, 6vw, 42px) clamp(18px, 6vw, 34px);
+        gap: clamp(18px, 4vw, 24px);
+    }
+    #contacto .cta-title {
+        font-size: clamp(1.18rem, 4.4vw, 1.7rem);
+        line-height: 1.33;
+        overflow-wrap: normal;
+        hyphens: auto;
+    }
+    #contacto .cta-description {
+        font-size: clamp(.96rem, 3.2vw, 1.1rem);
+        line-height: 1.75;
+    }
+    #contacto .cta-btn {
+        min-height: 54px;
+        width: min(100%, 350px);
+        max-width: 100%;
+        align-self: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px clamp(12px, 3vw, 24px);
+        font-size: clamp(.78rem, 2.75vw, .92rem);
+        line-height: 1.35;
+        white-space: normal;
+        text-align: center;
+    }
+}
+@media (max-width: 380px) {
+    #contacto .cta-panel-left, #contacto .cta-panel-right { padding-inline: 18px; }
+    #contacto .cta-title { font-size: 1.12rem; }
+    #contacto .cta-btn { font-size: .79rem; }
+}
+
+/* Portafolio: superficies y botones táctiles sin tapar el video,
+   alturas que respetan el formato vertical original. */
+@media (max-width: 900px) {
+    .portfolio-carousel-wrapper {
+        width: min(100%, 430px);
+        max-width: 430px;
+        margin-inline: auto;
+        border: 1px solid rgba(0,255,102,.20);
+        border-radius: 18px;
+    }
+    .portfolio-mobile-slide, .portfolio-mobile-media {
+        min-height: 0;
+        height: auto;
+    }
+    .portfolio-mobile-slide { aspect-ratio: 9 / 13; }
+    .portfolio-mobile-media {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        inset: 0;
+        object-fit: contain;
+        background: #050505;
+    }
+    .portfolio-mobile-btn {
+        width: 44px;
+        height: 44px;
+        border-width: 1px;
+        background: rgba(0,0,0,.84);
+    }
+    .portfolio-mobile-btn.prev { left: 8px; }
+    .portfolio-mobile-btn.next { right: 8px; }
+    .portfolio-mobile-dots {
+        gap: 2px;
+        padding: 6px 0 10px;
+    }
+    .portfolio-mobile-dots .dot {
+        appearance: none;
+        display: inline-flex;
+        width: 24px;
+        height: 24px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        box-shadow: none;
+        transform: none;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+    }
+    .portfolio-mobile-dots .dot::before {
+        content: "";
+        display: block;
+        width: 8px;
+        height: 8px;
+        background: rgba(255,255,255,.35);
+        border-radius: 50%;
+        transition: background .2s ease, transform .2s ease;
+    }
+    .portfolio-mobile-dots .dot.active { background: transparent; box-shadow: none; transform: none; }
+    .portfolio-mobile-dots .dot.active::before {
+        background: var(--accent-green);
+        transform: scale(1.25);
+        box-shadow: 0 0 8px rgba(0,255,102,.5);
+    }
+    .portfolio-ig-text { max-width: 430px; margin-inline: auto; }
+}
+@media (max-width: 380px) {
+    .portfolio-carousel-wrapper { border-radius: 14px; }
+    .portfolio-mobile-btn.prev { left: 5px; }
+    .portfolio-mobile-btn.next { right: 5px; }
+}
+
+/* Footer: composición editorial en móvil; jerarquía clara, columnas
+   sin palabras partidas y contacto completo y pulsable. */
+.main-footer .footer-container {
+    max-width: 1180px;
+    column-gap: clamp(24px, 2.3vw, 38px);
+}
+.main-footer .footer-title { letter-spacing: 1px; }
+.main-footer .footer-links a::before { content: none; display: none; }
+.main-footer .footer-contact-info a { overflow-wrap: anywhere; }
+.main-footer .footer-contact-info li i { flex: 0 0 18px; }
+.main-footer .social-icon { min-width: 44px; min-height: 44px; }
+@media (max-width: 1024px) {
+    .main-footer .footer-container {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 36px 24px;
+    }
+    .main-footer .brand-col { grid-column: 1 / -1; }
+    .main-footer .contact-col { grid-column: span 2; }
+}
+@media (max-width: 700px) {
+    .main-footer { padding: 50px 22px max(32px, env(safe-area-inset-bottom)); }
+    .main-footer .footer-container {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+        max-width: 480px;
+    }
+    .main-footer .footer-col {
+        grid-column: 1 / -1;
+        text-align: left;
+        min-width: 0;
+        padding: 22px 0;
+    }
+    .main-footer .brand-col {
+        text-align: center;
+        padding-top: 0;
+        padding-bottom: 32px;
+    }
+    .main-footer .brand-col .footer-about-text {
+        max-width: 350px;
+        margin-inline: auto;
+        font-size: clamp(.89rem, 3.5vw, .98rem);
+        font-weight: 400;
+        line-height: 1.75;
+    }
+    .main-footer .footer-logo {
+        max-width: 130px;
+        width: auto;
+        height: auto;
+        margin: 0 auto 18px;
+    }
+    .main-footer .footer-col:not(.brand-col) {
+        border-top: 1px solid rgba(255,255,255,.11);
+    }
+    .main-footer .footer-title {
+        font-size: .86rem;
+        font-weight: 800;
+        letter-spacing: 1.15px;
+        color: var(--accent-green);
+        margin: 0 0 14px;
+    }
+    .main-footer .footer-links {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px 18px;
+        align-items: start;
+    }
+    .main-footer .footer-links li { margin: 0; min-width: 0; }
+    .main-footer .footer-links a {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 9px 0;
+        margin: 0;
+        font-size: clamp(.78rem, 3.2vw, .9rem);
+        line-height: 1.4;
+        font-weight: 500;
+        overflow-wrap: normal;
+        word-break: normal;
+        hyphens: none;
+    }
+    .main-footer .footer-col.services-col .footer-links,
+    .main-footer .footer-col.solutions-col .footer-links {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .main-footer .footer-col.contact-col {
+        padding-top: 26px;
+        border-top: 1px solid rgba(0,255,102,.25);
+    }
+    .main-footer .footer-contact-info {
+        display: grid;
+        gap: 9px;
+    }
+    .main-footer .footer-contact-info li {
+        margin: 0;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        font-size: clamp(.84rem, 3.35vw, .94rem);
+        line-height: 1.5;
+        gap: 12px;
+    }
+    .main-footer .footer-contact-info li i { margin: 0; }
+    .main-footer .footer-contact-info a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        overflow-wrap: anywhere;
+    }
+    .main-footer .social-icons {
+        justify-content: flex-start;
+        margin-top: 20px;
+        gap: 14px;
+    }
+    .main-footer .footer-bottom-bar {
+        max-width: 480px;
+        margin-top: 10px;
+        padding-top: 24px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .main-footer .copyright {
+        font-size: .78rem;
+        line-height: 1.7;
+        max-width: 34ch;
+    }
+}
+@media (max-width: 359px) {
+    .main-footer { padding-inline: 18px; }
+    .main-footer .footer-links {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .clientes-grid, .clientes-grid .client-logo-box {
+        animation: none !important;
+        opacity: 1 !important;
+        transition: none !important;
+        transform: none !important;
+    }
+    .portfolio-mobile-track { transition: none !important; }
+}
