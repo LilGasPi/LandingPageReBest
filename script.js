@@ -601,6 +601,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (whatsappBtn) {
         const contacto = document.getElementById('contacto');
         const footer = document.querySelector('.main-footer');
+        // En móvil la burbuja tapa flechas, botones y contenido de tarjetas.
+        // Se oculta mientras se leen estas secciones y vuelve en otras.
+        const interactiveSections = ['equipo', 'servicios', 'soluciones', 'portafolio']
+            .map(id => document.getElementById(id)).filter(Boolean);
         const visibleInViewport = element => {
             if (!element) return false;
             const rect = element.getBoundingClientRect();
@@ -610,7 +614,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Evita tapar el CTA, el contacto del footer y los botones
             // del carrusel. El botón reaparece en otras secciones.
             const overContact = visibleInViewport(contacto) || visibleInViewport(footer);
-            whatsappBtn.classList.toggle('show', window.scrollY > 400 && !overContact);
+            const overlappingMobileContent = window.innerWidth <= 900
+                && interactiveSections.some(visibleInViewport);
+            whatsappBtn.classList.toggle('show', window.scrollY > 400
+                && !overContact && !overlappingMobileContent);
         };
         window.addEventListener('scroll', updateWhatsapp, { passive: true });
         window.addEventListener('resize', updateWhatsapp, { passive: true });
