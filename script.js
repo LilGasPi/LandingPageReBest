@@ -86,78 +86,109 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // =========================================================
-    // 2. INTRO DE VIDEO: reproducción original sin bloqueo del scroll.
+    // 2. INTRO — video horizontal PC / vertical móvil.
+    // Los eventos de restauración del scroll NO deben cancelar la intro.
     // =========================================================
-    const introOverlay = document.querySelector('.intro-overlay');
-    const introVideos = Array.from(document.querySelectorAll('.intro-overlay video'));
-    const TIEMPO_REFLEJO = 4.700;
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const introOverlay = document.getElementById('intro-overlay');
+    const introVideos = Array.from(document.querySelectorAll('#intro-overlay video'));
+    const skipIntroButton = document.getElementById('skip-intro');
+    const INTRO_DURATION = 4.7; // tiempo original del logo
     let introFinished = false;
-    let introTimeCheck = 0;
-    let introFallback = 0;
+    let frameId = 0;
+    let fallbackId = 0;
 
-    const hideIntro = () => {
+    const finishIntro = () => {
         if (introFinished) return;
         introFinished = true;
-        window.clearTimeout(introFallback);
-        window.cancelAnimationFrame(introTimeCheck);
+        window.clearTimeout(fallbackId);
+        window.cancelAnimationFrame(frameId);
         if (introOverlay) {
             introOverlay.classList.add('hidden');
-            introOverlay.style.pointerEvents = 'none';
-            window.setTimeout(() => { introOverlay.style.display = 'none'; }, 450);
+            introOverlay.setAttribute('aria-hidden', 'true');
+            window.setTimeout(() => { introOverlay.hidden = true; }, 420);
         }
         introVideos.forEach(video => video.pause());
         body.classList.remove('intro-active');
         iniciarAnimacionesHero();
     };
 
-    // La intro es solo visual y nunca puede bloquear un scroll iniciado
-    // en celular. Se cierra al interactuar con la página, sin preventDefault.
-    ['touchstart', 'wheel', 'pointerdown'].forEach(type => {
-        document.addEventListener(type, hideIntro, { once: true, passive: true });
+    if (skipIntroButton) skipIntroButton.addEventListener('click', finishIntro);
+
+    // La intro no bloquea gestos. Solo se puede saltar con el botón,
+    // Escape o un gesto de desplazamiento genuino, nunca con el evento
+    // scroll que emite el navegador al recargar/restaurar posición.
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !introFinished) finishIntro();
     });
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 8) hideIntro();
+    window.addEventListener('wheel', event => {
+        if (!introFinished && Math.abs(event.deltaY) > 8) finishIntro();
     }, { passive: true });
-    window.addEventListener('pagehide', hideIntro, { once: true });
-
-    if (!introOverlay || !introVideos.length || reducedMotion) {
-        hideIntro();
-    } else {
-        const activeVideo = introVideos.find(video => getComputedStyle(video).display !== 'none');
-        if (!activeVideo) {
-            hideIntro();
-        } else {
-            const checkVideoTime = () => {
-                if (introFinished) return;
-                if (activeVideo.currentTime >= TIEMPO_REFLEJO) {
-                    hideIntro();
-                } else {
-                    introTimeCheck = window.requestAnimationFrame(checkVideoTime);
-                }
-            };
-            activeVideo.addEventListener('ended', hideIntro, { once: true });
-            activeVideo.addEventListener('error', hideIntro, { once: true });
-            activeVideo.addEventListener('playing', () => {
-                window.cancelAnimationFrame(introTimeCheck);
-                introTimeCheck = window.requestAnimationFrame(checkVideoTime);
-            }, { once: true });
-
-            // Registrar eventos antes de solicitar reproducción evita perder
-            // el evento de play cuando el vídeo ya está en caché.
-            activeVideo.preload = 'auto';
-            activeVideo.muted = true;
-            const playback = activeVideo.play();
-            if (playback && typeof playback.catch === 'function') {
-                playback.catch(() => {
-                    // No cubrir la landing con una pantalla negra si el
-                    // navegador rechaza el autoplay.
-                    hideIntro();
-                });
-            }
-            introFallback = window.setTimeout(hideIntro, 7000);
+    let touchStartY = null;
+    window.addEventListener('touchstart', event => {
+        if (!introFinished && event.touches.length === 1) {
+            touchStartY = event.touches[0].clientY;
         }
-    }
+    }, { passive: true });
+    window.addEventListener('touchmove', event => {
+        if (!introFinished && touchStartY !== null && event.touches.length === 1
+            && Math.abs(event.touches[0].clientY - touchStartY) > 14) {
+            finishIntro();
+        }
+    }, { passive: true });
+
+    const startIntro = () => {
+        if (!introOverlay || !introVideos.length) {
+            finishIntro();
+            return;
+        }
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        const activeVideo = document.getElementById(isMobile ? 'intro-video-mobile' : 'intro-video-desktop');
+        if (!activeVideo) {
+            finishIntro();
+            return;
+        }
+
+        // El dispositivo puede cambiar de orientación antes de que arranque:
+        // únicamente se carga y reproduce el archivo correspondiente.
+        introVideos.forEach(video => {
+            if (video !== activeVideo) video.pause();
+        });
+        activeVideo.muted = true;
+        activeVideo.defaultMuted = true;
+        activeVideo.playsInline = true;
+        activeVideo.autoplay = true;
+        activeVideo.preload = 'auto';
+        try { activeVideo.currentTime = 0; } catch (_) {}
+
+        const monitorPlayback = () => {
+            if (introFinished) return;
+            if (activeVideo.currentTime >= INTRO_DURATION) {
+                finishIntro();
+            } else {
+                frameId = requestAnimationFrame(monitorPlayback);
+            }
+        };
+        activeVideo.addEventListener('playing', () => {
+            cancelAnimationFrame(frameId);
+            frameId = requestAnimationFrame(monitorPlayback);
+        }, { once: true });
+        activeVideo.addEventListener('ended', finishIntro, { once: true });
+        activeVideo.addEventListener('error', finishIntro, { once: true });
+
+        // En iOS y Chrome, muted + playsinline permite autoplay en condiciones
+        // normales. Si el navegador lo bloquea, queda el botón para omitirla.
+        const playRequest = activeVideo.play();
+        if (playRequest && typeof playRequest.catch === 'function') {
+            playRequest.catch(error => {
+                console.warn('ReBest: reproducción de introducción bloqueada', error);
+                introOverlay?.classList.add('playback-blocked');
+            });
+        }
+        // Seguro frente a red lenta/archivo que no responde: evita overlay eterno.
+        fallbackId = window.setTimeout(finishIntro, 7500);
+    };
+
+    startIntro();
 
     // =========================================================
     // 3. LÓGICA DEL MENÚ HAMBURGUESA
@@ -340,55 +371,46 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Logos de Clientes: una serie original + una copia puramente visual.
-    // Su movimiento es continuo y la barra de scroll permanece oculta.
+    // Clientes: duplicamos una vez los logos y animamos exactamente la
+    // distancia de una serie, con velocidad constante y sin saltos.
     const clientViewport = document.querySelector('.clientes-container');
     const clientTrack = clientViewport?.querySelector('.clientes-grid');
     if (clientViewport && clientTrack) {
         const originals = Array.from(clientTrack.querySelectorAll('.client-logo-box:not(.clone)'));
-        if (originals.length > 0) {
-            originals.forEach(item => {
-                const copy = item.cloneNode(true);
-                copy.classList.add('clone');
-                copy.setAttribute('aria-hidden', 'true');
-                clientTrack.appendChild(copy);
-            });
-
-            // Medimos la distancia hasta el primer clon después de cambiar
-            // el layout a una fila continua; el loop termina exactamente
-            // donde vuelve a empezar y nunca deja una fila incompleta.
-            const measure = () => {
-                const clone = clientTrack.querySelector('.client-logo-box.clone');
-                if (!clone) return;
-                const distance = clone.offsetLeft - originals[0].offsetLeft;
-                if (distance > 0) {
-                    clientTrack.style.setProperty('--client-distance', distance + 'px');
-                    clientViewport.classList.add('is-ready');
-                }
-            };
-            const scheduleMeasure = () => requestAnimationFrame(measure);
-            const resizeObserver = typeof ResizeObserver !== 'undefined'
-                ? new ResizeObserver(scheduleMeasure) : null;
-            // Observar viewport, no pista animada: evita loops de resize.
-            resizeObserver?.observe(clientViewport);
-            window.addEventListener('resize', scheduleMeasure, { passive: true });
-            window.addEventListener('load', scheduleMeasure, { once: true });
-            if (document.fonts?.ready) document.fonts.ready.then(scheduleMeasure);
-            // Activamos la fila antes de medir, para obtener offsetLeft real.
-            clientViewport.classList.add('is-ready');
-            scheduleMeasure();
-
-            // Solo pausamos con hover verdadero de mouse/trackpad.
-            // En móvil no se registra touchstart ni pointerenter y el carrusel
-            // nunca queda detenido después de deslizar verticalmente.
-            if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                clientViewport.addEventListener('mouseenter', () => {
-                    clientViewport.classList.add('is-paused');
-                });
-                clientViewport.addEventListener('mouseleave', () => {
-                    clientViewport.classList.remove('is-paused');
-                });
+        if (originals.length) {
+            for (const item of originals) {
+                const clone = item.cloneNode(true);
+                clone.classList.add('clone');
+                clone.setAttribute('aria-hidden', 'true');
+                clientTrack.appendChild(clone);
             }
+            clientViewport.classList.add('is-measuring');
+
+            const updateClientMarquee = () => {
+                const firstClone = clientTrack.querySelector('.client-logo-box.clone');
+                if (!firstClone) return;
+                const distance = firstClone.offsetLeft - originals[0].offsetLeft;
+                if (distance <= 0) return;
+                // El valor ya es negativo; no dependemos de multiplicaciones
+                // en CSS calc() que difieren entre versiones de Safari.
+                clientTrack.style.setProperty('--client-offset', (-distance) + 'px');
+                clientTrack.style.setProperty('--client-duration', Math.max(24, distance / 72) + 's');
+                clientViewport.classList.add('is-ready');
+                clientViewport.classList.remove('is-measuring');
+            };
+
+            let measureFrame = 0;
+            const scheduleClientMeasure = () => {
+                cancelAnimationFrame(measureFrame);
+                measureFrame = requestAnimationFrame(updateClientMarquee);
+            };
+            const observer = typeof ResizeObserver === 'function'
+                ? new ResizeObserver(scheduleClientMeasure) : null;
+            observer?.observe(clientViewport);
+            window.addEventListener('resize', scheduleClientMeasure, { passive: true });
+            window.addEventListener('load', scheduleClientMeasure, { once: true });
+            document.fonts?.ready?.then(scheduleClientMeasure);
+            scheduleClientMeasure();
         }
     }
 
