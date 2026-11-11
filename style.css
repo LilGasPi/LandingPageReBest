@@ -6160,137 +6160,185 @@ a:focus-visible, button:focus-visible {
     }
 }
 
+
 /* ==========================================================================
-   CLIENTES — cinta de logos original, sin tarjetas ni fondos individuales.
-   La banda tiene dos series idénticas para desplazamiento continuo.
-   El contenedor recorta solo su propio eje X, no el scroll de la página.
+   CLIENTES — logos originales en marquesina continua, sin tarjetas.
+   Sin JavaScript, la lista queda envuelta y muestra todos los logos.
    ========================================================================== */
 .clientes-container {
+    position: relative;
     width: min(100%, 1400px);
     max-width: 1400px;
+    padding: 24px 0;
+    margin-inline: auto;
     overflow: hidden;
-    padding: clamp(12px, 2vw, 26px) 0;
+    overflow-x: clip;
     background: transparent;
     border: 0;
     border-radius: 0;
     touch-action: pan-y;
+    scrollbar-width: none;
+}
+.clientes-container::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
 }
 .clientes-container .clientes-grid {
-    --client-gap: clamp(24px, 4vw, 56px);
+    --client-gap: clamp(22px, 3.2vw, 50px);
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
     gap: var(--client-gap);
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    animation: none;
+    transform: none;
+    will-change: auto;
+}
+.clientes-container.is-ready .clientes-grid {
     width: max-content;
     max-width: none;
-    margin: 0;
-    padding: 0;
-    animation: rebestClientMarquee 34s linear infinite;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    animation: rebestLogosLoop 34s linear infinite;
     will-change: transform;
-    transform: translate3d(0,0,0);
 }
 .clientes-container .clientes-grid .client-logo-box,
 .clientes-container .clientes-grid .client-logo-box.clone {
     display: flex !important;
-    flex: 0 0 clamp(160px, 18vw, 220px);
-    width: clamp(160px, 18vw, 220px);
-    height: 110px;
+    flex: 0 0 clamp(152px, 17vw, 216px);
+    width: clamp(152px, 17vw, 216px);
     min-width: 0;
     max-width: none;
+    height: 108px;
     min-height: 0;
     margin: 0;
-    padding: 8px;
+    padding: 5px 8px;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
     border: 0;
     border-radius: 0;
     background: transparent;
     box-shadow: none;
-    filter: none;
-    overflow: visible;
-    animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+    animation: none !important;
     transition: none;
 }
 .clientes-container .clientes-grid .client-logo {
-    display: block;
     width: 100%;
+    height: 86px;
     max-width: 100%;
-    height: 90px;
     max-height: 100%;
     object-fit: contain;
     image-rendering: auto;
-    filter: drop-shadow(0 0 5px rgba(255,255,255,.12));
     transform: none !important;
-    transition: filter .25s ease;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,.14));
 }
-@keyframes rebestClientMarquee {
-    from { transform: translate3d(0,0,0); }
-    to { transform: translate3d(calc(-1 * var(--client-distance, 0px)),0,0); }
+@keyframes rebestLogosLoop {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(calc(-1 * var(--client-distance, 0px)), 0, 0); }
 }
 .clientes-container.is-paused .clientes-grid,
-.clientes-container:hover .clientes-grid,
 .clientes-container:focus-within .clientes-grid {
     animation-play-state: paused;
 }
 @media (hover: hover) and (pointer: fine) {
-    .clientes-container .clientes-grid .client-logo-box:hover {
+    .clientes-container:hover .clientes-grid { animation-play-state: paused; }
+    .clientes-container .client-logo-box:hover {
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
         transform: none !important;
-        border: 0;
-        box-shadow: none;
     }
-    .clientes-container .clientes-grid .client-logo-box:hover .client-logo {
-        filter: drop-shadow(0 0 12px rgba(0,255,102,.22));
+    .clientes-container .client-logo-box:hover .client-logo {
+        filter: drop-shadow(0 0 10px rgba(0,255,102,.22));
     }
 }
 @media (max-width: 768px) {
     .clientes-container {
         width: 100%;
         max-width: 100%;
-        overflow: hidden;
-        padding: 12px 0;
-    }
-    .clientes-container .clientes-grid {
-        --client-gap: 28px;
-        display: flex;
-        flex-wrap: nowrap;
-        width: max-content;
-        max-width: none;
-        gap: var(--client-gap);
-        padding: 0;
-        animation: rebestClientMarquee 30s linear infinite;
+        padding: 14px 0;
+        overflow-x: clip;
         touch-action: pan-y;
     }
+    .clientes-container .clientes-grid { --client-gap: 24px; }
+    .clientes-container.is-ready .clientes-grid { animation-duration: 30s; }
     .clientes-container .clientes-grid .client-logo-box,
     .clientes-container .clientes-grid .client-logo-box.clone {
-        flex: 0 0 clamp(132px, 42vw, 172px);
-        width: clamp(132px, 42vw, 172px);
-        height: 100px;
+        flex-basis: clamp(140px, 44vw, 174px);
+        width: clamp(140px, 44vw, 174px);
+        height: 95px;
         padding: 4px;
     }
     .clientes-container .clientes-grid .client-logo {
-        width: 100%;
-        height: 80px;
+        height: 76px;
         max-height: 100%;
         object-fit: contain;
-        filter: drop-shadow(0 0 5px rgba(255,255,255,.12));
     }
 }
 @media (prefers-reduced-motion: reduce) {
-    .clientes-container .clientes-grid {
-        animation: none !important;
-        transform: none !important;
-    }
-    .clientes-container {
-        overflow-x: auto;
+    /* En modo de movimiento reducido se pueden deslizar manualmente
+       todos los logos, sin scrollbar visible ni animación forzada. */
+    .clientes-container.is-ready {
+        overflow-x: auto !important;
         overscroll-behavior-x: contain;
         touch-action: pan-x pan-y;
-        scrollbar-width: thin;
+        scrollbar-width: none !important;
     }
-    .clientes-container .clientes-grid .client-logo-box.clone {
-        display: none !important;
+    .clientes-container.is-ready::-webkit-scrollbar { display: none !important; height: 0 !important; }
+    .clientes-container.is-ready .clientes-grid {
+        animation: none !important;
+        transform: none !important;
+        will-change: auto;
     }
+    .clientes-container.is-ready .client-logo-box.clone { display: none !important; }
 }
-/* La intro solo contiene los videos originales; nunca captura los
-   gestos de scroll y abandona el viewport al terminar. */
+/* ==========================================================================
+   HERO — video original completo sin recorte. Su ancho se limita en función
+   del alto útil para no quedar cortado bajo el borde de la pantalla.
+   ========================================================================== */
+.contenedor-imagen { min-width: 0; align-items: center; justify-content: center; }
+.marco-foto {
+    width: min(100%, 38vw, 43svh);
+    max-width: 100%;
+    aspect-ratio: 9 / 16;
+    max-height: 70svh;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #030603;
+}
+.marco-foto .hero-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-height: 70svh;
+    object-fit: contain;
+    object-position: center center;
+    background: #030603;
+}
+@media (max-width: 900px) {
+    .contenedor-imagen {
+        width: min(100%, 350px);
+        max-width: 100%;
+        justify-content: center;
+        margin-inline: auto;
+    }
+    .marco-foto {
+        width: min(100%, 320px);
+        max-height: none;
+    }
+    .marco-foto .hero-img { max-height: none; }
+}
+@media (max-width: 390px) {
+    .marco-foto { width: min(100%, 288px); }
+}
 .intro-overlay { pointer-events: none; touch-action: auto; }
