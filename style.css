@@ -7563,3 +7563,204 @@ a:focus-visible, button:focus-visible {
         border-bottom: 1px solid rgba(0,255,102,.14);
     }
 }
+
+/* ReBest — pulido Equipo, logos Marketing Digital e intro WhatsApp (2026-11) */
+/* La imagen fondo-negro-patron.png contiene los puntos que se ven sobre
+   los retratos; se conserva el tono negro/verde sin cambiar el archivo
+   original ni las otras secciones que lo usan. */
+#equipo .team-panel {
+    background-color: #050b07;
+    background-image: linear-gradient(
+        135deg, rgba(0, 39, 17, .67) 0%, rgba(2, 12, 6, .95) 48%,
+        rgba(0, 36, 14, .48) 100%
+    );
+    background-size: cover;
+    background-position: center;
+}
+
+/* El perfil más corto no debe quedar centrado verticalmente dentro del
+   panel común: ambas etiquetas comienzan a la misma altura. */
+@media (min-width: 901px) {
+    #equipo .team-panel-card.card-duvan,
+    #equipo .team-panel-card.card-nicolas {
+        align-self: stretch;
+        height: 100%;
+        min-height: 0;
+        box-sizing: border-box;
+    }
+    #equipo .team-panel-card .corner-tag { align-self: start; }
+}
+
+/* Google Ads y Meta Ads deben mostrarse simultáneamente: los originales
+   existen, pero el efecto de entrada podía dejar el segundo invisible.
+   No se sustituyen los logos ni se anulan las animaciones del panel. */
+#soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img {
+    display: flex;
+    flex: 0 0 130px;
+    width: 130px;
+    max-width: 130px;
+    height: 52px;
+    min-height: 52px;
+    margin: 0;
+    padding: 0;
+    opacity: 1;
+    visibility: visible;
+    align-items: center;
+    justify-content: center;
+    transform: none;
+}
+#soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img .mkt-img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+}
+#soluciones .solucion-col-panel .solucion-col-icons {
+    min-width: 0;
+    gap: 12px;
+}
+
+/* El botón flotante nunca aparece por encima del video al recargar,
+   incluso cuando el navegador restaura una posición de scroll anterior. */
+body.intro-active .whatsapp-flotante,
+#intro-overlay:not(.hidden) ~ .whatsapp-flotante {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(20px) !important;
+}
+
+/* Móvil: fichas con jerarquía limpia, imagen centrada y biografía legible. */
+@media (max-width: 900px) {
+    #equipo .team-panel {
+        width: 100%;
+        max-width: 620px;
+        grid-template-columns: minmax(0, 1fr) !important;
+        grid-template-rows: auto 1px auto !important;
+    }
+    #equipo .team-panel-card {
+        display: flex;
+        flex-direction: column;
+        align-self: stretch;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        padding: 30px clamp(20px, 5vw, 32px) !important;
+        gap: 13px;
+        text-align: center;
+    }
+    #equipo .team-panel-card .corner-tag {
+        align-self: center;
+        width: fit-content;
+        max-width: 100%;
+        margin: 0 auto 5px;
+        padding: 8px 15px;
+        font-size: .72rem;
+        box-shadow: none;
+    }
+    #equipo .team-panel-card .team-image-wrapper {
+        flex: none;
+        width: clamp(160px, 43vw, 200px);
+        max-width: 200px !important;
+        height: auto;
+        aspect-ratio: 4 / 5;
+        border-radius: 14px;
+    }
+    #equipo .team-panel-card .team-info {
+        display: flex;
+        width: 100%;
+        min-width: 0;
+        max-width: 450px;
+        margin: 5px auto 0;
+        flex: none;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0;
+    }
+    #equipo .team-panel-card .team-info h3 {
+        width: 100%;
+        margin: 0 0 10px;
+        font-size: clamp(1.3rem, 4.8vw, 1.7rem);
+        line-height: 1.24;
+        text-align: center;
+        text-wrap: balance;
+    }
+    #equipo .team-panel-card .team-role-highlight {
+        margin: 0 auto 10px;
+        width: auto;
+        max-width: 100%;
+        padding: 9px 12px;
+        font-size: clamp(.72rem, 2.45vw, .84rem) !important;
+        line-height: 1.5;
+        letter-spacing: .55px;
+        text-align: center;
+        text-shadow: none;
+    }
+    #equipo .team-panel-card .team-info p:last-child {
+        width: 100%;
+        margin: 12px 0 0;
+        font-size: clamp(.92rem, 3.2vw, 1.02rem);
+        line-height: 1.72;
+        text-align: left;
+        text-wrap: pretty;
+    }
+    #equipo .team-panel-divider { width: 78% !important; }
+
+    #soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img {
+        flex-basis: 100px;
+        width: 100px;
+        max-width: 100px;
+        height: 46px;
+        min-height: 46px;
+    }
+}
+/* Tabletas: foto y texto al lado; solo teléfonos apilan verticalmente. */
+@media (min-width: 640px) and (max-width: 900px) {
+    #equipo .team-panel-card {
+        display: grid;
+        grid-template-columns: minmax(150px, 180px) minmax(0, 1fr);
+        grid-template-rows: auto 1fr;
+        column-gap: 26px;
+        row-gap: 18px;
+        align-items: start;
+        text-align: left;
+    }
+    #equipo .team-panel-card .corner-tag {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        justify-self: start;
+        align-self: start;
+        margin: 0;
+    }
+    #equipo .team-panel-card .team-image-wrapper {
+        grid-column: 1;
+        grid-row: 2;
+        width: 100%;
+        max-width: 180px !important;
+    }
+    #equipo .team-panel-card .team-info {
+        grid-column: 2;
+        grid-row: 2;
+        align-items: flex-start;
+        margin: 0;
+    }
+    #equipo .team-panel-card .team-info h3,
+    #equipo .team-panel-card .team-role-highlight {
+        text-align: left;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+@media (max-width: 359px) {
+    #soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img {
+        flex-basis: 90px;
+        width: 90px;
+        max-width: 90px;
+    }
+}
