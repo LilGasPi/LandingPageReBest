@@ -15,7 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.style.display = 'none';
         }
     };
-    setTimeout(liberarScrollDeEmergencia, 5000);
+    // Último recurso solo si falla todo el controlador de introducción.
+    // No acorta la reproducción normal del video, que finaliza a ~4.7s.
+    setTimeout(liberarScrollDeEmergencia, 8500);
 
     try {
 
