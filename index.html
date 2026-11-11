@@ -75,34 +75,36 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     </noscript>
 
-    <link rel="stylesheet" href="style.css?v=2.3">
+    <link rel="stylesheet" href="style.css?v=2.4">
 </head>
 <body class="intro-active">
     <script>
-        // SEGURO INDEPENDIENTE: si por cualquier motivo script.js no carga
-        // o falla, esto garantiza que el scroll se libere de todas formas.
+        // Seguro de respaldo: no ocultar la introducción por errores
+        // ajenos al video (fuentes, favicon, imágenes, etc.).
+        // script.js controla normalmente el cierre y la animación del hero.
         (function () {
-            var liberado = false;
-            var liberar = function () {
-                if (liberado) return;
-                liberado = true;
-                document.body.classList.remove('intro-active');
+            setTimeout(function () {
                 var overlay = document.getElementById('intro-overlay');
-                if (overlay) { overlay.style.display = 'none'; }
-            };
-            setTimeout(liberar, 5500);
-            window.addEventListener('error', liberar);
+                if (overlay && !overlay.classList.contains('hidden')) {
+                    overlay.classList.add('hidden');
+                    overlay.style.pointerEvents = 'none';
+                    setTimeout(function () { overlay.style.display = 'none'; }, 450);
+                }
+                document.body.classList.remove('intro-active');
+                document.querySelector('.marco-foto')?.classList.add('visible');
+                document.querySelectorAll('.texto-animado .char, .anim-retraso').forEach(function (el) { el.classList.add('visible'); });
+            }, 8500);
         })();
     </script> 
     
     <div id="intro-overlay" class="intro-overlay">
-        <video id="intro-video-desktop" class="video-desktop" muted playsinline preload="none" aria-hidden="true">
+        <video id="intro-video-desktop" class="video-desktop" muted playsinline webkit-playsinline preload="metadata" aria-hidden="true">
             <source src="./img/rebest-presentacion-2.mp4" type="video/mp4">
             <track kind="captions" src="./img/vacio.vtt" srclang="es" label="Español" default>
             Tu navegador no soporta videos HTML5.
         </video>
         
-        <video id="intro-video-mobile" class="video-mobile" muted playsinline preload="none" aria-hidden="true">
+        <video id="intro-video-mobile" class="video-mobile" muted playsinline webkit-playsinline preload="metadata" aria-hidden="true">
             <source src="./img/animacion-rebest-vertical.mp4" type="video/mp4"> 
             <track kind="captions" src="./img/vacio.vtt" srclang="es" label="Español" default>
             Tu navegador no soporta videos HTML5.
@@ -682,6 +684,6 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <script src="script.js?v=1.8" defer></script>
+    <script src="script.js?v=1.9" defer></script>
 </body>
 </html>
