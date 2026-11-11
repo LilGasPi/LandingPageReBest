@@ -420,20 +420,41 @@ document.addEventListener('DOMContentLoaded', () => {
             const clientNext = document.querySelector('.clientes-next');
             const moveClients = direction => {
                 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                const step = originals[0].getBoundingClientRect().width
-                    + (Number.parseFloat(getComputedStyle(clientTrack).columnGap) || 0);
+                const count = originals.length;
+                if (!count) return;
+
+                // Movimiento reducido: flechas manuales y vuelta explícita
+                // de último → primero y primero → último.
                 if (reduced) {
-                    clientViewport.scrollBy({left: step * direction * 2, behavior: 'smooth'});
+                    const step = originals[0].getBoundingClientRect().width
+                        + (Number.parseFloat(getComputedStyle(clientTrack).columnGap) || 0);
+                    const maxLeft = Math.max(0, clientViewport.scrollWidth - clientViewport.clientWidth);
+                    const nearStart = clientViewport.scrollLeft <= step * 0.5;
+                    const nearEnd = clientViewport.scrollLeft >= maxLeft - step * 0.5;
+                    if (direction > 0 && nearEnd) {
+                        clientViewport.scrollTo({left: 0, behavior: 'auto'});
+                    } else if (direction < 0 && nearStart) {
+                        clientViewport.scrollTo({left: maxLeft, behavior: 'auto'});
+                    } else {
+                        clientViewport.scrollBy({left: step * direction, behavior: 'smooth'});
+                    }
                     return;
                 }
-                const animation = clientTrack.getAnimations().find(a => a.animationName === 'rebestLogosLoop');
+
+                const animation = clientTrack.getAnimations()
+                    .find(item => item.animationName === 'rebestLogosLoop');
                 if (!animation) return;
                 const duration = Number.parseFloat(getComputedStyle(clientTrack).animationDuration) * 1000;
-                const distance = Math.abs(Number.parseFloat(getComputedStyle(clientTrack).getPropertyValue('--client-offset')));
-                if (!(duration > 0) || !(distance > 0)) return;
-                const delta = step * 2 / distance * duration * direction;
-                const current = animation.currentTime || 0;
-                animation.currentTime = ((current + delta) % duration + duration) % duration;
+                if (!(duration > 0)) return;
+
+                // Cada logo equivale a 1/N de la primera serie.
+                // El módulo hace que Siguiente desde el último vuelva
+                // al primero y Anterior desde el primero vaya al último.
+                const elapsed = Number(animation.currentTime) || 0;
+                const position = ((elapsed % duration) + duration) % duration;
+                const currentIndex = Math.floor(position / duration * count);
+                const nextIndex = (currentIndex + direction + count) % count;
+                animation.currentTime = nextIndex / count * duration;
             };
             clientPrev?.addEventListener('click', () => moveClients(-1));
             clientNext?.addEventListener('click', () => moveClients(1));
