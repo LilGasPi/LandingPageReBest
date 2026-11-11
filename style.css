@@ -6199,12 +6199,15 @@ a:focus-visible, button:focus-visible {
     transform: none;
     will-change: auto;
 }
+.clientes-container.is-measuring .clientes-grid,
 .clientes-container.is-ready .clientes-grid {
     width: max-content;
     max-width: none;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    animation: rebestLogosLoop 34s linear infinite;
+}
+.clientes-container.is-ready .clientes-grid {
+    animation: rebestLogosLoop var(--client-duration, 34s) linear infinite;
     will-change: transform;
 }
 .clientes-container .clientes-grid .client-logo-box,
@@ -6242,15 +6245,13 @@ a:focus-visible, button:focus-visible {
 }
 @keyframes rebestLogosLoop {
     from { transform: translate3d(0, 0, 0); }
-    to { transform: translate3d(calc(-1 * var(--client-distance, 0px)), 0, 0); }
+    to { transform: translate3d(var(--client-offset, -2400px), 0, 0); }
 }
-.clientes-container.is-paused .clientes-grid,
 .clientes-container:focus-within .clientes-grid {
     animation-play-state: paused;
 }
 @media (hover: hover) and (pointer: fine) {
-    .clientes-container:hover .clientes-grid { animation-play-state: paused; }
-    .clientes-container .client-logo-box:hover {
+     .clientes-container .client-logo-box:hover {
         background: transparent !important;
         border: 0 !important;
         box-shadow: none !important;
@@ -6269,8 +6270,7 @@ a:focus-visible, button:focus-visible {
         touch-action: pan-y;
     }
     .clientes-container .clientes-grid { --client-gap: 24px; }
-    .clientes-container.is-ready .clientes-grid { animation-duration: 30s; }
-    .clientes-container .clientes-grid .client-logo-box,
+     .clientes-container .clientes-grid .client-logo-box,
     .clientes-container .clientes-grid .client-logo-box.clone {
         flex-basis: clamp(140px, 44vw, 174px);
         width: clamp(140px, 44vw, 174px);
@@ -6342,3 +6342,33 @@ a:focus-visible, button:focus-visible {
     .marco-foto { width: min(100%, 288px); }
 }
 .intro-overlay { pointer-events: none; touch-action: auto; }
+
+/* El video introductorio es decorativo y no absorbe los gestos táctiles.
+   El botón explícito siempre queda disponible incluso sin autoplay. */
+.intro-overlay .skip-intro {
+    position: absolute;
+    z-index: 2;
+    right: max(18px, env(safe-area-inset-right));
+    bottom: max(22px, calc(env(safe-area-inset-bottom) + 16px));
+    padding: 10px 16px;
+    min-height: 44px;
+    border: 1px solid rgba(0, 255, 102, .6);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, .72);
+    color: #fff;
+    font: 700 .8rem/1.3 'Montserrat', sans-serif;
+    cursor: pointer;
+    pointer-events: auto;
+    touch-action: manipulation;
+}
+.intro-overlay .skip-intro:hover,
+.intro-overlay .skip-intro:focus-visible {
+    background: rgba(0, 255, 102, .22);
+}
+.intro-overlay.hidden .skip-intro { pointer-events: none; }
+@media (max-width: 768px) {
+    .intro-overlay .skip-intro {
+        right: max(14px, env(safe-area-inset-right));
+        bottom: max(18px, calc(env(safe-area-inset-bottom) + 12px));
+    }
+}
