@@ -5759,7 +5759,8 @@ a:focus-visible, button:focus-visible {
    Se mantienen literalmente los textos, logos, vídeos y fondos existentes.
    ========================================================================== */
 
-/* Clientes: cuadrícula limpia, legible y estable en todas las plataformas.
+/* Clientes: filas flexibles y centradas en todos los tamaños.
+   Al haber 11 logos, la última fila se centra sin dejar un hueco lateral.
    Sin marquesina infinita, clones ni controles táctiles capturados. */
 .clientes-container {
     width: min(100% - 32px, 1140px);
@@ -5768,12 +5769,13 @@ a:focus-visible, button:focus-visible {
     padding: 20px 0;
 }
 .clientes-grid {
+    --client-gap: clamp(12px, 1.8vw, 22px);
     width: 100%;
     max-width: 100%;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(12px, 1.8vw, 22px);
-    justify-items: stretch;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--client-gap);
+    justify-content: center;
     align-items: stretch;
     animation: none;
     transform: none;
@@ -5781,7 +5783,8 @@ a:focus-visible, button:focus-visible {
 }
 .clientes-grid .client-logo-box {
     display: flex;
-    width: 100%;
+    flex: 0 0 calc((100% - 3 * var(--client-gap)) / 4);
+    width: calc((100% - 3 * var(--client-gap)) / 4);
     min-width: 0;
     max-width: none;
     height: auto;
@@ -5815,8 +5818,11 @@ a:focus-visible, button:focus-visible {
     }
 }
 @media (max-width: 1024px) {
-    .clientes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .clientes-grid .client-logo-box { min-height: 112px; }
+    .clientes-grid .client-logo-box {
+        flex-basis: calc((100% - 2 * var(--client-gap)) / 3);
+        width: calc((100% - 2 * var(--client-gap)) / 3);
+        min-height: 112px;
+    }
 }
 @media (max-width: 768px) {
     .clientes-container {
@@ -5825,16 +5831,19 @@ a:focus-visible, button:focus-visible {
         padding: 8px 0;
     }
     .clientes-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        --client-gap: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
         width: 100%;
         max-width: 100%;
-        gap: 12px;
+        gap: var(--client-gap);
         padding: 0;
         animation: none;
     }
     .clientes-grid .client-logo-box {
-        width: 100%;
+        flex-basis: calc((100% - var(--client-gap)) / 2);
+        width: calc((100% - var(--client-gap)) / 2);
         min-height: 106px;
         height: auto;
         padding: 16px 12px;
@@ -5850,7 +5859,7 @@ a:focus-visible, button:focus-visible {
     }
 }
 @media (max-width: 360px) {
-    .clientes-grid { gap: 9px; }
+    .clientes-grid { --client-gap: 9px; }
     .clientes-grid .client-logo-box { padding: 12px 9px; min-height: 96px; }
 }
 
