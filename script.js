@@ -9,7 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const liberarScrollDeEmergencia = () => {
         body.classList.remove('intro-active');
         const overlay = document.getElementById('intro-overlay');
-        if (overlay) overlay.style.display = 'none';
+        if (overlay) {
+            overlay.classList.add('hidden');
+            overlay.style.pointerEvents = 'none';
+            overlay.style.display = 'none';
+        }
     };
     setTimeout(liberarScrollDeEmergencia, 5000);
 
@@ -85,7 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const introOverlay = document.querySelector('.intro-overlay');
     const introVideos = document.querySelectorAll('.intro-overlay video');
 
-    const TIEMPO_REFLEJO = 4.700; 
+    const TIEMPO_REFLEJO = 4.700;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; 
 
     let animacionFrameId;
     let videoActivo = null;
@@ -108,6 +113,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // En móviles, el primer gesto debe desplazar la página sin requerir
+    // un segundo toque. La intro permanece intacta si no hay interacción.
+    ['touchstart', 'wheel', 'scroll', 'pointerdown'].forEach(eventName => {
+        window.addEventListener(eventName, hideIntro, { once: true, passive: true });
+    });
+    window.addEventListener('pagehide', hideIntro, { once: true });
+
     const checkVideoTime = () => {
         if (videoActivo && videoActivo.currentTime >= TIEMPO_REFLEJO) { 
             hideIntro();
@@ -122,7 +134,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return Array.from(introVideos).find(v => window.getComputedStyle(v).display !== 'none') || null;
     };
 
-    if (introVideos.length > 0) {
+    if (prefersReducedMotion) {
+        hideIntro();
+    } else if (introVideos.length > 0) {
         const videoVisible = obtenerVideoVisible();
 
         if (videoVisible) {
@@ -150,9 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hideIntro();
     }
 
-    setTimeout(() => {
-        hideIntro();
-    }, 8000);
+    setTimeout(hideIntro, 5000);
 
     // =========================================================
     // 3. LÓGICA DEL MENÚ HAMBURGUESA
@@ -170,13 +182,28 @@ document.addEventListener('DOMContentLoaded', () => {
         body.classList.toggle('menu-open', isOpen);
         
         hamburgerToggle.setAttribute('aria-expanded', isOpen);
-        hamburgerMenu.setAttribute('aria-hidden', !isOpen);
+        hamburgerMenu.setAttribute('aria-hidden', String(!isOpen));
+        hamburgerToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+        if ('inert' in hamburgerMenu) hamburgerMenu.inert = !isOpen;
     };
+    if (hamburgerMenu && 'inert' in hamburgerMenu) hamburgerMenu.inert = true;
 
     if (hamburgerToggle && hamburgerMenu) {
         hamburgerToggle.addEventListener('click', (e) => {
             e.preventDefault(); 
             toggleMenu();
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && hamburgerMenu.classList.contains('open')) {
+                toggleMenu(true);
+                hamburgerToggle.focus();
+            }
+        });
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 900 && hamburgerMenu.classList.contains('open')) {
+                toggleMenu(true);
+            }
         });
 
         const menuLinks = document.querySelectorAll('.hamburger-menu a');
