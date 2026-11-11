@@ -6755,3 +6755,321 @@ a:focus-visible, button:focus-visible {
     }
     #services-carousel, #soluciones-panel { overscroll-behavior-x: contain; }
 }
+
+/* ==========================================================================
+   ReBest — pulido final header, navegación, Soluciones y contacto del footer.
+   Conserva todas las palabras, imágenes, iconos originales y enlaces.
+   ========================================================================== */
+
+/* Header: negro elegante, verde de acento, altura estable al navegar. */
+.main-header {
+    min-height: 76px;
+    box-sizing: border-box;
+    padding: 14px clamp(20px, 3vw, 48px);
+    background: rgba(5, 7, 6, .96);
+    border-bottom: 1px solid rgba(0, 255, 102, .22);
+    box-shadow: 0 5px 22px rgba(0, 0, 0, .22);
+    gap: 20px;
+}
+.main-header.scrolled {
+    min-height: 70px;
+    padding: 10px clamp(20px, 3vw, 48px);
+    background: rgba(3, 6, 4, .98);
+    box-shadow: 0 7px 22px rgba(0, 0, 0, .42);
+}
+.main-header .logo { flex: 0 0 auto; }
+.main-header .logo-img { width: auto; height: clamp(35px, 3.1vw, 42px); }
+.desktop-nav-items { gap: clamp(12px, 2vw, 34px); }
+.desktop-nav-items a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: clamp(.81rem, .94vw, .94rem);
+    color: rgba(255, 255, 255, .89);
+    white-space: nowrap;
+}
+.desktop-nav-items a:hover,
+.desktop-nav-items a:focus-visible {
+    color: #00ff66;
+}
+@media (max-width: 900px) {
+    .main-header, .main-header.scrolled {
+        min-height: 74px;
+        height: 74px;
+        padding: 11px clamp(14px, 4vw, 24px);
+        backdrop-filter: none;
+    }
+    .main-header .logo-img { height: 36px; }
+    .hamburger-toggle {
+        flex: 0 0 48px;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,.17);
+        background: linear-gradient(145deg, rgba(30,34,31,.85), rgba(5,7,6,.96));
+        box-shadow: 0 2px 12px rgba(0,0,0,.28);
+        -webkit-tap-highlight-color: transparent;
+    }
+    .hamburger-toggle.open {
+        background: rgba(0,255,102,.10);
+        border-color: rgba(0,255,102,.6);
+    }
+
+    /* El panel móvil ocupa toda la pantalla debajo del header:
+       no tapa el logotipo ni el botón para cerrarlo. */
+    .hamburger-menu {
+        top: 74px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: calc(100dvh - 74px);
+        max-height: calc(100dvh - 74px);
+        box-sizing: border-box;
+        padding: clamp(14px, 3vh, 32px) clamp(18px, 6vw, 40px)
+            max(22px, env(safe-area-inset-bottom));
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        gap: 14px;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+        background:
+            radial-gradient(ellipse at 50% 12%, rgba(0,255,102,.09), transparent 58%),
+            linear-gradient(150deg, #060a07, #0a0c0a 68%, #050705);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-top: 1px solid rgba(0,255,102,.16);
+        scrollbar-width: none;
+        z-index: 1090;
+    }
+    .hamburger-menu::-webkit-scrollbar { display: none; }
+    .hamburger-menu .menu-header {
+        margin: 0;
+        padding: 5px 0 10px;
+        text-align: center;
+        border-bottom: 1px solid rgba(0,255,102,.15);
+    }
+    .hamburger-menu .menu-subtitle {
+        margin: 0;
+        font-size: .7rem;
+        line-height: 1.5;
+        letter-spacing: .18em;
+        color: #a9b7ac !important;
+    }
+    .hamburger-menu .menu-items {
+        width: min(100%, 440px);
+        max-width: 440px;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: clamp(3px, .75vh, 9px);
+        flex: 0 0 auto;
+        text-align: left;
+    }
+    .hamburger-menu .menu-items li {
+        margin: 0;
+        padding: 0;
+        min-width: 0;
+    }
+    .hamburger-menu .menu-items a {
+        width: 100%;
+        min-width: 0;
+        min-height: clamp(44px, 6.5vh, 59px);
+        padding: 10px clamp(14px, 4vw, 24px);
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: rgba(255,255,255,.93);
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background: rgba(255,255,255,.035);
+        font-size: clamp(1.03rem, 4vw, 1.38rem);
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: .015em;
+        text-transform: uppercase;
+        transform: none;
+        transition: background .2s ease, border-color .2s ease, color .2s ease;
+    }
+    .hamburger-menu .menu-items a::after {
+        content: "›";
+        position: static;
+        display: inline-block;
+        width: auto;
+        height: auto;
+        flex: 0 0 auto;
+        margin-left: 12px;
+        background: transparent;
+        color: #00ff66;
+        opacity: .75;
+        font-family: Arial, sans-serif;
+        font-size: 1.45rem;
+        line-height: 1;
+        transform: none;
+        transition: transform .2s ease, opacity .2s ease;
+    }
+    .hamburger-menu .menu-items a:hover,
+    .hamburger-menu .menu-items a:focus-visible {
+        background: rgba(0,255,102,.11);
+        border-color: rgba(0,255,102,.3);
+        color: #fff;
+        transform: none;
+    }
+    .hamburger-menu .menu-items a:hover::after {
+        width: auto;
+        opacity: 1;
+        transform: translateX(3px);
+    }
+}
+@media (max-width: 900px) and (max-height: 600px) {
+    .hamburger-menu { gap: 6px; padding-top: 8px; }
+    .hamburger-menu .menu-items { gap: 2px; }
+    .hamburger-menu .menu-items a {
+        min-height: 42px;
+        font-size: 1rem;
+        padding-block: 6px;
+    }
+}
+
+/* Soluciones: todo el material gráfico debe quedar dentro de cada slide. */
+.soluciones-carousel-wrapper .solucion-col-panel { min-width: 0; }
+.soluciones-carousel-wrapper .solucion-col-icons {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+}
+.soluciones-carousel-wrapper .solucion-col-icons .icon-circle,
+.soluciones-carousel-wrapper .solucion-col-icons .partner-logo-img {
+    flex-shrink: 0;
+    box-sizing: border-box;
+    transform: none;
+}
+.soluciones-carousel-wrapper .solucion-col-icons .adobe-logo-img,
+.soluciones-carousel-wrapper .solucion-col-icons .davinci-img,
+.soluciones-carousel-wrapper .solucion-col-icons .mkt-img {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transform: none;
+}
+@media (max-width: 900px) {
+    .soluciones-carousel-wrapper .soluciones-panel { align-items: stretch; }
+    .soluciones-carousel-wrapper .solucion-col-panel {
+        padding: 22px clamp(12px, 4vw, 24px) 26px !important;
+        overflow: hidden;
+        align-items: center;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        gap: 12px;
+        width: min(100%, 230px);
+        max-width: 230px;
+        height: auto;
+        min-height: 0;
+        margin: 4px auto 0;
+        padding: 0;
+        overflow: visible;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons .icon-circle {
+        display: flex;
+        flex: 0 0 43px;
+        width: 43px;
+        height: 43px;
+        padding: 0;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons .partner-logo-img {
+        display: flex;
+        flex: 0 1 96px;
+        width: 96px;
+        max-width: 100%;
+        height: 46px;
+        margin: 0;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons .adobe-logo-img,
+    .soluciones-carousel-wrapper .solucion-col-icons .davinci-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons .mkt-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+@media (max-width: 359px) {
+    .soluciones-carousel-wrapper .solucion-col-icons {
+        width: min(100%, 196px);
+        max-width: 196px;
+        gap: 9px;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons .icon-circle {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+    }
+}
+
+/* Contacto del footer: ancho propio y correo sin recortes en PC ni móvil. */
+.main-footer .footer-contact-info {
+    width: 100%;
+    min-width: 0;
+}
+.main-footer .footer-contact-info li {
+    min-width: 0;
+    max-width: 100%;
+    align-items: flex-start;
+}
+.main-footer .footer-contact-info li i {
+    flex: 0 0 18px;
+    margin-top: 4px;
+}
+.main-footer .footer-contact-info li a {
+    display: inline-block;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    line-height: 1.6;
+}
+@media (min-width: 1025px) {
+    .main-footer .footer-container {
+        grid-template-columns: minmax(190px,1.25fr) minmax(90px,.7fr)
+            minmax(155px,1.1fr) minmax(145px,1fr) minmax(225px,1.25fr);
+        gap: clamp(15px, 2vw, 28px);
+        max-width: 1250px;
+    }
+}
+@media (min-width: 701px) and (max-width: 1024px) {
+    .main-footer .footer-col.contact-col { grid-column: 1 / -1; }
+    .main-footer .footer-contact-info {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap: 6px 20px;
+    }
+}
+@media (max-width: 700px) {
+    .main-footer .footer-contact-info { width: 100%; }
+    .main-footer .footer-contact-info li {
+        gap: 10px;
+        align-items: flex-start;
+    }
+    .main-footer .footer-contact-info li a {
+        min-height: 44px;
+        font-size: clamp(.81rem, 3.4vw, .94rem);
+        overflow-wrap: anywhere;
+    }
+}
