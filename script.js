@@ -9,9 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const liberarScrollDeEmergencia = () => {
         body.classList.remove('intro-active');
         const overlay = document.getElementById('intro-overlay');
-        if (overlay) overlay.style.display = 'none';
+        if (overlay) {
+            overlay.classList.add('hidden');
+            overlay.style.pointerEvents = 'none';
+            overlay.style.display = 'none';
+        }
     };
-    setTimeout(liberarScrollDeEmergencia, 5000);
+    // Último recurso solo si falla todo el controlador de introducción.
+    // No acorta la reproducción normal del video, que finaliza a ~4.7s.
+    setTimeout(liberarScrollDeEmergencia, 8500);
 
     try {
 
@@ -80,79 +86,109 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // =========================================================
-    // 2. LÓGICA DE LA PANTALLA DE INTRODUCCIÓN (MULTI-VIDEO Y ALTA PRECISIÓN)
+    // 2. INTRO — video horizontal PC / vertical móvil.
+    // Los eventos de restauración del scroll NO deben cancelar la intro.
     // =========================================================
-    const introOverlay = document.querySelector('.intro-overlay');
-    const introVideos = document.querySelectorAll('.intro-overlay video');
+    const introOverlay = document.getElementById('intro-overlay');
+    const introVideos = Array.from(document.querySelectorAll('#intro-overlay video'));
+    const skipIntroButton = document.getElementById('skip-intro');
+    const INTRO_DURATION = 4.7; // tiempo original del logo
+    let introFinished = false;
+    let frameId = 0;
+    let fallbackId = 0;
 
-    const TIEMPO_REFLEJO = 4.700; 
-
-    let animacionFrameId;
-    let videoActivo = null;
-
-    const hideIntro = () => {
-        if (introOverlay && !introOverlay.classList.contains('hidden')) {
+    const finishIntro = () => {
+        if (introFinished) return;
+        introFinished = true;
+        window.clearTimeout(fallbackId);
+        window.cancelAnimationFrame(frameId);
+        if (introOverlay) {
             introOverlay.classList.add('hidden');
-            introOverlay.style.pointerEvents = 'none';
-            
-            iniciarAnimacionesHero();
-            
-            introVideos.forEach(v => v.pause());
-            cancelAnimationFrame(animacionFrameId);
-            
-            setTimeout(() => {
-                introOverlay.style.display = 'none'; 
-            }, 600); 
-            
-            body.classList.remove('intro-active'); 
+            introOverlay.setAttribute('aria-hidden', 'true');
+            window.setTimeout(() => { introOverlay.hidden = true; }, 420);
         }
+        introVideos.forEach(video => video.pause());
+        body.classList.remove('intro-active');
+        iniciarAnimacionesHero();
     };
 
-    const checkVideoTime = () => {
-        if (videoActivo && videoActivo.currentTime >= TIEMPO_REFLEJO) { 
-            hideIntro();
-        } else if (introOverlay && !introOverlay.classList.contains('hidden')) {
-            animacionFrameId = requestAnimationFrame(checkVideoTime);
+    if (skipIntroButton) skipIntroButton.addEventListener('click', finishIntro);
+
+    // La intro no bloquea gestos. Solo se puede saltar con el botón,
+    // Escape o un gesto de desplazamiento genuino, nunca con el evento
+    // scroll que emite el navegador al recargar/restaurar posición.
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !introFinished) finishIntro();
+    });
+    window.addEventListener('wheel', event => {
+        if (!introFinished && Math.abs(event.deltaY) > 8) finishIntro();
+    }, { passive: true });
+    let touchStartY = null;
+    window.addEventListener('touchstart', event => {
+        if (!introFinished && event.touches.length === 1) {
+            touchStartY = event.touches[0].clientY;
         }
-    };
+    }, { passive: true });
+    window.addEventListener('touchmove', event => {
+        if (!introFinished && touchStartY !== null && event.touches.length === 1
+            && Math.abs(event.touches[0].clientY - touchStartY) > 14) {
+            finishIntro();
+        }
+    }, { passive: true });
 
-    // Solo reproducimos el video que realmente está visible según el viewport,
-    // para evitar que ambos compitan por iniciar la animación a la vez.
-    const obtenerVideoVisible = () => {
-        return Array.from(introVideos).find(v => window.getComputedStyle(v).display !== 'none') || null;
-    };
+    const startIntro = () => {
+        if (!introOverlay || !introVideos.length) {
+            finishIntro();
+            return;
+        }
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        const activeVideo = document.getElementById(isMobile ? 'intro-video-mobile' : 'intro-video-desktop');
+        if (!activeVideo) {
+            finishIntro();
+            return;
+        }
 
-    if (introVideos.length > 0) {
-        const videoVisible = obtenerVideoVisible();
+        // El dispositivo puede cambiar de orientación antes de que arranque:
+        // únicamente se carga y reproduce el archivo correspondiente.
+        introVideos.forEach(video => {
+            if (video !== activeVideo) video.pause();
+        });
+        activeVideo.muted = true;
+        activeVideo.defaultMuted = true;
+        activeVideo.playsInline = true;
+        activeVideo.autoplay = true;
+        activeVideo.preload = 'auto';
+        try { activeVideo.currentTime = 0; } catch (_) {}
 
-        if (videoVisible) {
-            videoVisible.preload = 'auto';
-            const playPromise = videoVisible.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                    hideIntro();
-                });
+        const monitorPlayback = () => {
+            if (introFinished) return;
+            if (activeVideo.currentTime >= INTRO_DURATION) {
+                finishIntro();
+            } else {
+                frameId = requestAnimationFrame(monitorPlayback);
             }
+        };
+        activeVideo.addEventListener('playing', () => {
+            cancelAnimationFrame(frameId);
+            frameId = requestAnimationFrame(monitorPlayback);
+        }, { once: true });
+        activeVideo.addEventListener('ended', finishIntro, { once: true });
+        activeVideo.addEventListener('error', finishIntro, { once: true });
 
-            videoVisible.addEventListener('play', () => {
-                videoActivo = videoVisible;
-                cancelAnimationFrame(animacionFrameId);
-                animacionFrameId = requestAnimationFrame(checkVideoTime);
+        // En iOS y Chrome, muted + playsinline permite autoplay en condiciones
+        // normales. Si el navegador lo bloquea, queda el botón para omitirla.
+        const playRequest = activeVideo.play();
+        if (playRequest && typeof playRequest.catch === 'function') {
+            playRequest.catch(error => {
+                console.warn('ReBest: reproducción de introducción bloqueada', error);
+                introOverlay?.classList.add('playback-blocked');
             });
-
-            videoVisible.addEventListener('ended', hideIntro);
-            videoVisible.addEventListener('error', hideIntro);
-        } else {
-            // No hay video visible (caso inesperado): saltamos la intro directamente
-            hideIntro();
         }
-    } else {
-        hideIntro();
-    }
+        // Seguro frente a red lenta/archivo que no responde: evita overlay eterno.
+        fallbackId = window.setTimeout(finishIntro, 7500);
+    };
 
-    setTimeout(() => {
-        hideIntro();
-    }, 8000);
+    startIntro();
 
     // =========================================================
     // 3. LÓGICA DEL MENÚ HAMBURGUESA
@@ -170,13 +206,28 @@ document.addEventListener('DOMContentLoaded', () => {
         body.classList.toggle('menu-open', isOpen);
         
         hamburgerToggle.setAttribute('aria-expanded', isOpen);
-        hamburgerMenu.setAttribute('aria-hidden', !isOpen);
+        hamburgerMenu.setAttribute('aria-hidden', String(!isOpen));
+        hamburgerToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+        if ('inert' in hamburgerMenu) hamburgerMenu.inert = !isOpen;
     };
+    if (hamburgerMenu && 'inert' in hamburgerMenu) hamburgerMenu.inert = true;
 
     if (hamburgerToggle && hamburgerMenu) {
         hamburgerToggle.addEventListener('click', (e) => {
             e.preventDefault(); 
             toggleMenu();
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && hamburgerMenu.classList.contains('open')) {
+                toggleMenu(true);
+                hamburgerToggle.focus();
+            }
+        });
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 900 && hamburgerMenu.classList.contains('open')) {
+                toggleMenu(true);
+            }
         });
 
         const menuLinks = document.querySelectorAll('.hamburger-menu a');
@@ -320,19 +371,94 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // =========================================================
-    // 7. CARRUSEL INFINITO AUTOMÁTICO (LOGOS CLIENTES MÓVIL)
-    // =========================================================
-    const gridClientes = document.querySelector('.clientes-grid');
-    
-    if (gridClientes && window.innerWidth <= 768) {
-        const logosOriginales = Array.from(gridClientes.children);
-        
-        logosOriginales.forEach(logo => {
-            const clon = logo.cloneNode(true);
-            clon.classList.add('clone');
-            gridClientes.appendChild(clon);
-        });
+    // Clientes: duplicamos una vez los logos y animamos exactamente la
+    // distancia de una serie, con velocidad constante y sin saltos.
+    const clientViewport = document.querySelector('.clientes-container');
+    const clientTrack = clientViewport?.querySelector('.clientes-grid');
+    if (clientViewport && clientTrack) {
+        const originals = Array.from(clientTrack.querySelectorAll('.client-logo-box:not(.clone)'));
+        if (originals.length) {
+            for (const item of originals) {
+                const clone = item.cloneNode(true);
+                clone.classList.add('clone');
+                clone.setAttribute('aria-hidden', 'true');
+                clientTrack.appendChild(clone);
+            }
+            clientViewport.classList.add('is-measuring');
+
+            const updateClientMarquee = () => {
+                const firstClone = clientTrack.querySelector('.client-logo-box.clone');
+                if (!firstClone) return;
+                const distance = firstClone.offsetLeft - originals[0].offsetLeft;
+                if (distance <= 0) return;
+                // El valor ya es negativo; no dependemos de multiplicaciones
+                // en CSS calc() que difieren entre versiones de Safari.
+                clientTrack.style.setProperty('--client-offset', (-distance) + 'px');
+                clientTrack.style.setProperty('--client-duration', Math.max(24, distance / 72) + 's');
+                clientViewport.classList.add('is-ready');
+                clientViewport.classList.remove('is-measuring');
+            };
+
+            let measureFrame = 0;
+            const scheduleClientMeasure = () => {
+                cancelAnimationFrame(measureFrame);
+                measureFrame = requestAnimationFrame(updateClientMarquee);
+            };
+            const observer = typeof ResizeObserver === 'function'
+                ? new ResizeObserver(scheduleClientMeasure) : null;
+            observer?.observe(clientViewport);
+            window.addEventListener('resize', scheduleClientMeasure, { passive: true });
+            window.addEventListener('load', scheduleClientMeasure, { once: true });
+            document.fonts?.ready?.then(scheduleClientMeasure);
+            scheduleClientMeasure();
+
+            // Flechas del carrusel en escritorio: avanzan o retroceden
+            // dos logos dentro del propio loop, sin congelarlo ni alterar
+            // su reproducción automática. Con movimiento reducido, el
+            // desplazamiento es manual.
+            const clientPrev = document.querySelector('.clientes-prev');
+            const clientNext = document.querySelector('.clientes-next');
+            const moveClients = direction => {
+                const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const count = originals.length;
+                if (!count) return;
+
+                // Movimiento reducido: flechas manuales y vuelta explícita
+                // de último → primero y primero → último.
+                if (reduced) {
+                    const step = originals[0].getBoundingClientRect().width
+                        + (Number.parseFloat(getComputedStyle(clientTrack).columnGap) || 0);
+                    const maxLeft = Math.max(0, clientViewport.scrollWidth - clientViewport.clientWidth);
+                    const nearStart = clientViewport.scrollLeft <= step * 0.5;
+                    const nearEnd = clientViewport.scrollLeft >= maxLeft - step * 0.5;
+                    if (direction > 0 && nearEnd) {
+                        clientViewport.scrollTo({left: 0, behavior: 'auto'});
+                    } else if (direction < 0 && nearStart) {
+                        clientViewport.scrollTo({left: maxLeft, behavior: 'auto'});
+                    } else {
+                        clientViewport.scrollBy({left: step * direction, behavior: 'smooth'});
+                    }
+                    return;
+                }
+
+                const animation = clientTrack.getAnimations()
+                    .find(item => item.animationName === 'rebestLogosLoop');
+                if (!animation) return;
+                const duration = Number.parseFloat(getComputedStyle(clientTrack).animationDuration) * 1000;
+                if (!(duration > 0)) return;
+
+                // Cada logo equivale a 1/N de la primera serie.
+                // El módulo hace que Siguiente desde el último vuelva
+                // al primero y Anterior desde el primero vaya al último.
+                const elapsed = Number(animation.currentTime) || 0;
+                const position = ((elapsed % duration) + duration) % duration;
+                const currentIndex = Math.floor(position / duration * count);
+                const nextIndex = (currentIndex + direction + count) % count;
+                animation.currentTime = nextIndex / count * duration;
+            };
+            clientPrev?.addEventListener('click', () => moveClients(-1));
+            clientNext?.addEventListener('click', () => moveClients(1));
+        }
     }
 
     // =========================================================
@@ -360,7 +486,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const updateDots = (index) => {
             dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
+                const selected = i === index;
+                dot.classList.toggle('active', selected);
+                dot.setAttribute('aria-pressed', String(selected));
             });
         };
 
@@ -492,14 +620,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const whatsappBtn = document.querySelector('.whatsapp-flotante');
 
     if (whatsappBtn) {
-        window.addEventListener('scroll', () => {
-            // Se muestra solo si pasamos los 400px de scroll (fuera del inicio)
-            if (window.scrollY > 400) {
-                whatsappBtn.classList.add('show');
-            } else {
-                whatsappBtn.classList.remove('show');
-            }
-        }, { passive: true });
+        const contacto = document.getElementById('contacto');
+        const footer = document.querySelector('.main-footer');
+        // En móvil la burbuja tapa flechas, botones y contenido de tarjetas.
+        // Se oculta mientras se leen estas secciones y vuelve en otras.
+        const interactiveSections = ['equipo', 'servicios', 'soluciones', 'portafolio']
+            .map(id => document.getElementById(id)).filter(Boolean);
+        const visibleInViewport = element => {
+            if (!element) return false;
+            const rect = element.getBoundingClientRect();
+            return rect.top < window.innerHeight && rect.bottom > 0;
+        };
+        const updateWhatsapp = () => {
+            // Evita tapar el CTA, el contacto del footer y los botones
+            // del carrusel. El botón reaparece en otras secciones.
+            const overContact = visibleInViewport(contacto) || visibleInViewport(footer);
+            const overlappingMobileContent = window.innerWidth <= 900
+                && interactiveSections.some(visibleInViewport);
+            whatsappBtn.classList.toggle('show', window.scrollY > 400
+                && !overContact && !overlappingMobileContent);
+        };
+        window.addEventListener('scroll', updateWhatsapp, { passive: true });
+        window.addEventListener('resize', updateWhatsapp, { passive: true });
+        updateWhatsapp();
     }
     } catch (err) {
         console.error('Error en script.js:', err);
@@ -552,13 +695,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Crear dots dinámicamente
         slides.forEach((_, i) => {
-            const dot = document.createElement('span');
+            const dot = document.createElement('button');
+            dot.type = 'button';
             dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('aria-label', `Ver trabajo ${i + 1} de ${slides.length}`);
+            dot.setAttribute('aria-pressed', String(i === 0));
+            dot.setAttribute('aria-controls', 'portfolio-mobile-track');
             dot.addEventListener('click', () => goToMobile(i));
             mobileDotsBox.appendChild(dot);
         });
 
         const mobileDots = () => mobileDotsBox.querySelectorAll('.dot');
+
+        // Los slides fuera de pantalla no deben dejar controles de audio
+        // accesibles al tabulador ni ocultar el slide activo al lector de pantalla.
+        const syncSlideAccess = () => {
+            slides.forEach((slide, i) => {
+                const isCurrent = i === mobileIdx;
+                slide.setAttribute('aria-hidden', String(!isCurrent));
+                if ('inert' in slide) slide.inert = !isCurrent;
+            });
+        };
+        syncSlideAccess();
 
         const goToMobile = (idx) => {
             // Pausar todos los videos del slide actual
@@ -568,7 +726,11 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileTrack.style.transform = `translateX(-${mobileIdx * 100}%)`;
 
             // Actualizar dots
-            mobileDots().forEach((d, i) => d.classList.toggle('active', i === mobileIdx));
+            mobileDots().forEach((d, i) => {
+                d.classList.toggle('active', i === mobileIdx);
+                d.setAttribute('aria-pressed', String(i === mobileIdx));
+            });
+            syncSlideAccess();
 
             // Reproducir video del nuevo slide si existe
             const vid = slides[mobileIdx].querySelector('video');
@@ -578,14 +740,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mobilePrev) mobilePrev.addEventListener('click', () => goToMobile(mobileIdx - 1));
         if (mobileNext) mobileNext.addEventListener('click', () => goToMobile(mobileIdx + 1));
 
-        // Soporte touch / swipe
+        // Gesto horizontal: evitar que un desplazamiento vertical del
+        // usuario cambie de trabajo por accidente en iOS o Android.
         let touchStartX = 0;
+        let touchStartY = 0;
         mobileTrack.addEventListener('touchstart', e => {
             touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
         }, { passive: true });
         mobileTrack.addEventListener('touchend', e => {
-            const diff = touchStartX - e.changedTouches[0].clientX;
-            if (Math.abs(diff) > 45) goToMobile(mobileIdx + (diff > 0 ? 1 : -1));
+            const diffX = touchStartX - e.changedTouches[0].clientX;
+            const diffY = touchStartY - e.changedTouches[0].clientY;
+            if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY) * 1.25) {
+                goToMobile(mobileIdx + (diffX > 0 ? 1 : -1));
+            }
         }, { passive: true });
 
         // Reproducir primer video si hay

@@ -8,19 +8,20 @@
     <meta name="google-site-verification" content="Qnh-kNKqL1TBlBhcmc2xDAJPa8n9LDy6-_9cysAOB0Y" />
 
     <!-- Descripción y datos para buscadores y redes sociales -->
-    <meta name="description" content="Sistema de Captación de Clientes para Negocios de Servicios | Estrategia · Meta Ads · Google Ads · Automatización con IA">
+    <meta name="description" content="ReBest ayuda a negocios de servicios a captar clientes con estrategia de marketing digital, contenido, Meta Ads, Google Ads y automatización con IA.">
     <link rel="canonical" href="https://agenciarebest.cl/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="ReBest">
     <meta property="og:title" content="ReBest | Agencia de Marketing Digital">
-    <meta property="og:description" content="Sistema de Captación de Clientes para Negocios de Servicios | Estrategia · Meta Ads · Google Ads · Automatización con IA">
-    <meta property="og:image" content="https://agenciarebest.cl/img/logo-bkn.jpg">
+    <meta property="og:description" content="ReBest ayuda a negocios de servicios a captar clientes con estrategia de marketing digital, contenido, Meta Ads, Google Ads y automatización con IA.">
+    <meta property="og:image" content="https://agenciarebest.cl/img/portada-rebest.jpg">
     <meta property="og:url" content="https://agenciarebest.cl/">
     <meta property="og:locale" content="es_CL">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image:alt" content="ReBest, agencia de marketing digital">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ReBest | Agencia de Marketing Digital">
-    <meta name="twitter:description" content="Sistema de Captación de Clientes para Negocios de Servicios | Estrategia · Meta Ads · Google Ads · Automatización con IA">
-    <meta name="twitter:image" content="https://agenciarebest.cl/img/logo-bkn.jpg">
+    <meta name="twitter:description" content="ReBest ayuda a negocios de servicios a captar clientes con estrategia de marketing digital, contenido, Meta Ads, Google Ads y automatización con IA.">
+    <meta name="twitter:image" content="https://agenciarebest.cl/img/portada-rebest.jpg">
 
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
@@ -41,21 +42,47 @@
     <link rel="apple-touch-icon" sizes="180x180" href="./img/apple-touch-icon.png">
     <link rel="manifest" href="./site.webmanifest">
 
-    <!-- Datos estructurados para que Google muestre el logo en resultados de búsqueda -->
+    <!-- Datos estructurados verificables para identidad de la agencia y nombre del sitio -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "ReBest",
-      "url": "https://agenciarebest.cl/",
-      "logo": "https://agenciarebest.cl/img/logo-bkn.jpg",
-      "image": "https://agenciarebest.cl/img/logo-bkn.jpg",
-      "description": "Sistema de Captación de Clientes para Negocios de Servicios | Estrategia · Meta Ads · Google Ads · Automatización con IA",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Santiago",
-        "addressCountry": "CL"
-      }
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://agenciarebest.cl/#organizacion",
+          "name": "ReBest",
+          "url": "https://agenciarebest.cl/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://agenciarebest.cl/img/favicon-512x512.png"
+          },
+          "image": "https://agenciarebest.cl/img/portada-rebest.jpg",
+          "description": "ReBest ayuda a negocios de servicios a captar clientes con estrategia de marketing digital, contenido, Meta Ads, Google Ads y automatización con IA.",
+          "telephone": "+56 9 9177 7994",
+          "email": "duvan.rebest@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Santiago",
+            "addressCountry": "CL"
+          },
+          "sameAs": [
+            "https://instagram.com/agenciarebest",
+            "https://www.facebook.com/profile.php?id=61561895342487",
+            "https://www.linkedin.com/company/agenciarebest/"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://agenciarebest.cl/#sitio",
+          "url": "https://agenciarebest.cl/",
+          "name": "ReBest",
+          "alternateName": "Agencia ReBest",
+          "inLanguage": "es-CL",
+          "publisher": {
+            "@id": "https://agenciarebest.cl/#organizacion"
+          }
+        }
+      ]
     }
     </script>
 
@@ -74,38 +101,41 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     </noscript>
 
-    <link rel="stylesheet" href="style.css?v=2.1">
+    <link rel="stylesheet" href="style.css?v=3.1">
 </head>
 <body class="intro-active">
     <script>
-        // SEGURO INDEPENDIENTE: si por cualquier motivo script.js no carga
-        // o falla, esto garantiza que el scroll se libere de todas formas.
+        // Seguro de respaldo: no ocultar la introducción por errores
+        // ajenos al video (fuentes, favicon, imágenes, etc.).
+        // script.js controla normalmente el cierre y la animación del hero.
         (function () {
-            var liberado = false;
-            var liberar = function () {
-                if (liberado) return;
-                liberado = true;
-                document.body.classList.remove('intro-active');
+            setTimeout(function () {
                 var overlay = document.getElementById('intro-overlay');
-                if (overlay) { overlay.style.display = 'none'; }
-            };
-            setTimeout(liberar, 5500);
-            window.addEventListener('error', liberar);
+                if (overlay && !overlay.classList.contains('hidden')) {
+                    overlay.classList.add('hidden');
+                    overlay.style.pointerEvents = 'none';
+                    setTimeout(function () { overlay.style.display = 'none'; }, 450);
+                }
+                document.body.classList.remove('intro-active');
+                document.querySelector('.marco-foto')?.classList.add('visible');
+                document.querySelectorAll('.texto-animado .char, .anim-retraso').forEach(function (el) { el.classList.add('visible'); });
+            }, 8500);
         })();
     </script> 
     
     <div id="intro-overlay" class="intro-overlay">
-        <video id="intro-video-desktop" class="video-desktop" muted playsinline preload="none">
+        <video id="intro-video-desktop" class="video-desktop" autoplay muted playsinline webkit-playsinline preload="auto" aria-hidden="true">
             <source src="./img/rebest-presentacion-2.mp4" type="video/mp4">
             <track kind="captions" src="./img/vacio.vtt" srclang="es" label="Español" default>
             Tu navegador no soporta videos HTML5.
         </video>
         
-        <video id="intro-video-mobile" class="video-mobile" muted playsinline preload="none">
+        <video id="intro-video-mobile" class="video-mobile" autoplay muted playsinline webkit-playsinline preload="auto" aria-hidden="true">
             <source src="./img/animacion-rebest-vertical.mp4" type="video/mp4"> 
             <track kind="captions" src="./img/vacio.vtt" srclang="es" label="Español" default>
             Tu navegador no soporta videos HTML5.
         </video>
+        <button id="skip-intro" class="skip-intro" type="button" aria-label="Omitir video de presentación">Omitir intro <span aria-hidden="true">→</span></button>
     </div>
     
     <header class="main-header">
@@ -127,14 +157,14 @@
             </ul>
         </nav>
 
-        <button class="hamburger-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <button type="button" class="hamburger-toggle" aria-label="Abrir menú" aria-controls="mobile-navigation" aria-expanded="false">
             <span class="bar bar-1"></span>
             <span class="bar bar-2"></span>
             <span class="bar bar-3"></span>
         </button>
     </header>
 
-    <nav class="hamburger-menu" aria-hidden="true">
+    <nav id="mobile-navigation" class="hamburger-menu" aria-label="Navegación móvil" aria-hidden="true" inert>
         <div class="menu-header">
             <p class="menu-subtitle">Agencia de Marketing</p>
         </div>
@@ -145,6 +175,7 @@
             <li><a href="#soluciones">Soluciones</a></li>
             <li><a href="#portafolio">Portafolio</a></li>
             <li><a href="#clientes">Clientes</a></li>
+            <li><a href="#contacto">Contacto</a></li>
         </ul>
         
     </nav>
@@ -301,7 +332,7 @@
 
                 <!-- Móvil: carrusel -->
                 <div class="carousel-container mobile-only fade-in">
-                    <button class="carousel-arrow prev rb-glow" aria-label="Anterior">&#10094;</button>
+                    <button type="button" class="carousel-arrow prev rb-glow" aria-label="Anterior">&#10094;</button>
                     <div id="services-carousel" class="services-carousel">
                         <div class="service-card active">
                             <img src="./img/produccion-audiovisual.webp" alt="Icono Audiovisual" class="service-icon-right" width="96" height="96">
@@ -328,13 +359,13 @@
                             <p class="card-description">Utilizamos Meta Ads y Google Ads para atraer clientes potenciales, generar oportunidades comerciales y convertir la inversión publicitaria en <strong>crecimiento medible</strong>.</p>
                         </div>
                     </div>
-                    <button class="carousel-arrow next rb-glow" aria-label="Siguiente">&#10095;</button>
+                    <button type="button" class="carousel-arrow next rb-glow" aria-label="Siguiente">&#10095;</button>
                 </div>
-                <div id="services-dots" class="carousel-dots mobile-only fade-in">
-                    <span class="dot active"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
+                <div id="services-dots" class="carousel-dots mobile-only fade-in" role="group" aria-label="Seleccionar servicio">
+                    <button type="button" class="dot active" aria-label="Servicio 1 de 4" aria-pressed="true"></button>
+                    <button type="button" class="dot" aria-label="Servicio 2 de 4" aria-pressed="false"></button>
+                    <button type="button" class="dot" aria-label="Servicio 3 de 4" aria-pressed="false"></button>
+                    <button type="button" class="dot" aria-label="Servicio 4 de 4" aria-pressed="false"></button>
                 </div>
 
                 <div class="frase-linea-verde bottom-frase">
@@ -355,7 +386,7 @@
 
             <!-- Panel negro con 3 columnas (desktop) / carrusel deslizable (móvil) -->
             <div class="soluciones-carousel-wrapper">
-                <button class="carousel-arrow prev rb-glow mobile-only" id="soluciones-prev" aria-label="Anterior">&#10094;</button>
+                <button type="button" class="carousel-arrow prev rb-glow mobile-only" id="soluciones-prev" aria-label="Anterior">&#10094;</button>
 
                 <div class="soluciones-panel" id="soluciones-panel">
                     <!-- Video de serpiente: solo desktop, recorre el panel y revela cada columna -->
@@ -413,12 +444,12 @@
                     </div>
                 </div>
 
-                <button class="carousel-arrow next rb-glow mobile-only" id="soluciones-next" aria-label="Siguiente">&#10095;</button>
+                <button type="button" class="carousel-arrow next rb-glow mobile-only" id="soluciones-next" aria-label="Siguiente">&#10095;</button>
             </div>
-            <div id="soluciones-dots" class="carousel-dots mobile-only fade-in">
-                <span class="dot active"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+            <div id="soluciones-dots" class="carousel-dots mobile-only fade-in" role="group" aria-label="Seleccionar solución">
+                <button type="button" class="dot active" aria-label="Solución 1 de 3" aria-pressed="true"></button>
+                <button type="button" class="dot" aria-label="Solución 2 de 3" aria-pressed="false"></button>
+                <button type="button" class="dot" aria-label="Solución 3 de 3" aria-pressed="false"></button>
             </div>
         </section>
 
@@ -438,88 +469,88 @@
                         <source data-src="img/mentoria-venta-delivery.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Marca Personal</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
+                    <button type="button" class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                 </div>
                 <div class="portfolio-grid-item portfolio-anim" style="--pi:1">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
                         <source data-src="img/entrenamiento.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Academia de Fútbol</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
+                    <button type="button" class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                 </div>
                 <div class="portfolio-grid-item portfolio-anim" style="--pi:2">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
                         <source data-src="img/hair-studio.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Salón de belleza</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
+                    <button type="button" class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                 </div>
                 <div class="portfolio-grid-item portfolio-anim" style="--pi:3">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
                         <source data-src="img/catalina-portugal.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Salón de belleza</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
+                    <button type="button" class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                 </div>
                 <div class="portfolio-grid-item portfolio-anim" style="--pi:4">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
                         <source data-src="img/auto.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Concurso</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
+                    <button type="button" class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                 </div>
                 <div class="portfolio-grid-item portfolio-anim" style="--pi:5">
                     <video class="portfolio-grid-video" autoplay muted loop playsinline preload="metadata">
                         <source data-src="img/centro-despertar.mp4" type="video/mp4">
                     </video>
                     <div class="portfolio-grid-overlay"><span class="portfolio-grid-tag">Campaña Activación</span></div>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
+                    <button type="button" class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                 </div>
             </div>
 
             <!-- Móvil: carrusel mejorado -->
             <div class="portfolio-carousel-wrapper mobile-only">
-                <div class="portfolio-mobile-track" id="portfolio-mobile-track">
+                <div class="portfolio-mobile-track" id="portfolio-mobile-track" aria-label="Trabajos realizados">
                     <div class="portfolio-mobile-slide active">
                         <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
                             <source data-src="img/mentoria-venta-delivery.mp4" type="video/mp4">
                         </video>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
+                    <button type="button" class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                     </div>
                     <div class="portfolio-mobile-slide">
                         <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
                             <source data-src="img/hair-studio.mp4" type="video/mp4">
                         </video>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
+                    <button type="button" class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                     </div>
                     <div class="portfolio-mobile-slide">
                         <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
                             <source data-src="img/catalina-portugal.mp4" type="video/mp4">
                         </video>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
+                    <button type="button" class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                     </div>
                     <div class="portfolio-mobile-slide">
                         <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
                             <source data-src="img/entrenamiento.mp4" type="video/mp4">
                         </video>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
+                    <button type="button" class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                     </div>
                     <div class="portfolio-mobile-slide">
                         <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
                             <source data-src="img/auto.mp4" type="video/mp4">
                         </video>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
+                    <button type="button" class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                     </div>
                     <div class="portfolio-mobile-slide">
                         <video class="portfolio-mobile-media" autoplay muted loop playsinline preload="metadata">
                             <source data-src="img/centro-despertar.mp4" type="video/mp4">
                         </video>
-                    <button class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
+                    <button type="button" class="sound-toggle" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg></button>
                     </div>
                 </div>
-                <button class="portfolio-mobile-btn prev" id="portfolio-mobile-prev" aria-label="Anterior">&#10094;</button>
-                <button class="portfolio-mobile-btn next" id="portfolio-mobile-next" aria-label="Siguiente">&#10095;</button>
-                <div class="portfolio-mobile-dots" id="portfolio-mobile-dots"></div>
+                <button type="button" class="portfolio-mobile-btn prev" id="portfolio-mobile-prev" aria-label="Anterior">&#10094;</button>
+                <button type="button" class="portfolio-mobile-btn next" id="portfolio-mobile-next" aria-label="Siguiente">&#10095;</button>
+                <div class="portfolio-mobile-dots" id="portfolio-mobile-dots" role="group" aria-label="Elegir trabajo del portafolio"></div>
             </div>
 
             <div class="portfolio-ig-text" style="margin-top: 30px;">
@@ -558,8 +589,10 @@
                 <div class="vertical-neon-line"></div>
             </div>
             
-            <div class="clientes-container">
-                <div class="clientes-grid">
+            <div class="clientes-carousel-shell" aria-label="Empresas que confían en ReBest">
+                <button type="button" class="clientes-arrow clientes-prev" aria-label="Ver clientes anteriores" aria-controls="clientes-logo-track">&#10094;</button>
+                <div class="clientes-container">
+                    <div id="clientes-logo-track" class="clientes-grid">
                     <div class="client-logo-box"><img src="./img/palimpulsa-new.webp" alt="Palimpulsa" class="client-logo" loading="lazy" width="235" height="125"></div>
                     <div class="client-logo-box"><img src="./img/softhair-new.webp" alt="Soft Hair" class="client-logo" loading="lazy" width="235" height="125"></div>
                     <div class="client-logo-box"><img src="./img/victoria-hair-_studio-new.webp" alt="Victoria Hair Studio" class="client-logo" loading="lazy" width="235" height="125"></div>
@@ -571,7 +604,9 @@
                     <div class="client-logo-box"><img src="./img/futproyect-new.webp" alt="Futproyect" class="client-logo" loading="lazy" width="235" height="125"></div>
                     <div class="client-logo-box"><img src="./img/mecanica-esposito-new.webp" alt="Mecanica Esposito" class="client-logo" loading="lazy" width="235" height="125"></div>
                     <div class="client-logo-box"><img src="./img/barber-soft-new.webp" alt="Barber Soft" class="client-logo" loading="lazy" width="235" height="125"></div>
+                    </div>
                 </div>
+                <button type="button" class="clientes-arrow clientes-next" aria-label="Ver siguientes clientes" aria-controls="clientes-logo-track">&#10095;</button>
             </div>
         </section>
 
@@ -604,6 +639,8 @@
          <div class="separator-container">
             <div class="animated-neon-line"></div>
         </div>
+
+    </main>
 
         <footer class="main-footer fade-in">
             <div class="footer-container">
@@ -673,12 +710,11 @@
                 <p class="copyright">ReBest® - Santiago, Chile - 2026. Todos los derechos reservados.</p>
             </div>
         </footer>
-    </main>
 
     <a href="https://api.whatsapp.com/send?phone=56991777994&text=Hola%20ReBest%20%F0%9F%91%8B%20Me%20gustar%C3%ADa%20conocer%20m%C3%A1s%20sobre%20su%20sistema%20de%20captaci%C3%B3n%20de%20clientes%20y%20ver%20c%C3%B3mo%20podr%C3%ADa%20aplicarse%20a%20mi%20negocio." class="whatsapp-flotante" target="_blank" rel="noopener noreferrer" aria-label="Chatear por WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <script src="script.js?v=1.6"></script>
+    <script src="script.js?v=2.4" defer></script>
 </body>
 </html>

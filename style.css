@@ -10,8 +10,8 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow-x: hidden;
-    /* Evita scroll horizontal indeseado */
+    overflow-x: clip;
+    /* clip evita un scroll vertical anidado al ocultar desbordamiento X. */
 }
 
 /* --- FIX ANTI-PIXELADO GLOBAL PARA ANIMACIONES --- */
@@ -76,7 +76,7 @@ body {
     color: var(--text-main);
     line-height: 1.6;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: clip;
     -webkit-overflow-scrolling: touch;
     position: relative;
     -webkit-font-smoothing: antialiased;
@@ -215,13 +215,9 @@ body.menu-open {
     justify-content: center;
     align-items: center;
     transition: opacity 0.4s ease-out, visibility 0.4s ease-out;
-    /* El overlay ya cubre toda la pantalla (fixed + 100dvh), así que basta
-       con impedir gestos táctiles AQUÍ para bloquear el scroll durante la
-       intro. No usamos overflow:hidden en <body> (ver más abajo) porque en
-       iOS Safari, quitar esa clase por JS no libera el scroll hasta que el
-       usuario toca la pantalla una vez — eso es justamente el bug reportado
-       ("hay que tocar la pantalla para que el scroll vuelva"). */
-    touch-action: none;
+    /* La intro es visual: no secuestra el primer gesto táctil o de rueda. */
+    pointer-events: none;
+    touch-action: auto;
 }
 
 .intro-overlay.hidden {
@@ -1016,7 +1012,7 @@ body.menu-open {
         overflow-x: auto;
         scroll-snap-type: x proximity;
         -webkit-overflow-scrolling: touch;
-        touch-action: pan-y;
+        touch-action: auto;
         scrollbar-width: none;
         padding: 25px 0;
         gap: 20px;
@@ -4054,7 +4050,7 @@ main {
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
-        touch-action: pan-x;
+        touch-action: auto;
         scrollbar-width: none;
         gap: 16px;
         padding: 12px 8px 25px;
@@ -5671,4 +5667,1640 @@ section.is-visible .section-title::after {
 .portfolio-mobile-media {
     contain: layout paint;
     transform: translateZ(0);
+}
+/* ==========================================================================
+   ReBest — ajustes UX finales: scroll, foco y footer responsive.
+   No se sustituyen imágenes, videos, fondos ni textos.
+   ========================================================================== */
+html, body { overflow-x: clip; }
+body::before { will-change: auto; }
+.hamburger-menu { overscroll-behavior: contain; }
+a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent-green);
+    outline-offset: 4px;
+}
+.main-footer { width: 100%; }
+.footer-contact-info a { overflow-wrap: anywhere; }
+
+@media (max-width: 900px) {
+    .main-footer { padding: 52px clamp(18px, 5vw, 32px) max(28px, env(safe-area-inset-bottom)); }
+    .footer-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 30px clamp(16px, 4vw, 32px);
+    }
+    .footer-col.brand-col, .footer-col.contact-col { grid-column: 1 / -1; }
+    .footer-col.brand-col { text-align: center; }
+    .footer-logo { width: auto; height: auto; max-width: 132px; margin: 0 auto 18px; }
+    .footer-about-text {
+        max-width: 480px;
+        margin-inline: auto;
+        font-size: clamp(0.92rem, 2.6vw, 1rem);
+        font-weight: 400;
+        line-height: 1.75;
+        text-wrap: pretty;
+    }
+    .footer-title { font-size: 0.86rem; line-height: 1.4; margin-bottom: 14px; }
+    .footer-links li { margin-bottom: 4px; }
+    .footer-links a {
+        font-size: clamp(0.83rem, 2.2vw, 0.95rem);
+        font-weight: 500;
+        line-height: 1.45;
+        padding: 6px 0;
+        overflow-wrap: anywhere;
+    }
+    .footer-col.contact-col {
+        padding-top: 22px;
+        border-top: 1px solid rgba(255,255,255,.1);
+    }
+    .footer-contact-info li {
+        align-items: flex-start;
+        font-size: clamp(0.82rem, 2.3vw, 0.95rem);
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+    .footer-contact-info li i { flex: 0 0 18px; margin-top: 5px; }
+    .social-icons { justify-content: flex-start; margin-top: 16px; }
+    .social-icon { width: 44px; height: 44px; font-size: 17px; }
+    .footer-bottom-bar {
+        margin-top: 30px;
+        padding-top: 22px;
+        gap: 14px;
+        text-align: center;
+        justify-content: center;
+    }
+    .back-to-top { min-height: 44px; justify-content: center; }
+    .copyright { max-width: 100%; line-height: 1.6; }
+}
+@media (max-width: 560px) {
+    .footer-container { gap: 26px 18px; }
+    .footer-col.solutions-col { grid-column: 1 / -1; }
+    .footer-col.solutions-col .footer-links {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 18px;
+    }
+    .footer-about-text { font-size: .94rem; }
+    .footer-contact-info li { font-size: .88rem; }
+    .social-icons { justify-content: center; }
+}
+@media (max-width: 359px) {
+    .footer-container { grid-template-columns: minmax(0, 1fr); }
+    .footer-col.brand-col, .footer-col.solutions-col, .footer-col.contact-col {
+        grid-column: 1;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .intro-overlay { transition: none; }
+}
+
+/* ==========================================================================
+   REBEST / REFINAMIENTO UX RESPONSIVE — CLIENTES · CONTACTO · FOOTER
+   Se mantienen literalmente los textos, logos, vídeos y fondos existentes.
+   ========================================================================== */
+
+/* Clientes: filas flexibles y centradas en todos los tamaños.
+   Al haber 11 logos, la última fila se centra sin dejar un hueco lateral.
+   Sin marquesina infinita, clones ni controles táctiles capturados. */
+.clientes-container {
+    width: min(100% - 32px, 1140px);
+    max-width: 1140px;
+    margin-inline: auto;
+    padding: 20px 0;
+}
+.clientes-grid {
+    --client-gap: clamp(12px, 1.8vw, 22px);
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--client-gap);
+    justify-content: center;
+    align-items: stretch;
+    animation: none;
+    transform: none;
+    will-change: auto;
+}
+.clientes-grid .client-logo-box {
+    display: flex;
+    flex: 0 0 calc((100% - 3 * var(--client-gap)) / 4);
+    width: calc((100% - 3 * var(--client-gap)) / 4);
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    min-height: 124px;
+    padding: 22px 18px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: linear-gradient(145deg, rgba(18, 21, 19, 0.92), rgba(4, 9, 6, 0.88));
+    border: 1px solid rgba(0, 255, 102, 0.16);
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+    animation: none;
+    transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.clientes-grid .client-logo-box.clone { display: none !important; }
+.clientes-grid .client-logo {
+    width: 100%;
+    height: 80px;
+    max-width: 185px;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,.15));
+    image-rendering: auto;
+    transform: none;
+}
+@media (hover: hover) and (pointer: fine) {
+    .clientes-grid .client-logo-box:hover {
+        border-color: rgba(0,255,102,.5);
+        box-shadow: 0 14px 34px rgba(0,255,102,.09);
+        transform: translateY(-3px);
+    }
+}
+@media (max-width: 1024px) {
+    .clientes-grid .client-logo-box {
+        flex-basis: calc((100% - 2 * var(--client-gap)) / 3);
+        width: calc((100% - 2 * var(--client-gap)) / 3);
+        min-height: 112px;
+    }
+}
+@media (max-width: 768px) {
+    .clientes-container {
+        width: min(100% - 24px, 600px);
+        overflow: visible;
+        padding: 8px 0;
+    }
+    .clientes-grid {
+        --client-gap: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        max-width: 100%;
+        gap: var(--client-gap);
+        padding: 0;
+        animation: none;
+    }
+    .clientes-grid .client-logo-box {
+        flex-basis: calc((100% - var(--client-gap)) / 2);
+        width: calc((100% - var(--client-gap)) / 2);
+        min-height: 106px;
+        height: auto;
+        padding: 16px 12px;
+        opacity: 1;
+        transform: none;
+    }
+    .clientes-grid .client-logo {
+        width: 100%;
+        height: 70px;
+        max-height: 70px;
+        filter: drop-shadow(0 0 5px rgba(255,255,255,.15));
+        transform: none;
+    }
+}
+@media (max-width: 360px) {
+    .clientes-grid { --client-gap: 9px; }
+    .clientes-grid .client-logo-box { padding: 12px 9px; min-height: 96px; }
+}
+
+/* CTA / Contacto: equilibrio visual y ancho legible incluso a 320 px.
+   Asegura que textos y botón entren sin cortes ni desplazamiento horizontal. */
+.cta-panel {
+    max-width: 1100px;
+    min-width: 0;
+}
+.cta-panel-left, .cta-panel-right { min-width: 0; }
+.cta-panel-right .cta-title { text-wrap: balance; }
+.cta-panel-right .cta-description { text-wrap: pretty; }
+@media (max-width: 900px) {
+    #contacto.cta-section {
+        width: 100%;
+        max-width: 640px;
+        margin: clamp(60px, 8vw, 88px) auto;
+        padding: 0 clamp(12px, 3vw, 22px);
+    }
+    #contacto .cta-panel {
+        width: 100%;
+        min-height: 0;
+        grid-template-columns: minmax(0, 1fr);
+    }
+    #contacto .cta-panel-left {
+        padding: clamp(28px, 7vw, 44px) clamp(18px, 6vw, 32px);
+        gap: 16px;
+    }
+    #contacto .cta-panel-logo { width: min(100%, 180px); height: auto; }
+    #contacto .cta-panel-divider { width: 65%; max-width: 240px; margin-inline: auto; }
+    #contacto .cta-panel-right {
+        padding: clamp(28px, 6vw, 42px) clamp(18px, 6vw, 34px);
+        gap: clamp(18px, 4vw, 24px);
+    }
+    #contacto .cta-title {
+        font-size: clamp(1.18rem, 4.4vw, 1.7rem);
+        line-height: 1.33;
+        overflow-wrap: normal;
+        hyphens: auto;
+    }
+    #contacto .cta-description {
+        font-size: clamp(.96rem, 3.2vw, 1.1rem);
+        line-height: 1.75;
+    }
+    #contacto .cta-btn {
+        min-height: 54px;
+        width: min(100%, 350px);
+        max-width: 100%;
+        align-self: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px clamp(12px, 3vw, 24px);
+        font-size: clamp(.78rem, 2.75vw, .92rem);
+        line-height: 1.35;
+        white-space: normal;
+        text-align: center;
+    }
+}
+@media (max-width: 380px) {
+    #contacto .cta-panel-left, #contacto .cta-panel-right { padding-inline: 18px; }
+    #contacto .cta-title { font-size: 1.12rem; }
+    #contacto .cta-btn { font-size: .79rem; }
+}
+
+/* Portafolio: superficies y botones táctiles sin tapar el video,
+   alturas que respetan el formato vertical original. */
+@media (max-width: 900px) {
+    .portfolio-carousel-wrapper {
+        width: min(100%, 430px);
+        max-width: 430px;
+        margin-inline: auto;
+        border: 1px solid rgba(0,255,102,.20);
+        border-radius: 18px;
+    }
+    .portfolio-mobile-slide, .portfolio-mobile-media {
+        min-height: 0;
+        height: auto;
+    }
+    .portfolio-mobile-slide { aspect-ratio: 9 / 13; }
+    .portfolio-mobile-media {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        inset: 0;
+        object-fit: contain;
+        background: #050505;
+    }
+    .portfolio-mobile-btn {
+        width: 44px;
+        height: 44px;
+        border-width: 1px;
+        background: rgba(0,0,0,.84);
+    }
+    .portfolio-mobile-btn.prev { left: 8px; }
+    .portfolio-mobile-btn.next { right: 8px; }
+    .portfolio-mobile-dots {
+        gap: 2px;
+        padding: 6px 0 10px;
+    }
+    .portfolio-mobile-dots .dot {
+        appearance: none;
+        display: inline-flex;
+        width: 24px;
+        height: 24px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        box-shadow: none;
+        transform: none;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+    }
+    .portfolio-mobile-dots .dot::before {
+        content: "";
+        display: block;
+        width: 8px;
+        height: 8px;
+        background: rgba(255,255,255,.35);
+        border-radius: 50%;
+        transition: background .2s ease, transform .2s ease;
+    }
+    .portfolio-mobile-dots .dot.active { background: transparent; box-shadow: none; transform: none; }
+    .portfolio-mobile-dots .dot.active::before {
+        background: var(--accent-green);
+        transform: scale(1.25);
+        box-shadow: 0 0 8px rgba(0,255,102,.5);
+    }
+    .portfolio-ig-text { max-width: 430px; margin-inline: auto; }
+}
+@media (max-width: 380px) {
+    .portfolio-carousel-wrapper { border-radius: 14px; }
+    .portfolio-mobile-btn.prev { left: 5px; }
+    .portfolio-mobile-btn.next { right: 5px; }
+}
+
+/* Footer: composición editorial en móvil; jerarquía clara, columnas
+   sin palabras partidas y contacto completo y pulsable. */
+.main-footer .footer-container {
+    max-width: 1180px;
+    column-gap: clamp(24px, 2.3vw, 38px);
+}
+.main-footer .footer-title { letter-spacing: 1px; }
+.main-footer .footer-links a::before { content: none; display: none; }
+.main-footer .footer-contact-info a { overflow-wrap: anywhere; }
+.main-footer .footer-contact-info li i { flex: 0 0 18px; }
+.main-footer .social-icon { min-width: 44px; min-height: 44px; }
+@media (max-width: 1024px) {
+    .main-footer .footer-container {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 36px 24px;
+    }
+    .main-footer .brand-col { grid-column: 1 / -1; }
+    .main-footer .contact-col { grid-column: span 2; }
+}
+@media (max-width: 700px) {
+    .main-footer { padding: 50px 22px max(32px, env(safe-area-inset-bottom)); }
+    .main-footer .footer-container {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+        max-width: 480px;
+    }
+    .main-footer .footer-col {
+        grid-column: 1 / -1;
+        text-align: left;
+        min-width: 0;
+        padding: 22px 0;
+    }
+    .main-footer .brand-col {
+        text-align: center;
+        padding-top: 0;
+        padding-bottom: 32px;
+    }
+    .main-footer .brand-col .footer-about-text {
+        max-width: 350px;
+        margin-inline: auto;
+        font-size: clamp(.89rem, 3.5vw, .98rem);
+        font-weight: 400;
+        line-height: 1.75;
+    }
+    .main-footer .footer-logo {
+        max-width: 130px;
+        width: auto;
+        height: auto;
+        margin: 0 auto 18px;
+    }
+    .main-footer .footer-col:not(.brand-col) {
+        border-top: 1px solid rgba(255,255,255,.11);
+    }
+    .main-footer .footer-title {
+        font-size: .86rem;
+        font-weight: 800;
+        letter-spacing: 1.15px;
+        color: var(--accent-green);
+        margin: 0 0 14px;
+    }
+    .main-footer .footer-links {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px 18px;
+        align-items: start;
+    }
+    .main-footer .footer-links li { margin: 0; min-width: 0; }
+    .main-footer .footer-links a {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 9px 0;
+        margin: 0;
+        font-size: clamp(.78rem, 3.2vw, .9rem);
+        line-height: 1.4;
+        font-weight: 500;
+        overflow-wrap: normal;
+        word-break: normal;
+        hyphens: none;
+    }
+    .main-footer .footer-col.services-col .footer-links,
+    .main-footer .footer-col.solutions-col .footer-links {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .main-footer .footer-col.contact-col {
+        padding-top: 26px;
+        border-top: 1px solid rgba(0,255,102,.25);
+    }
+    .main-footer .footer-contact-info {
+        display: grid;
+        gap: 9px;
+    }
+    .main-footer .footer-contact-info li {
+        margin: 0;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        font-size: clamp(.84rem, 3.35vw, .94rem);
+        line-height: 1.5;
+        gap: 12px;
+    }
+    .main-footer .footer-contact-info li i { margin: 0; }
+    .main-footer .footer-contact-info a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        overflow-wrap: anywhere;
+    }
+    .main-footer .social-icons {
+        justify-content: flex-start;
+        margin-top: 20px;
+        gap: 14px;
+    }
+    .main-footer .footer-bottom-bar {
+        max-width: 480px;
+        margin-top: 10px;
+        padding-top: 24px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .main-footer .copyright {
+        font-size: .78rem;
+        line-height: 1.7;
+        max-width: 34ch;
+    }
+}
+@media (max-width: 359px) {
+    .main-footer { padding-inline: 18px; }
+    .main-footer .footer-links {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .clientes-grid, .clientes-grid .client-logo-box {
+        animation: none !important;
+        opacity: 1 !important;
+        transition: none !important;
+        transform: none !important;
+    }
+    .portfolio-mobile-track { transition: none !important; }
+}
+
+/* Tablet pequeña: dos columnas legibles antes del footer de una sola columna. */
+@media (min-width: 701px) and (max-width: 900px) {
+    .main-footer .footer-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .main-footer .brand-col,
+    .main-footer .contact-col {
+        grid-column: 1 / -1;
+    }
+}
+/* Evita animación previa de marqués y asegura el mismo comportamiento
+   al cruzar el breakpoint sin recargar la página. */
+@media (min-width: 769px) {
+    .clientes-grid .client-logo-box {
+        animation: none !important;
+    }
+}
+
+
+/* ==========================================================================
+   CLIENTES — logos originales en marquesina continua, sin tarjetas.
+   Sin JavaScript, la lista queda envuelta y muestra todos los logos.
+   ========================================================================== */
+.clientes-container {
+    position: relative;
+    width: min(100%, 1400px);
+    max-width: 1400px;
+    padding: 24px 0;
+    margin-inline: auto;
+    overflow: hidden;
+    overflow-x: clip;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    touch-action: pan-y;
+    scrollbar-width: none;
+}
+.clientes-container::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+.clientes-container .clientes-grid {
+    --client-gap: clamp(22px, 3.2vw, 50px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--client-gap);
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    animation: none;
+    transform: none;
+    will-change: auto;
+}
+.clientes-container.is-measuring .clientes-grid,
+.clientes-container.is-ready .clientes-grid {
+    width: max-content;
+    max-width: none;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+.clientes-container.is-ready .clientes-grid {
+    animation: rebestLogosLoop var(--client-duration, 34s) linear infinite;
+    will-change: transform;
+}
+.clientes-container .clientes-grid .client-logo-box,
+.clientes-container .clientes-grid .client-logo-box.clone {
+    display: flex !important;
+    flex: 0 0 clamp(152px, 17vw, 216px);
+    width: clamp(152px, 17vw, 216px);
+    min-width: 0;
+    max-width: none;
+    height: 108px;
+    min-height: 0;
+    margin: 0;
+    padding: 5px 8px;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none;
+}
+.clientes-container .clientes-grid .client-logo {
+    width: 100%;
+    height: 86px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    image-rendering: auto;
+    transform: none !important;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,.14));
+}
+@keyframes rebestLogosLoop {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(var(--client-offset, -2400px), 0, 0); }
+}
+.clientes-container:focus-within .clientes-grid {
+    animation-play-state: paused;
+}
+@media (hover: hover) and (pointer: fine) {
+     .clientes-container .client-logo-box:hover {
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+    .clientes-container .client-logo-box:hover .client-logo {
+        filter: drop-shadow(0 0 10px rgba(0,255,102,.22));
+    }
+}
+@media (max-width: 768px) {
+    .clientes-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 14px 0;
+        overflow-x: clip;
+        touch-action: pan-y;
+    }
+    .clientes-container .clientes-grid { --client-gap: 24px; }
+     .clientes-container .clientes-grid .client-logo-box,
+    .clientes-container .clientes-grid .client-logo-box.clone {
+        flex-basis: clamp(140px, 44vw, 174px);
+        width: clamp(140px, 44vw, 174px);
+        height: 95px;
+        padding: 4px;
+    }
+    .clientes-container .clientes-grid .client-logo {
+        height: 76px;
+        max-height: 100%;
+        object-fit: contain;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    /* En modo de movimiento reducido se pueden deslizar manualmente
+       todos los logos, sin scrollbar visible ni animación forzada. */
+    .clientes-container.is-ready {
+        overflow-x: auto !important;
+        overscroll-behavior-x: contain;
+        touch-action: pan-x pan-y;
+        scrollbar-width: none !important;
+    }
+    .clientes-container.is-ready::-webkit-scrollbar { display: none !important; height: 0 !important; }
+    .clientes-container.is-ready .clientes-grid {
+        animation: none !important;
+        transform: none !important;
+        will-change: auto;
+    }
+    .clientes-container.is-ready .clientes-grid .client-logo-box.clone { display: none !important; }
+}
+/* ==========================================================================
+   HERO — video original completo sin recorte. Su ancho se limita en función
+   del alto útil para no quedar cortado bajo el borde de la pantalla.
+   ========================================================================== */
+.contenedor-imagen { min-width: 0; align-items: center; justify-content: center; }
+.marco-foto {
+    width: min(100%, 38vw, calc(70svh * 9 / 16));
+    max-width: 100%;
+    aspect-ratio: 9 / 16;
+    max-height: 70svh;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #030603;
+}
+.marco-foto .hero-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-height: 70svh;
+    object-fit: contain;
+    object-position: center center;
+    background: #030603;
+}
+@media (max-width: 900px) {
+    .contenedor-imagen {
+        width: min(100%, 350px);
+        max-width: 100%;
+        justify-content: center;
+        margin-inline: auto;
+    }
+    .marco-foto {
+        width: min(100%, 320px);
+        max-height: none;
+    }
+    .marco-foto .hero-img { max-height: none; }
+}
+@media (max-width: 390px) {
+    .marco-foto { width: min(100%, 288px); }
+}
+.intro-overlay { pointer-events: none; touch-action: auto; }
+
+/* El video introductorio es decorativo y no absorbe los gestos táctiles.
+   El botón explícito siempre queda disponible incluso sin autoplay. */
+.intro-overlay .skip-intro {
+    position: absolute;
+    z-index: 2;
+    right: max(18px, env(safe-area-inset-right));
+    bottom: max(22px, calc(env(safe-area-inset-bottom) + 16px));
+    padding: 10px 16px;
+    min-height: 44px;
+    border: 1px solid rgba(0, 255, 102, .6);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, .72);
+    color: #fff;
+    font: 700 .8rem/1.3 'Montserrat', sans-serif;
+    cursor: pointer;
+    pointer-events: auto;
+    touch-action: manipulation;
+}
+.intro-overlay .skip-intro:hover,
+.intro-overlay .skip-intro:focus-visible {
+    background: rgba(0, 255, 102, .22);
+}
+.intro-overlay.hidden .skip-intro { pointer-events: none; }
+@media (max-width: 768px) {
+    .intro-overlay .skip-intro {
+        right: max(14px, env(safe-area-inset-right));
+        bottom: max(18px, calc(env(safe-area-inset-bottom) + 12px));
+    }
+}
+
+/* ==========================================================================
+   ReBest — revisión de Equipo, Servicios, Soluciones y Portafolio 2026-11
+   No se cambian textos, fotografías, logos ni videos originales.
+   ========================================================================== */
+
+/* Navegar a un ancla no coloca el título detrás de la cabecera fija. */
+#inicio, #nosotros, #equipo, #servicios, #soluciones,
+#portafolio, #clientes, #contacto {
+    scroll-margin-top: 112px;
+}
+
+/* Clientes: flechas discretas SOLO para puntero de PC.
+   El loop sigue reproduciéndose al pulsarlas. */
+.clientes-carousel-shell {
+    position: relative;
+    width: min(100%, 1480px);
+    margin-inline: auto;
+    padding: 0 58px;
+    box-sizing: border-box;
+}
+.clientes-carousel-shell .clientes-container {
+    width: 100%;
+    margin-inline: auto;
+}
+.clientes-arrow {
+    position: absolute;
+    z-index: 4;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(0,255,102,.72);
+    border-radius: 50%;
+    color: #00ff66;
+    background: rgba(0,0,0,.86);
+    box-shadow: 0 0 16px rgba(0,255,102,.14);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease;
+}
+.clientes-prev { left: 7px; }
+.clientes-next { right: 7px; }
+.clientes-arrow:hover {
+    background: #00ff66;
+    color: #050505;
+}
+@media (max-width: 900px), (hover: none) {
+    .clientes-carousel-shell { padding: 0; }
+    .clientes-arrow { display: none; }
+}
+
+/* Equipo: dos perfiles equilibrados en PC y tarjetas legibles en móvil. */
+.team-panel { width: min(100%, 1160px); }
+.team-panel-card {
+    min-width: 0;
+    box-sizing: border-box;
+}
+.team-panel-card .team-info { min-width: 0; }
+.team-panel-card .team-role-highlight {
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+.team-panel-card .team-info p:last-child {
+    margin-top: 14px;
+    margin-bottom: 0;
+}
+@media (min-width: 901px) {
+    .team-panel-card { padding: clamp(28px, 3vw, 46px); }
+    .team-panel-card .team-image-wrapper { max-width: 210px; }
+    .team-panel-card .team-info p { line-height: 1.65; }
+}
+@media (max-width: 900px) {
+    .team-section { width: min(100%, 670px); margin-inline: auto; }
+    .team-panel {
+        grid-template-columns: minmax(0, 1fr) !important;
+        grid-template-rows: auto 1px auto !important;
+        width: 100%;
+        max-width: 620px;
+        border-radius: 20px;
+    }
+    .team-panel-card {
+        width: 100%;
+        min-width: 0;
+        gap: 16px;
+        padding: clamp(26px, 6vw, 38px) clamp(18px, 5vw, 34px) !important;
+        text-align: center;
+    }
+    .team-panel-divider {
+        width: 74% !important;
+        height: 1px !important;
+        margin-inline: auto;
+    }
+    .team-panel-card .team-image-wrapper {
+        width: min(100%, 210px);
+        max-width: 210px !important;
+        aspect-ratio: 4 / 5;
+    }
+    .team-panel-card .team-photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .team-panel-card .team-info {
+        max-width: 425px;
+        margin-inline: auto;
+    }
+    .team-panel-card .team-info h3 {
+        font-size: clamp(1.32rem, 4.6vw, 1.65rem);
+        line-height: 1.3;
+        margin: 4px 0 12px;
+    }
+    .team-panel-card .team-role-highlight {
+        font-size: clamp(.78rem, 3vw, .9rem);
+        line-height: 1.5;
+        letter-spacing: .6px;
+        margin: 0 0 12px;
+    }
+    .team-panel-card .team-info p:last-child {
+        font-size: clamp(.91rem, 3.15vw, 1rem);
+        line-height: 1.72;
+        margin: 0;
+        text-wrap: pretty;
+    }
+}
+@media (max-width: 359px) {
+    .team-panel-card { padding-inline: 16px !important; }
+    .team-panel-card .team-image-wrapper { width: min(100%, 180px); }
+}
+
+/* Servicios: evita tarjetas estrechas y alturas artificiales en móvil. */
+@media (min-width: 901px) and (max-width: 1199px) {
+    .services-panel.services-panel-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px;
+    }
+    .services-panel.services-panel-4 .services-panel-divider { display: none; }
+    .services-panel.services-panel-4 .service-card-panel {
+        min-width: 0;
+        padding: 38px 30px;
+    }
+}
+@media (max-width: 900px) {
+    .services-section { width: min(100%, 690px); margin-inline: auto; }
+    .services-block {
+        padding: 36px 0 30px;
+        overflow: hidden;
+    }
+    .services-block .carousel-container {
+        position: relative;
+        width: min(100%, 560px);
+        max-width: 560px;
+        padding: 0 clamp(46px, 11vw, 58px);
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+    .services-block .services-carousel {
+        display: flex;
+        align-items: stretch;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        gap: 12px;
+        padding: 12px 1px 18px;
+        touch-action: pan-x pan-y;
+        scrollbar-width: none;
+    }
+    .services-block .services-carousel::-webkit-scrollbar { display: none; }
+    .services-block .service-card {
+        flex: 0 0 100%;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        min-height: 0;
+        height: auto;
+        box-sizing: border-box;
+        padding: 24px clamp(15px, 4.5vw, 28px) 28px;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+        scroll-snap-align: center;
+    }
+    .services-block .service-card .card-number {
+        align-self: flex-start;
+        margin: 0;
+        font-size: clamp(1.65rem, 5vw, 2rem);
+        line-height: 1.15;
+    }
+    .services-block .service-card .service-icon-right {
+        position: static;
+        align-self: flex-end;
+        width: clamp(42px, 12vw, 60px);
+        max-height: 60px;
+        height: auto;
+        margin: -38px 0 0;
+        object-fit: contain;
+    }
+    .services-block .service-card .card-title {
+        width: 100%;
+        margin: 8px 0 0;
+        padding: 0;
+        font-size: clamp(1.04rem, 4.2vw, 1.35rem);
+        line-height: 1.28;
+        overflow-wrap: normal;
+    }
+    .services-block .service-card .card-description {
+        font-size: clamp(.92rem, 3.25vw, 1.03rem);
+        line-height: 1.68;
+        overflow-wrap: break-word;
+    }
+    .services-block .carousel-arrow {
+        width: 42px;
+        height: 42px;
+        border-width: 1px;
+        background: rgba(0, 0, 0, .88);
+    }
+    .services-block .carousel-arrow.prev { left: 3px; }
+    .services-block .carousel-arrow.next { right: 3px; }
+}
+
+/* Soluciones: panel de lectura amplio con iconos originales centrados.
+   Se mantiene el carrusel y la animación serpiente en PC. */
+@media (max-width: 900px) {
+    .soluciones-integrales { width: min(100%, 690px); margin-inline: auto; }
+    .soluciones-carousel-wrapper {
+        width: min(100%, 570px);
+        max-width: 570px;
+        padding: 0 clamp(46px, 11vw, 58px);
+        box-sizing: border-box;
+    }
+    .soluciones-carousel-wrapper .soluciones-panel {
+        display: flex;
+        width: 100%;
+        min-width: 0;
+        padding: 12px 1px 22px;
+        gap: 12px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        touch-action: pan-x pan-y;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+    .soluciones-carousel-wrapper .solucion-col-panel {
+        flex: 0 0 100% !important;
+        min-height: 0;
+        height: auto;
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 20px clamp(14px, 4vw, 26px) 26px !important;
+        gap: 18px;
+        border-left: 2px solid rgba(0,255,102,.55) !important;
+        box-sizing: border-box;
+        text-align: center;
+        align-items: center;
+    }
+    .soluciones-carousel-wrapper .solucion-col-title {
+        text-align: center;
+        font-size: clamp(1.03rem, 3.8vw, 1.3rem) !important;
+        line-height: 1.36;
+        overflow-wrap: normal;
+    }
+    .soluciones-carousel-wrapper .solucion-col-desc {
+        text-align: center;
+        font-size: clamp(.97rem, 3.3vw, 1.08rem) !important;
+        line-height: 1.75;
+        overflow-wrap: break-word;
+        text-wrap: pretty;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons {
+        width: 100%;
+        max-width: 260px;
+        margin: 6px auto 0;
+        justify-content: center;
+        gap: 12px;
+    }
+    .soluciones-carousel-wrapper .icon-circle {
+        width: 44px;
+        height: 44px;
+    }
+    .soluciones-carousel-wrapper .partner-logo-img {
+        width: clamp(94px, 26vw, 125px);
+        height: 48px;
+        margin: 0;
+    }
+    .soluciones-carousel-wrapper .carousel-arrow {
+        width: 42px;
+        height: 42px;
+        border-width: 1px;
+        background: rgba(0,0,0,.88);
+    }
+    .soluciones-carousel-wrapper .carousel-arrow.prev { left: 3px; }
+    .soluciones-carousel-wrapper .carousel-arrow.next { right: 3px; }
+}
+
+/* Portafolio: vídeo vertical protagonista, navegación fuera del centro de
+   la imagen y texto de Instagram a una distancia consistente. */
+@media (max-width: 900px) {
+    .portfolio-section { width: min(100%, 690px); margin-inline: auto; }
+    .portfolio-carousel-wrapper {
+        width: min(100%, 425px);
+        max-width: 425px;
+        overflow: hidden;
+        border-radius: 17px;
+        margin: 26px auto 0;
+    }
+    .portfolio-mobile-slide {
+        aspect-ratio: 9 / 14;
+        min-height: 0;
+        height: auto;
+    }
+    .portfolio-mobile-media {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .portfolio-mobile-btn {
+        width: 44px;
+        height: 44px;
+        background: rgba(0,0,0,.86);
+    }
+    .portfolio-mobile-btn.prev { left: 5px; }
+    .portfolio-mobile-btn.next { right: 5px; }
+    .portfolio-ig-text {
+        padding: 0 12px;
+        line-height: 1.65;
+        margin: 24px auto 0 !important;
+    }
+}
+
+/* Indicadores visibles, suficientemente grandes para tocar, sin
+   convertir la totalidad de cada punto en una mancha de color. */
+@media (max-width: 900px) {
+    #services-dots, #soluciones-dots {
+        gap: 4px;
+        margin-top: 16px;
+        align-items: center;
+        justify-content: center;
+    }
+    #services-dots .dot, #soluciones-dots .dot {
+        display: inline-flex;
+        appearance: none;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        box-shadow: none;
+        transform: none;
+        cursor: pointer;
+    }
+    #services-dots .dot::before, #soluciones-dots .dot::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background: rgba(255,255,255,.35);
+        border-radius: 50%;
+    }
+    #services-dots .dot.active::before, #soluciones-dots .dot.active::before {
+        background: var(--accent-green);
+        box-shadow: 0 0 9px rgba(0,255,102,.6);
+        transform: scale(1.25);
+    }
+}
+
+/* Navegación táctil y foco: evita "doble" scrollbar exterior. */
+@media (max-width: 900px) {
+    .team-panel, .services-section, .soluciones-integrales,
+    .portfolio-section, .clientes-carousel-shell {
+        min-width: 0;
+        box-sizing: border-box;
+    }
+    #services-carousel, #soluciones-panel { overscroll-behavior-x: contain; }
+}
+
+/* ==========================================================================
+   ReBest — pulido final header, navegación, Soluciones y contacto del footer.
+   Conserva todas las palabras, imágenes, iconos originales y enlaces.
+   ========================================================================== */
+
+/* Header: negro elegante, verde de acento, altura estable al navegar. */
+.main-header {
+    min-height: 76px;
+    box-sizing: border-box;
+    padding: 14px clamp(20px, 3vw, 48px);
+    background: rgba(5, 7, 6, .96);
+    border-bottom: 1px solid rgba(0, 255, 102, .22);
+    box-shadow: 0 5px 22px rgba(0, 0, 0, .22);
+    gap: 20px;
+}
+.main-header.scrolled {
+    min-height: 70px;
+    padding: 10px clamp(20px, 3vw, 48px);
+    background: rgba(3, 6, 4, .98);
+    box-shadow: 0 7px 22px rgba(0, 0, 0, .42);
+}
+.main-header .logo { flex: 0 0 auto; }
+.main-header .logo-img { width: auto; height: clamp(35px, 3.1vw, 42px); }
+.desktop-nav-items { gap: clamp(12px, 2vw, 34px); }
+.desktop-nav-items a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: clamp(.81rem, .94vw, .94rem);
+    color: rgba(255, 255, 255, .89);
+    white-space: nowrap;
+}
+.desktop-nav-items a:hover,
+.desktop-nav-items a:focus-visible {
+    color: #00ff66;
+}
+@media (max-width: 900px) {
+    .main-header, .main-header.scrolled {
+        min-height: 74px;
+        height: 74px;
+        padding: 11px clamp(14px, 4vw, 24px);
+        backdrop-filter: none;
+    }
+    .main-header .logo-img { height: 36px; }
+    .hamburger-toggle {
+        flex: 0 0 48px;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,.17);
+        background: linear-gradient(145deg, rgba(30,34,31,.85), rgba(5,7,6,.96));
+        box-shadow: 0 2px 12px rgba(0,0,0,.28);
+        -webkit-tap-highlight-color: transparent;
+    }
+    .hamburger-toggle.open {
+        background: rgba(0,255,102,.10);
+        border-color: rgba(0,255,102,.6);
+    }
+
+    /* El panel móvil ocupa toda la pantalla debajo del header:
+       no tapa el logotipo ni el botón para cerrarlo. */
+    .hamburger-menu {
+        top: 74px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: calc(100dvh - 74px);
+        max-height: calc(100dvh - 74px);
+        box-sizing: border-box;
+        padding: clamp(14px, 3vh, 32px) clamp(18px, 6vw, 40px)
+            max(22px, env(safe-area-inset-bottom));
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        gap: 14px;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+        background:
+            radial-gradient(ellipse at 50% 12%, rgba(0,255,102,.09), transparent 58%),
+            linear-gradient(150deg, #060a07, #0a0c0a 68%, #050705);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-top: 1px solid rgba(0,255,102,.16);
+        scrollbar-width: none;
+        z-index: 1090;
+    }
+    .hamburger-menu::-webkit-scrollbar { display: none; }
+    .hamburger-menu .menu-header {
+        margin: 0;
+        padding: 5px 0 10px;
+        text-align: center;
+        border-bottom: 1px solid rgba(0,255,102,.15);
+    }
+    .hamburger-menu .menu-subtitle {
+        margin: 0;
+        font-size: .7rem;
+        line-height: 1.5;
+        letter-spacing: .18em;
+        color: #a9b7ac !important;
+    }
+    .hamburger-menu .menu-items {
+        width: min(100%, 440px);
+        max-width: 440px;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: clamp(3px, .75vh, 9px);
+        flex: 0 0 auto;
+        text-align: left;
+    }
+    .hamburger-menu .menu-items li {
+        margin: 0;
+        padding: 0;
+        min-width: 0;
+    }
+    .hamburger-menu .menu-items a {
+        width: 100%;
+        min-width: 0;
+        min-height: clamp(44px, 6.5vh, 59px);
+        padding: 10px clamp(14px, 4vw, 24px);
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: rgba(255,255,255,.93);
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background: rgba(255,255,255,.035);
+        font-size: clamp(1.03rem, 4vw, 1.38rem);
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: .015em;
+        text-transform: uppercase;
+        transform: none;
+        transition: background .2s ease, border-color .2s ease, color .2s ease;
+    }
+    .hamburger-menu .menu-items a::after {
+        content: "›";
+        position: static;
+        display: inline-block;
+        width: auto;
+        height: auto;
+        flex: 0 0 auto;
+        margin-left: 12px;
+        background: transparent;
+        color: #00ff66;
+        opacity: .75;
+        font-family: Arial, sans-serif;
+        font-size: 1.45rem;
+        line-height: 1;
+        transform: none;
+        transition: transform .2s ease, opacity .2s ease;
+    }
+    .hamburger-menu .menu-items a:hover,
+    .hamburger-menu .menu-items a:focus-visible {
+        background: rgba(0,255,102,.11);
+        border-color: rgba(0,255,102,.3);
+        color: #fff;
+        transform: none;
+    }
+    .hamburger-menu .menu-items a:hover::after {
+        width: auto;
+        opacity: 1;
+        transform: translateX(3px);
+    }
+}
+@media (max-width: 900px) and (max-height: 600px) {
+    .hamburger-menu { gap: 6px; padding-top: 8px; }
+    .hamburger-menu .menu-items { gap: 2px; }
+    .hamburger-menu .menu-items a {
+        min-height: 42px;
+        font-size: 1rem;
+        padding-block: 6px;
+    }
+}
+
+/* Soluciones: todo el material gráfico debe quedar dentro de cada slide. */
+.soluciones-carousel-wrapper .solucion-col-panel { min-width: 0; }
+.soluciones-carousel-wrapper .solucion-col-icons {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+}
+.soluciones-carousel-wrapper .solucion-col-icons .icon-circle,
+.soluciones-carousel-wrapper .solucion-col-icons .partner-logo-img {
+    flex-shrink: 0;
+    box-sizing: border-box;
+    transform: none;
+}
+.soluciones-carousel-wrapper .solucion-col-icons .adobe-logo-img,
+.soluciones-carousel-wrapper .solucion-col-icons .davinci-img,
+.soluciones-carousel-wrapper .solucion-col-icons .mkt-img {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transform: none;
+}
+@media (max-width: 900px) {
+    .soluciones-carousel-wrapper .soluciones-panel { align-items: stretch; }
+    .soluciones-carousel-wrapper .solucion-col-panel {
+        padding: 22px clamp(12px, 4vw, 24px) 26px !important;
+        overflow: hidden;
+        align-items: center;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        gap: 12px;
+        width: min(100%, 230px);
+        max-width: 230px;
+        height: auto;
+        min-height: 0;
+        margin: 4px auto 0;
+        padding: 0;
+        overflow: visible;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons .icon-circle {
+        display: flex;
+        flex: 0 0 43px;
+        width: 43px;
+        height: 43px;
+        padding: 0;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons .partner-logo-img {
+        display: flex;
+        flex: 0 1 96px;
+        width: 96px;
+        max-width: 100%;
+        height: 46px;
+        margin: 0;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons .adobe-logo-img,
+    .soluciones-carousel-wrapper .solucion-col-icons .davinci-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons .mkt-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+@media (max-width: 359px) {
+    .soluciones-carousel-wrapper .solucion-col-icons {
+        width: min(100%, 196px);
+        max-width: 196px;
+        gap: 9px;
+    }
+    .soluciones-carousel-wrapper .solucion-col-icons .icon-circle {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+    }
+}
+
+/* Contacto del footer: ancho propio y correo sin recortes en PC ni móvil. */
+.main-footer .footer-contact-info {
+    width: 100%;
+    min-width: 0;
+}
+.main-footer .footer-contact-info li {
+    min-width: 0;
+    max-width: 100%;
+    align-items: flex-start;
+}
+.main-footer .footer-contact-info li i {
+    flex: 0 0 18px;
+    margin-top: 4px;
+}
+.main-footer .footer-contact-info li a {
+    display: inline-block;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    line-height: 1.6;
+}
+@media (min-width: 1025px) {
+    .main-footer .footer-container {
+        grid-template-columns: minmax(190px,1.25fr) minmax(90px,.7fr)
+            minmax(155px,1.1fr) minmax(145px,1fr) minmax(225px,1.25fr);
+        gap: clamp(15px, 2vw, 28px);
+        max-width: 1250px;
+    }
+}
+@media (min-width: 701px) and (max-width: 1024px) {
+    .main-footer .footer-col.contact-col { grid-column: 1 / -1; }
+    .main-footer .footer-contact-info {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap: 6px 20px;
+    }
+}
+@media (max-width: 700px) {
+    .main-footer .footer-contact-info { width: 100%; }
+    .main-footer .footer-contact-info li {
+        gap: 10px;
+        align-items: flex-start;
+    }
+    .main-footer .footer-contact-info li a {
+        min-height: 44px;
+        font-size: clamp(.81rem, 3.4vw, .94rem);
+        overflow-wrap: anywhere;
+    }
+}
+
+/* ==========================================================================
+   ReBest — refinamiento visual Nov 2026: servicios, DaVinci, menú sobrio.
+   No altera el contenido ni los archivos de imagen/vídeo.
+   ========================================================================== */
+
+/* DaVinci: la imagen tiene márgenes transparentes dentro del archivo.
+   Escalamos la imagen intrínseca sin agrandar el aro que la contiene. */
+.soluciones-carousel-wrapper .solucion-col-icons .icon-circle.dv {
+    display: flex;
+    flex: 0 0 45px;
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+    min-height: 45px;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+}
+.soluciones-carousel-wrapper .solucion-col-icons .icon-circle.dv .davinci-img {
+    display: block;
+    flex: 0 0 auto;
+    width: 188%;
+    height: 132%;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    object-position: center;
+    transform: none !important;
+}
+@media (max-width: 900px) {
+    .soluciones-carousel-wrapper .solucion-col-icons .icon-circle.dv {
+        flex-basis: 43px;
+        width: 43px;
+        height: 43px;
+        min-width: 43px;
+        min-height: 43px;
+    }
+}
+@media (max-width: 359px) {
+    .soluciones-carousel-wrapper .solucion-col-icons .icon-circle.dv {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        min-height: 38px;
+    }
+}
+
+/* Servicios: el ícono queda siempre dentro del borde, alineado al
+   número (extremos opuestos). El título comienza DEBAJO de esa fila,
+   evitando solapes incluso a 320 px. */
+@media (max-width: 900px) {
+    .services-block .service-card {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        box-sizing: border-box;
+        min-height: 0;
+        height: auto;
+        padding: clamp(22px, 5vw, 30px) clamp(16px, 4.5vw, 28px)
+            clamp(26px, 6vw, 34px);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+    }
+    .services-block .service-card .card-number {
+        position: relative;
+        top: auto;
+        right: auto;
+        bottom: auto;
+        left: auto;
+        align-self: flex-start;
+        display: block;
+        width: auto;
+        min-height: clamp(46px, 12vw, 58px);
+        margin: 0;
+        padding: 0;
+        font-size: clamp(1.7rem, 6vw, 2.15rem);
+        line-height: 1;
+        z-index: 2;
+    }
+    .services-block .service-card .service-icon-right {
+        position: absolute;
+        top: clamp(15px, 4vw, 24px);
+        right: clamp(15px, 4vw, 24px);
+        bottom: auto;
+        left: auto;
+        display: block;
+        width: clamp(46px, 11vw, 56px);
+        height: clamp(46px, 11vw, 56px);
+        max-width: 56px;
+        max-height: 56px;
+        margin: 0;
+        padding: 0;
+        align-self: auto;
+        object-fit: contain;
+        object-position: center;
+        transform: none !important;
+        z-index: 2;
+        filter: drop-shadow(0 0 7px rgba(255,255,255,.2));
+    }
+    .services-block .service-card .card-title {
+        width: 100%;
+        margin: clamp(10px, 2vw, 14px) 0 14px;
+        padding: 0;
+        font-size: clamp(1.07rem, 4.25vw, 1.33rem);
+        line-height: 1.3;
+        white-space: normal;
+        overflow-wrap: normal;
+    }
+    .services-block .service-card .card-description {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        font-size: clamp(.9rem, 3.25vw, 1.02rem);
+        line-height: 1.65;
+        text-wrap: pretty;
+    }
+}
+@media (max-width: 359px) {
+    .services-block .service-card {
+        padding: 20px 15px 26px;
+    }
+    .services-block .service-card .service-icon-right {
+        top: 13px;
+        right: 13px;
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* Menú móvil translúcido: deja ver la landing y sus fondos originales
+   detrás, con links editoriales simples. Reemplaza el override opaco. */
+@media (max-width: 900px) {
+    .hamburger-menu {
+        background: linear-gradient(
+            165deg,
+            rgba(3, 8, 5, .68) 0%,
+            rgba(3, 7, 5, .58) 56%,
+            rgba(2, 6, 4, .72) 100%
+        );
+        -webkit-backdrop-filter: blur(6px) saturate(110%);
+        backdrop-filter: blur(6px) saturate(110%);
+        border-top: 1px solid rgba(0, 255, 102, .19);
+        box-shadow: 0 16px 36px rgba(0, 0, 0, .18);
+        padding: clamp(18px, 3vh, 30px) 24px max(30px, env(safe-area-inset-bottom));
+        gap: 15px;
+    }
+    .hamburger-menu .menu-header {
+        width: min(100%, 400px);
+        margin: 0 auto;
+        padding: 0 6px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, .18);
+        text-align: left;
+    }
+    .hamburger-menu .menu-subtitle {
+        font-size: .69rem;
+        line-height: 1.4;
+        font-weight: 700 !important;
+        letter-spacing: .12em;
+        color: rgba(255, 255, 255, .75) !important;
+    }
+    .hamburger-menu .menu-items {
+        width: min(100%, 400px);
+        max-width: 400px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        text-align: left;
+    }
+    .hamburger-menu .menu-items li {
+        margin: 0;
+        padding: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, .16);
+    }
+    .hamburger-menu .menu-items a {
+        min-height: clamp(50px, 8vh, 62px);
+        width: 100%;
+        margin: 0;
+        padding: 10px 6px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        font-size: clamp(1.07rem, 4vw, 1.35rem);
+        font-weight: 700;
+        letter-spacing: .025em;
+        line-height: 1.25;
+        color: #fff;
+        text-shadow: 0 1px 6px rgba(0, 0, 0, .4);
+        text-transform: none;
+        transform: none;
+    }
+    .hamburger-menu .menu-items a::after {
+        content: none;
+        display: none;
+    }
+    .hamburger-menu .menu-items a:hover,
+    .hamburger-menu .menu-items a:focus-visible {
+        background: rgba(0, 255, 102, .08);
+        border: 0;
+        color: #00ff66;
+        transform: none;
+        box-shadow: none;
+    }
+    .hamburger-toggle { box-shadow: none; }
+}
+@media (max-width: 900px) and (max-height: 600px) {
+    .hamburger-menu { gap: 8px; padding-top: 10px; }
+    .hamburger-menu .menu-header { padding-bottom: 9px; }
+    .hamburger-menu .menu-items a {
+        min-height: 42px;
+        padding: 6px;
+        font-size: 1rem;
+    }
+}
+/* En navegadores sin blur, se conserva el menú translúcido y legible. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    @media (max-width: 900px) {
+        .hamburger-menu { background: rgba(3, 8, 5, .82); }
+    }
 }
