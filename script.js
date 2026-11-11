@@ -84,87 +84,78 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // =========================================================
-    // 2. LÓGICA DE LA PANTALLA DE INTRODUCCIÓN (MULTI-VIDEO Y ALTA PRECISIÓN)
+    // 2. INTRO DE VIDEO: reproducción original sin bloqueo del scroll.
     // =========================================================
     const introOverlay = document.querySelector('.intro-overlay');
-    const introVideos = document.querySelectorAll('.intro-overlay video');
-
+    const introVideos = Array.from(document.querySelectorAll('.intro-overlay video'));
     const TIEMPO_REFLEJO = 4.700;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; 
-
-    let animacionFrameId;
-    let videoActivo = null;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let introFinished = false;
+    let introTimeCheck = 0;
+    let introFallback = 0;
 
     const hideIntro = () => {
-        if (introOverlay && !introOverlay.classList.contains('hidden')) {
+        if (introFinished) return;
+        introFinished = true;
+        window.clearTimeout(introFallback);
+        window.cancelAnimationFrame(introTimeCheck);
+        if (introOverlay) {
             introOverlay.classList.add('hidden');
             introOverlay.style.pointerEvents = 'none';
-            
-            iniciarAnimacionesHero();
-            
-            introVideos.forEach(v => v.pause());
-            cancelAnimationFrame(animacionFrameId);
-            
-            setTimeout(() => {
-                introOverlay.style.display = 'none'; 
-            }, 600); 
-            
-            body.classList.remove('intro-active'); 
+            window.setTimeout(() => { introOverlay.style.display = 'none'; }, 450);
         }
+        introVideos.forEach(video => video.pause());
+        body.classList.remove('intro-active');
+        iniciarAnimacionesHero();
     };
 
-    // En móviles, el primer gesto debe desplazar la página sin requerir
-    // un segundo toque. La intro permanece intacta si no hay interacción.
-    ['touchstart', 'wheel', 'scroll', 'pointerdown'].forEach(eventName => {
-        window.addEventListener(eventName, hideIntro, { once: true, passive: true });
+    // La intro es solo visual y nunca puede bloquear un scroll iniciado
+    // en celular. Se cierra al interactuar con la página, sin preventDefault.
+    ['touchstart', 'wheel', 'pointerdown'].forEach(type => {
+        document.addEventListener(type, hideIntro, { once: true, passive: true });
     });
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 8) hideIntro();
+    }, { passive: true });
     window.addEventListener('pagehide', hideIntro, { once: true });
 
-    const checkVideoTime = () => {
-        if (videoActivo && videoActivo.currentTime >= TIEMPO_REFLEJO) { 
-            hideIntro();
-        } else if (introOverlay && !introOverlay.classList.contains('hidden')) {
-            animacionFrameId = requestAnimationFrame(checkVideoTime);
-        }
-    };
-
-    // Solo reproducimos el video que realmente está visible según el viewport,
-    // para evitar que ambos compitan por iniciar la animación a la vez.
-    const obtenerVideoVisible = () => {
-        return Array.from(introVideos).find(v => window.getComputedStyle(v).display !== 'none') || null;
-    };
-
-    if (prefersReducedMotion) {
+    if (!introOverlay || !introVideos.length || reducedMotion) {
         hideIntro();
-    } else if (introVideos.length > 0) {
-        const videoVisible = obtenerVideoVisible();
+    } else {
+        const activeVideo = introVideos.find(video => getComputedStyle(video).display !== 'none');
+        if (!activeVideo) {
+            hideIntro();
+        } else {
+            const checkVideoTime = () => {
+                if (introFinished) return;
+                if (activeVideo.currentTime >= TIEMPO_REFLEJO) {
+                    hideIntro();
+                } else {
+                    introTimeCheck = window.requestAnimationFrame(checkVideoTime);
+                }
+            };
+            activeVideo.addEventListener('ended', hideIntro, { once: true });
+            activeVideo.addEventListener('error', hideIntro, { once: true });
+            activeVideo.addEventListener('playing', () => {
+                window.cancelAnimationFrame(introTimeCheck);
+                introTimeCheck = window.requestAnimationFrame(checkVideoTime);
+            }, { once: true });
 
-        if (videoVisible) {
-            videoVisible.preload = 'auto';
-            const playPromise = videoVisible.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(() => {
+            // Registrar eventos antes de solicitar reproducción evita perder
+            // el evento de play cuando el vídeo ya está en caché.
+            activeVideo.preload = 'auto';
+            activeVideo.muted = true;
+            const playback = activeVideo.play();
+            if (playback && typeof playback.catch === 'function') {
+                playback.catch(() => {
+                    // No cubrir la landing con una pantalla negra si el
+                    // navegador rechaza el autoplay.
                     hideIntro();
                 });
             }
-
-            videoVisible.addEventListener('play', () => {
-                videoActivo = videoVisible;
-                cancelAnimationFrame(animacionFrameId);
-                animacionFrameId = requestAnimationFrame(checkVideoTime);
-            });
-
-            videoVisible.addEventListener('ended', hideIntro);
-            videoVisible.addEventListener('error', hideIntro);
-        } else {
-            // No hay video visible (caso inesperado): saltamos la intro directamente
-            hideIntro();
+            introFallback = window.setTimeout(hideIntro, 7000);
         }
-    } else {
-        hideIntro();
     }
-
-    setTimeout(hideIntro, 5000);
 
     // =========================================================
     // 3. LÓGICA DEL MENÚ HAMBURGUESA
@@ -347,8 +338,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Los logos de clientes se muestran en una cuadrícula estática y accesible
-    // en móvil y escritorio: no clonamos elementos ni forzamos animación continua.
+    // Carrusel de logos sin tarjetas: se clona una sola serie solo a nivel
+    // visual para que el movimiento sea continuo y sin saltos. Los clones
+    // se ocultan a lectores de pantalla y no son interactivos.
+    const clientTrack = document.querySelector('.clientes-grid');
+    const clientViewport = document.querySelector('.clientes-container');
+    if (clientTrack && clientViewport) {
+        const originals = Array.from(clientTrack.querySelectorAll('.client-logo-box:not(.clone)'));
+        if (originals.length) {
+            originals.forEach(item => {
+                const clone = item.cloneNode(true);
+                clone.classList.add('clone');
+                clone.setAttribute('aria-hidden', 'true');
+                clientTrack.appendChild(clone);
+            });
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            const setClientTrackWidth = () => {
+                const firstClone = clientTrack.querySelector('.client-logo-box.clone');
+                if (!firstClone) return;
+                // Distancia real hasta el comienzo de la segunda serie,
+                // incluido el gap, para no crear salto visible en el loop.
+                const distance = firstClone.offsetLeft - originals[0].offsetLeft;
+                if (distance > 0) clientTrack.style.setProperty('--client-distance', distance + 'px');
+            };
+            const resizeObserver = typeof ResizeObserver !== 'undefined'
+                ? new ResizeObserver(setClientTrackWidth) : null;
+            if (resizeObserver) resizeObserver.observe(clientViewport);
+            window.addEventListener('load', setClientTrackWidth, { once: true });
+            window.addEventListener('resize', setClientTrackWidth, { passive: true });
+            setClientTrackWidth();
+
+            // Pausa de forma natural cuando el usuario toca o señala
+            // la banda. Sin captura táctil ni bloqueo de scroll vertical.
+            const pauseClients = () => clientViewport.classList.add('is-paused');
+            const resumeClients = () => clientViewport.classList.remove('is-paused');
+            clientViewport.addEventListener('pointerenter', pauseClients);
+            clientViewport.addEventListener('pointerleave', resumeClients);
+            clientViewport.addEventListener('touchstart', pauseClients, { passive: true });
+            clientViewport.addEventListener('touchend', () => {
+                // Se reanuda con la siguiente interacción fuera de la banda,
+                // evitando temporizadores mientras se hace scroll.
+            }, { passive: true });
+            document.addEventListener('touchstart', event => {
+                if (!clientViewport.contains(event.target)) resumeClients();
+            }, { passive: true });
+            if (reduceMotion.matches) clientViewport.classList.add('is-reduced-motion');
+            reduceMotion.addEventListener?.('change', event => {
+                clientViewport.classList.toggle('is-reduced-motion', event.matches);
+            });
+        }
+    }
 
     // =========================================================
     // 8. CARRUSEL DE SERVICIOS Y SOLUCIONES (función reutilizable)
