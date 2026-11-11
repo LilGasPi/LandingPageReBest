@@ -75,7 +75,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     </noscript>
 
-    <link rel="stylesheet" href="style.css?v=2.5">
+    <link rel="stylesheet" href="style.css?v=2.6">
 </head>
 <body class="intro-active">
     <script>
@@ -98,17 +98,18 @@
     </script> 
     
     <div id="intro-overlay" class="intro-overlay">
-        <video id="intro-video-desktop" class="video-desktop" muted playsinline webkit-playsinline preload="metadata" aria-hidden="true">
+        <video id="intro-video-desktop" class="video-desktop" autoplay muted playsinline webkit-playsinline preload="auto" aria-hidden="true">
             <source src="./img/rebest-presentacion-2.mp4" type="video/mp4">
             <track kind="captions" src="./img/vacio.vtt" srclang="es" label="Español" default>
             Tu navegador no soporta videos HTML5.
         </video>
         
-        <video id="intro-video-mobile" class="video-mobile" muted playsinline webkit-playsinline preload="metadata" aria-hidden="true">
+        <video id="intro-video-mobile" class="video-mobile" autoplay muted playsinline webkit-playsinline preload="auto" aria-hidden="true">
             <source src="./img/animacion-rebest-vertical.mp4" type="video/mp4"> 
             <track kind="captions" src="./img/vacio.vtt" srclang="es" label="Español" default>
             Tu navegador no soporta videos HTML5.
         </video>
+        <button id="skip-intro" class="skip-intro" type="button" aria-label="Omitir video de presentación">Omitir intro <span aria-hidden="true">→</span></button>
     </div>
     
     <header class="main-header">
@@ -684,6 +685,6 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <script src="script.js?v=2.0" defer></script>
+    <script src="script.js?v=2.1" defer></script>
 </body>
 </html>
