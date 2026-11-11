@@ -411,6 +411,32 @@ document.addEventListener('DOMContentLoaded', () => {
             window.addEventListener('load', scheduleClientMeasure, { once: true });
             document.fonts?.ready?.then(scheduleClientMeasure);
             scheduleClientMeasure();
+
+            // Flechas del carrusel en escritorio: avanzan o retroceden
+            // dos logos dentro del propio loop, sin congelarlo ni alterar
+            // su reproducción automática. Con movimiento reducido, el
+            // desplazamiento es manual.
+            const clientPrev = document.querySelector('.clientes-prev');
+            const clientNext = document.querySelector('.clientes-next');
+            const moveClients = direction => {
+                const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const step = originals[0].getBoundingClientRect().width
+                    + (Number.parseFloat(getComputedStyle(clientTrack).columnGap) || 0);
+                if (reduced) {
+                    clientViewport.scrollBy({left: step * direction * 2, behavior: 'smooth'});
+                    return;
+                }
+                const animation = clientTrack.getAnimations().find(a => a.animationName === 'rebestLogosLoop');
+                if (!animation) return;
+                const duration = Number.parseFloat(getComputedStyle(clientTrack).animationDuration) * 1000;
+                const distance = Math.abs(Number.parseFloat(getComputedStyle(clientTrack).getPropertyValue('--client-offset')));
+                if (!(duration > 0) || !(distance > 0)) return;
+                const delta = step * 2 / distance * duration * direction;
+                const current = animation.currentTime || 0;
+                animation.currentTime = ((current + delta) % duration + duration) % duration;
+            };
+            clientPrev?.addEventListener('click', () => moveClients(-1));
+            clientNext?.addEventListener('click', () => moveClients(1));
         }
     }
 
@@ -439,7 +465,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const updateDots = (index) => {
             dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
+                const selected = i === index;
+                dot.classList.toggle('active', selected);
+                dot.setAttribute('aria-pressed', String(selected));
             });
         };
 
