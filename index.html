@@ -14,13 +14,14 @@
     <meta property="og:site_name" content="ReBest">
     <meta property="og:title" content="ReBest | Agencia de Marketing Digital">
     <meta property="og:description" content="Sistema de Captación de Clientes para Negocios de Servicios | Estrategia · Meta Ads · Google Ads · Automatización con IA">
-    <meta property="og:image" content="https://agenciarebest.cl/img/logo-bkn.jpg">
+    <meta property="og:image" content="https://agenciarebest.cl/img/portada-rebest.jpg">
     <meta property="og:url" content="https://agenciarebest.cl/">
     <meta property="og:locale" content="es_CL">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image:alt" content="ReBest, agencia de marketing digital">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ReBest | Agencia de Marketing Digital">
     <meta name="twitter:description" content="Sistema de Captación de Clientes para Negocios de Servicios | Estrategia · Meta Ads · Google Ads · Automatización con IA">
-    <meta name="twitter:image" content="https://agenciarebest.cl/img/logo-bkn.jpg">
+    <meta name="twitter:image" content="https://agenciarebest.cl/img/portada-rebest.jpg">
 
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
@@ -48,8 +49,8 @@
       "@type": "Organization",
       "name": "ReBest",
       "url": "https://agenciarebest.cl/",
-      "logo": "https://agenciarebest.cl/img/logo-bkn.jpg",
-      "image": "https://agenciarebest.cl/img/logo-bkn.jpg",
+      "logo": "https://agenciarebest.cl/img/logo-rb-blanco.webp",
+      "image": "https://agenciarebest.cl/img/portada-rebest.jpg",
       "description": "Sistema de Captación de Clientes para Negocios de Servicios | Estrategia · Meta Ads · Google Ads · Automatización con IA",
       "address": {
         "@type": "PostalAddress",
@@ -74,7 +75,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     </noscript>
 
-    <link rel="stylesheet" href="style.css?v=2.1">
+    <link rel="stylesheet" href="style.css?v=2.2">
 </head>
 <body class="intro-active">
     <script>
@@ -95,13 +96,13 @@
     </script> 
     
     <div id="intro-overlay" class="intro-overlay">
-        <video id="intro-video-desktop" class="video-desktop" muted playsinline preload="none">
+        <video id="intro-video-desktop" class="video-desktop" muted playsinline preload="none" aria-hidden="true">
             <source src="./img/rebest-presentacion-2.mp4" type="video/mp4">
             <track kind="captions" src="./img/vacio.vtt" srclang="es" label="Español" default>
             Tu navegador no soporta videos HTML5.
         </video>
         
-        <video id="intro-video-mobile" class="video-mobile" muted playsinline preload="none">
+        <video id="intro-video-mobile" class="video-mobile" muted playsinline preload="none" aria-hidden="true">
             <source src="./img/animacion-rebest-vertical.mp4" type="video/mp4"> 
             <track kind="captions" src="./img/vacio.vtt" srclang="es" label="Español" default>
             Tu navegador no soporta videos HTML5.
@@ -127,14 +128,14 @@
             </ul>
         </nav>
 
-        <button class="hamburger-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <button type="button" class="hamburger-toggle" aria-label="Abrir menú" aria-controls="mobile-navigation" aria-expanded="false">
             <span class="bar bar-1"></span>
             <span class="bar bar-2"></span>
             <span class="bar bar-3"></span>
         </button>
     </header>
 
-    <nav class="hamburger-menu" aria-hidden="true">
+    <nav id="mobile-navigation" class="hamburger-menu" aria-label="Navegación móvil" aria-hidden="true" inert>
         <div class="menu-header">
             <p class="menu-subtitle">Agencia de Marketing</p>
         </div>
@@ -145,6 +146,7 @@
             <li><a href="#soluciones">Soluciones</a></li>
             <li><a href="#portafolio">Portafolio</a></li>
             <li><a href="#clientes">Clientes</a></li>
+            <li><a href="#contacto">Contacto</a></li>
         </ul>
         
     </nav>
@@ -605,6 +607,8 @@
             <div class="animated-neon-line"></div>
         </div>
 
+    </main>
+
         <footer class="main-footer fade-in">
             <div class="footer-container">
                 
@@ -673,12 +677,11 @@
                 <p class="copyright">ReBest® - Santiago, Chile - 2026. Todos los derechos reservados.</p>
             </div>
         </footer>
-    </main>
 
     <a href="https://api.whatsapp.com/send?phone=56991777994&text=Hola%20ReBest%20%F0%9F%91%8B%20Me%20gustar%C3%ADa%20conocer%20m%C3%A1s%20sobre%20su%20sistema%20de%20captaci%C3%B3n%20de%20clientes%20y%20ver%20c%C3%B3mo%20podr%C3%ADa%20aplicarse%20a%20mi%20negocio." class="whatsapp-flotante" target="_blank" rel="noopener noreferrer" aria-label="Chatear por WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <script src="script.js?v=1.6"></script>
+    <script src="script.js?v=1.7" defer></script>
 </body>
 </html>
