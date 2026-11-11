@@ -7952,3 +7952,61 @@ body.intro-active .whatsapp-flotante,
         min-height: 42px;
     }
 }
+
+/* Identificador neutro para el logo original de Google en Soluciones. */
+#soluciones .solucion-col-panel .solucion-col-icons:has(.brand-google-mark) {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+    gap: 10px;
+    overflow: visible;
+    margin: 8px auto 0;
+}
+#soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img.meta-ads,
+#soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img.brand-google-mark {
+    display: flex !important;
+    flex: 0 1 130px;
+    width: 130px;
+    max-width: calc((100% - 10px) / 2);
+    min-width: 0;
+    height: 48px;
+    min-height: 48px;
+    margin: 0;
+    padding: 0;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    justify-content: center;
+    align-items: center;
+}
+#soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img.brand-google-mark .mkt-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+}
+@media (max-width: 900px) {
+    #soluciones .solucion-col-panel .solucion-col-icons:has(.brand-google-mark) {
+        max-width: 230px;
+        flex-wrap: nowrap;
+        gap: 10px;
+    }
+    #soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img.meta-ads,
+    #soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img.brand-google-mark {
+        flex: 0 1 108px;
+        width: 108px;
+        max-width: calc((100% - 10px) / 2);
+        height: 42px;
+        min-height: 42px;
+    }
+}
