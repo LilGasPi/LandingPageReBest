@@ -7880,3 +7880,75 @@ body.intro-active .whatsapp-flotante,
         max-width: 96px;
     }
 }
+
+/* ReBest — logos de Marketing Digital: pareja compacta, sin salto de fila */
+#soluciones .solucion-col-panel .solucion-col-icons:has(.google-ads) {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(8px, 1vw, 14px);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+    margin: 8px auto 0;
+    overflow: visible;
+}
+#soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img.meta-ads,
+#soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img.google-ads {
+    display: flex !important;
+    position: relative;
+    flex: 0 1 128px;
+    width: 128px;
+    max-width: calc((100% - 14px) / 2);
+    min-width: 0;
+    height: 48px;
+    min-height: 48px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+}
+#soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img .mkt-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+}
+#soluciones .solucion-col-panel .solucion-col-icons .google-ads-fallback:not([hidden]) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+#soluciones .solucion-col-panel .solucion-col-icons .google-ads-fallback[hidden],
+#soluciones .solucion-col-panel .solucion-col-icons .mkt-img[hidden] {
+    display: none !important;
+}
+@media (max-width: 900px) {
+    #soluciones .solucion-col-panel .solucion-col-icons:has(.google-ads) {
+        width: 100%;
+        max-width: 230px;
+        flex-wrap: nowrap;
+        gap: 10px;
+    }
+    #soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img.meta-ads,
+    #soluciones .solucion-col-panel .solucion-col-icons .partner-logo-img.google-ads {
+        flex: 0 1 108px;
+        width: 108px;
+        max-width: calc((100% - 10px) / 2);
+        height: 42px;
+        min-height: 42px;
+    }
+}
