@@ -6298,7 +6298,7 @@ a:focus-visible, button:focus-visible {
         transform: none !important;
         will-change: auto;
     }
-    .clientes-container.is-ready .client-logo-box.clone { display: none !important; }
+    .clientes-container.is-ready .clientes-grid .client-logo-box.clone { display: none !important; }
 }
 /* ==========================================================================
    HERO — video original completo sin recorte. Su ancho se limita en función
@@ -6306,7 +6306,7 @@ a:focus-visible, button:focus-visible {
    ========================================================================== */
 .contenedor-imagen { min-width: 0; align-items: center; justify-content: center; }
 .marco-foto {
-    width: min(100%, 38vw, 43svh);
+    width: min(100%, 38vw, calc(70svh * 9 / 16));
     max-width: 100%;
     aspect-ratio: 9 / 16;
     max-height: 70svh;
